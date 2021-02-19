@@ -15,6 +15,10 @@ class ShiftedKernel(Kernel, ShiftedFunction):
 
     _dispatch = Dispatcher(in_class=Self)
 
+    def _compute(self, x, y):
+        shifts1, shifts2 = expand(self.shifts)
+        return B.subtract(x, shifts1), B.subtract(y, shifts2)
+
     @property
     def _stationary(self):
         if len(self.shifts) == 1:
@@ -31,17 +35,12 @@ class ShiftedKernel(Kernel, ShiftedFunction):
 
 @_dispatch(ShiftedKernel, B.Numeric, B.Numeric)
 def pairwise(k, x, y):
-    return pairwise(k[0], *_shiftedkernel_compute(k, x, y))
+    return pairwise(k[0], *k._compute(x, y))
 
 
 @_dispatch(ShiftedKernel, B.Numeric, B.Numeric)
 def elwise(k, x, y):
-    return elwise(k[0], *_shiftedkernel_compute(k, x, y))
-
-
-def _shiftedkernel_compute(k, x, y):
-    shifts1, shifts2 = expand(k.shifts)
-    return B.subtract(x, shifts1), B.subtract(y, shifts2)
+    return elwise(k[0], *k._compute(x, y))
 
 
 # Make shifting synergise with stationary kernels.

@@ -25,6 +25,14 @@ class PeriodicKernel(Kernel, WrappedFunction):
         WrappedFunction.__init__(self, k)
         self.period = to_tensor(period)
 
+    def _compute(self, x, y):
+        @uprank
+        def feature_map(z):
+            z = B.divide(B.multiply(B.multiply(z, 2), B.pi), self.period)
+            return B.concat(B.sin(z), B.cos(z), axis=1)
+
+        return feature_map(x), feature_map(y)
+
     @property
     def _stationary(self):
         return self[0].stationary
@@ -39,21 +47,12 @@ class PeriodicKernel(Kernel, WrappedFunction):
 
 @_dispatch(PeriodicKernel, B.Numeric, B.Numeric)
 def pairwise(k, x, y):
-    return pairwise(k[0], *_periodickernel_compute(k, x, y))
+    return pairwise(k[0], *k._compute(x, y))
 
 
 @_dispatch(PeriodicKernel, B.Numeric, B.Numeric)
 def elwise(k, x, y):
-    return elwise(k[0], *_periodickernel_compute(k, x, y))
-
-
-def _periodickernel_compute(k, x, y):
-    @uprank
-    def feature_map(z):
-        z = B.divide(B.multiply(B.multiply(z, 2), B.pi), k.period)
-        return B.concat(B.sin(z), B.cos(z), axis=1)
-
-    return feature_map(x), feature_map(y)
+    return elwise(k[0], *k._compute(x, y))
 
 
 # Periodicise kernels.
