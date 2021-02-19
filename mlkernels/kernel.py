@@ -13,7 +13,7 @@ class Kernel(Function):
     """
 
     def __call__(self, *args, **kw_args):
-        return pairwise(self, *args, **kw_args)
+        return self.pairwise(self, *args, **kw_args)
 
     def pairwise(self, *args, **kw_args):
         """Shortcut for :func:`.kernel.pairwise`."""
