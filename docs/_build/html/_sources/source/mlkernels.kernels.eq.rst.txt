@@ -1,0 +1,7 @@
+mlkernels.kernels.eq module
+===========================
+
+.. automodule:: mlkernels.kernels.eq
+   :members:
+   :undoc-members:
+   :show-inheritance:

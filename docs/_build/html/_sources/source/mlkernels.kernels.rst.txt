@@ -1,0 +1,36 @@
+mlkernels.kernels package
+=========================
+
+.. automodule:: mlkernels.kernels
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   mlkernels.kernels.decaying
+   mlkernels.kernels.delta
+   mlkernels.kernels.derivative
+   mlkernels.kernels.eq
+   mlkernels.kernels.linear
+   mlkernels.kernels.log
+   mlkernels.kernels.matern12
+   mlkernels.kernels.matern32
+   mlkernels.kernels.matern52
+   mlkernels.kernels.one
+   mlkernels.kernels.periodic
+   mlkernels.kernels.product
+   mlkernels.kernels.reverse
+   mlkernels.kernels.rq
+   mlkernels.kernels.scaled
+   mlkernels.kernels.selected
+   mlkernels.kernels.shifted
+   mlkernels.kernels.stretched
+   mlkernels.kernels.sum
+   mlkernels.kernels.tensor
+   mlkernels.kernels.transformed
+   mlkernels.kernels.zero

@@ -1,0 +1,7 @@
+mlkernels.kernels.derivative module
+===================================
+
+.. automodule:: mlkernels.kernels.derivative
+   :members:
+   :undoc-members:
+   :show-inheritance:

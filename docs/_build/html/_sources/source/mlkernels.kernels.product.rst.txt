@@ -1,0 +1,7 @@
+mlkernels.kernels.product module
+================================
+
+.. automodule:: mlkernels.kernels.product
+   :members:
+   :undoc-members:
+   :show-inheritance:

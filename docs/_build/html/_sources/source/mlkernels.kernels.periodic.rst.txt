@@ -1,0 +1,7 @@
+mlkernels.kernels.periodic module
+=================================
+
+.. automodule:: mlkernels.kernels.periodic
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,7 @@
+mlkernels.kernels.transformed module
+====================================
+
+.. automodule:: mlkernels.kernels.transformed
+   :members:
+   :undoc-members:
+   :show-inheritance:

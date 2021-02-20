@@ -1,0 +1,7 @@
+mlkernels.kernels.selected module
+=================================
+
+.. automodule:: mlkernels.kernels.selected
+   :members:
+   :undoc-members:
+   :show-inheritance:

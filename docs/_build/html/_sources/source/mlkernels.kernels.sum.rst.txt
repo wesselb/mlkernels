@@ -1,0 +1,7 @@
+mlkernels.kernels.sum module
+============================
+
+.. automodule:: mlkernels.kernels.sum
+   :members:
+   :undoc-members:
+   :show-inheritance:

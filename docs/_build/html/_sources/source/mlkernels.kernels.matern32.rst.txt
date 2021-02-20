@@ -1,0 +1,7 @@
+mlkernels.kernels.matern32 module
+=================================
+
+.. automodule:: mlkernels.kernels.matern32
+   :members:
+   :undoc-members:
+   :show-inheritance:

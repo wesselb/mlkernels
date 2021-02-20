@@ -1,0 +1,7 @@
+mlkernels.kernels.linear module
+===============================
+
+.. automodule:: mlkernels.kernels.linear
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,571 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>MLKernels &mdash; mlkernels 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Application Programming Interface" href="api.html" />
+    <link rel="prev" title="Welcome" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> mlkernels
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">MLKernels</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#available-kernels">Available Kernels</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compositional-design">Compositional Design</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#displaying-kernels">Displaying Kernels</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#properties-of-kernels">Properties of Kernels</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">Application Programming Interface</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">mlkernels</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>MLKernels</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/readme.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="mlkernels">
+<h1><a class="reference external" href="http://github.com/wesselb/mlkernels">MLKernels</a><a class="headerlink" href="#mlkernels" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="https://github.com/wesselb/mlkernels/actions?query=workflow%3ACI"><img alt="CI" src="https://github.com/wesselb/mlkernels/workflows/CI/badge.svg" /></a> <a class="reference external" href="https://coveralls.io/github/wesselb/mlkernels?branch=main"><img alt="Coverage Status" src="https://coveralls.io/repos/github/wesselb/mlkernels/badge.svg?branch=main" /></a> <a class="reference external" href="https://wesselb.github.io/mlkernels"><img alt="Latest Docs" src="https://img.shields.io/badge/docs-latest-blue.svg" /></a> <a class="reference external" href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg" /></a></p>
+<p>Kernels, the machine learning ones</p>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>See <a class="reference external" href="https://gist.github.com/wesselb/4b44bf87f3789425f96e26c4308d0adc">the instructions
+here</a>.
+Then simply</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">mlkernels</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>Inputs to kernels, henceforth referred to simply as <em>inputs</em>, must be of
+one of the following three forms:</p>
+<ul class="simple">
+<li><p>If the input <code class="docutils literal notranslate"><span class="pre">x</span></code> is a <em>rank 0 tensor</em>, i.e. a scalar, then <code class="docutils literal notranslate"><span class="pre">x</span></code>
+refers to a single input location. For example, <code class="docutils literal notranslate"><span class="pre">0</span></code> simply refers
+to the sole input location <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
+<li><p>If the input <code class="docutils literal notranslate"><span class="pre">x</span></code> is a <em>rank 1 tensor</em>, then every element of <code class="docutils literal notranslate"><span class="pre">x</span></code>
+is interpreted as a separate input location. For example,
+<code class="docutils literal notranslate"><span class="pre">np.linspace(0,</span> <span class="pre">1,</span> <span class="pre">10)</span></code> generates 10 different input locations
+ranging from <code class="docutils literal notranslate"><span class="pre">0</span></code> to <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></li>
+<li><p>If the input <code class="docutils literal notranslate"><span class="pre">x</span></code> is a <em>rank 2 tensor</em>, then every <em>row</em> of <code class="docutils literal notranslate"><span class="pre">x</span></code> is
+interpreted as a separate input location. In this case inputs are
+multi-dimensional, and the columns correspond to the various input
+dimensions.</p></li>
+</ul>
+<p>If <code class="docutils literal notranslate"><span class="pre">k</span></code> is a kernel, say <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">=</span> <span class="pre">EQ()</span></code>, then <code class="docutils literal notranslate"><span class="pre">k(x,</span> <span class="pre">y)</span></code> constructs the
+<em>kernel matrix</em> for all pairs of points between <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code>.
+<code class="docutils literal notranslate"><span class="pre">k(x)</span></code> is shorthand for <code class="docutils literal notranslate"><span class="pre">k(x,</span> <span class="pre">x)</span></code>. Furthermore, <code class="docutils literal notranslate"><span class="pre">k.elwise(x,</span> <span class="pre">y)</span></code>
+constructs the <em>kernel vector</em> pairing the points in <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code>
+element wise, which will be a <em>rank 2 column vector</em>.</p>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">EQ</span><span class="p">()(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="go">array([[1.        , 0.8824969 , 0.60653066],</span>
+<span class="go">       [0.8824969 , 1.        , 0.8824969 ],</span>
+<span class="go">       [0.60653066, 0.8824969 , 1.        ]])</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">EQ</span><span class="p">()</span><span class="o">.</span><span class="n">elwise</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+<span class="go">array([[1.        ],</span>
+<span class="go">       [0.8824969 ],</span>
+<span class="go">       [0.60653066]])</span>
+</pre></div>
+</div>
+<div class="section" id="available-kernels">
+<h3>Available Kernels<a class="headerlink" href="#available-kernels" title="Permalink to this headline">¶</a></h3>
+<p>Constants function as constant kernels. Besides that, the following
+kernels are available:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">EQ()</span></code>, the exponentiated quadratic:</p>
+<div class="math notranslate nohighlight">
+\[k(x, y) = \exp\left( -\frac{1}{2}\|x - y\|^2 \right);\]</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RQ(alpha)</span></code>, the rational quadratic:</p>
+<div class="math notranslate nohighlight">
+\[k(x, y) = \left( 1 + \frac{\|x - y\|^2}{2 \alpha} \right)^{-\alpha};\]</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Exp()</span></code> or <code class="docutils literal notranslate"><span class="pre">Matern12()</span></code>, the exponential kernel:</p>
+<div class="math notranslate nohighlight">
+\[k(x, y) = \exp\left( -\|x - y\| \right);\]</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Matern32()</span></code>, the Matern–3/2 kernel:</p>
+<div class="math notranslate nohighlight">
+\[k(x, y) = \left(
+   1 + \sqrt{3}\|x - y\|
+   \right)\exp\left(-\sqrt{3}\|x - y\|\right);\]</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Matern52()</span></code>, the Matern–5/2 kernel:</p>
+<div class="math notranslate nohighlight">
+\[k(x, y) = \left(
+   1 + \sqrt{5}\|x - y\| + \frac{5}{3} \|x - y\|^2
+  \right)\exp\left(-\sqrt{3}\|x - y\|\right);\]</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Delta()</span></code>, the Kronecker delta kernel:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}k(x, y) = \begin{cases}
+   1 &amp; \text{if } x = y, \\
+   0 &amp; \text{otherwise};
+  \end{cases}\end{split}\]</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DecayingKernel(alpha,</span> <span class="pre">beta)</span></code>:</p>
+<div class="math notranslate nohighlight">
+\[k(x, y) = \frac{\|\beta\|^\alpha}{\|x + y + \beta\|^\alpha};\]</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LogKernel()</span></code>:</p>
+<div class="math notranslate nohighlight">
+\[k(x, y) = \frac{\log(1 + \|x - y\|)}{\|x - y\|};\]</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TensorProductKernel(f)</span></code>:</p>
+<div class="math notranslate nohighlight">
+\[k(x, y) = f(x)f(y).\]</div>
+<p>Adding or multiplying a <code class="docutils literal notranslate"><span class="pre">FunctionType</span></code> <code class="docutils literal notranslate"><span class="pre">f</span></code> to or with a kernel
+will automatically translate <code class="docutils literal notranslate"><span class="pre">f</span></code> to <code class="docutils literal notranslate"><span class="pre">TensorProductKernel(f)</span></code>. For
+example, <code class="docutils literal notranslate"><span class="pre">f</span> <span class="pre">*</span> <span class="pre">k</span></code> will translate to <code class="docutils literal notranslate"><span class="pre">TensorProductKernel(f)</span> <span class="pre">*</span> <span class="pre">k</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">f</span> <span class="pre">+</span> <span class="pre">k</span></code> will translate to <code class="docutils literal notranslate"><span class="pre">TensorProductKernel(f)</span> <span class="pre">+</span> <span class="pre">k</span></code>.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="compositional-design">
+<h3>Compositional Design<a class="headerlink" href="#compositional-design" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p>Add and subtract kernels.</p>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">EQ</span><span class="p">()</span> <span class="o">+</span> <span class="n">Exp</span><span class="p">()</span>
+<span class="go">EQ() + Exp()</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">EQ</span><span class="p">()</span> <span class="o">+</span> <span class="n">EQ</span><span class="p">()</span>
+<span class="go">2 * EQ()</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">EQ</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="go">EQ() + 1</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">EQ</span><span class="p">()</span> <span class="o">+</span> <span class="mi">0</span>
+<span class="go">EQ()</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">EQ</span><span class="p">()</span> <span class="o">-</span> <span class="n">Exp</span><span class="p">()</span>
+<span class="go">EQ() - Exp()</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">EQ</span><span class="p">()</span> <span class="o">-</span> <span class="n">EQ</span><span class="p">()</span>
+<span class="go">0</span>
+</pre></div>
+</div>
+</li>
+<li><p>Multiply kernels.</p>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">EQ</span><span class="p">()</span> <span class="o">*</span> <span class="n">Exp</span><span class="p">()</span>
+<span class="go">EQ() * Exp()</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="mi">2</span> <span class="o">*</span> <span class="n">EQ</span><span class="p">()</span>
+<span class="go">2 * EQ()</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="mi">0</span> <span class="o">*</span> <span class="n">EQ</span><span class="p">()</span>
+<span class="go">0</span>
+</pre></div>
+</div>
+</li>
+<li><p>Shift kernels.</p>
+<p>Definition:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">k</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="n">c</span><span class="p">)(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">==</span> <span class="n">k</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">c</span><span class="p">,</span> <span class="n">y</span> <span class="o">-</span> <span class="n">c</span><span class="p">)</span>
+
+<span class="n">k</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">)(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">==</span> <span class="n">k</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">c1</span><span class="p">,</span> <span class="n">y</span> <span class="o">-</span> <span class="n">c2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Linear</span><span class="p">()</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">Linear() shift 1</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">EQ</span><span class="p">()</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="go">EQ() shift (1, 2)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Stretch kernels.</p>
+<p>Definition:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">k</span><span class="o">.</span><span class="n">stretch</span><span class="p">(</span><span class="n">c</span><span class="p">)(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">==</span> <span class="n">k</span><span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="n">c</span><span class="p">,</span> <span class="n">y</span> <span class="o">/</span> <span class="n">c</span><span class="p">)</span>
+
+<span class="n">k</span><span class="o">.</span><span class="n">stretch</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">)(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">==</span> <span class="n">k</span><span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="n">c1</span><span class="p">,</span> <span class="n">y</span> <span class="o">/</span> <span class="n">c2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">EQ</span><span class="p">()</span><span class="o">.</span><span class="n">stretch</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">EQ() &gt; 2</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">EQ</span><span class="p">()</span><span class="o">.</span><span class="n">stretch</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="go">EQ() &gt; (2, 3)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> operator is implemented to provide a shorthand for
+stretching:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">EQ</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">2</span>
+<span class="go">EQ() &gt; 2</span>
+</pre></div>
+</div>
+</li>
+<li><p>Select particular input dimensions of kernels.</p>
+<p>Definition:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">k</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="mi">0</span><span class="p">])(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">==</span> <span class="n">k</span><span class="p">(</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
+
+<span class="n">k</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">==</span> <span class="n">k</span><span class="p">(</span><span class="n">x</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="n">y</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+
+<span class="n">k</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">])(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">==</span> <span class="n">k</span><span class="p">(</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+
+<span class="n">k</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">])(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">==</span> <span class="n">k</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">EQ</span><span class="p">()</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="mi">0</span><span class="p">])</span>
+<span class="go">EQ() : [0]</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">EQ</span><span class="p">()</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="go">EQ() : [0, 1]</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">EQ</span><span class="p">()</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="go">EQ() : ([0], [1])</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">EQ</span><span class="p">()</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="go">EQ() : (None, [1])</span>
+</pre></div>
+</div>
+</li>
+<li><p>Transform the inputs of kernels.</p>
+<p>Definition:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">k</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">f</span><span class="p">)(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">==</span> <span class="n">k</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">f</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+
+<span class="n">k</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">)(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">==</span> <span class="n">k</span><span class="p">(</span><span class="n">f1</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">f2</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+
+<span class="n">k</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">f</span><span class="p">)(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">==</span> <span class="n">k</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">EQ</span><span class="p">()</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="go">EQ() transform f</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">EQ</span><span class="p">()</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">)</span>
+<span class="go">EQ() transform (f1, f2)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">EQ</span><span class="p">()</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+<span class="go">EQ() transform (None, f)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Numerically, but efficiently, take derivatives of kernels. This
+currently only works in TensorFlow.</p>
+<p>Definition:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">k</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="mi">0</span><span class="p">)(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">==</span> <span class="n">d</span><span class="o">/</span><span class="n">d</span><span class="p">(</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span> <span class="n">d</span><span class="o">/</span><span class="n">d</span><span class="p">(</span><span class="n">y</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span> <span class="n">k</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="n">k</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">==</span> <span class="n">d</span><span class="o">/</span><span class="n">d</span><span class="p">(</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span> <span class="n">d</span><span class="o">/</span><span class="n">d</span><span class="p">(</span><span class="n">y</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span> <span class="n">k</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="n">k</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">)(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">==</span> <span class="n">d</span><span class="o">/</span><span class="n">d</span><span class="p">(</span><span class="n">y</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span> <span class="n">k</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">EQ</span><span class="p">()</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">d(0) EQ()</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">EQ</span><span class="p">()</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">d(0, 1) EQ()</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">EQ</span><span class="p">()</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">d(None, 1) EQ()</span>
+</pre></div>
+</div>
+</li>
+<li><p>Make kernels periodic.</p>
+<p>Definition:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">k</span><span class="o">.</span><span class="n">periodic</span><span class="p">(</span><span class="mi">2</span> <span class="n">pi</span> <span class="o">/</span> <span class="n">w</span><span class="p">)(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">==</span> <span class="n">k</span><span class="p">((</span><span class="n">sin</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="n">x</span><span class="p">),</span> <span class="n">cos</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="n">x</span><span class="p">)),</span> <span class="p">(</span><span class="n">sin</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="n">y</span><span class="p">),</span> <span class="n">cos</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="n">y</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">EQ</span><span class="p">()</span><span class="o">.</span><span class="n">periodic</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">EQ() per 1</span>
+</pre></div>
+</div>
+</li>
+<li><p>Reverse the arguments of kernels.</p>
+<p>Definition:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">reversed</span><span class="p">(</span><span class="n">k</span><span class="p">)(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">==</span> <span class="n">k</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">reversed</span><span class="p">(</span><span class="n">Linear</span><span class="p">())</span>
+<span class="go">Reversed(Linear())</span>
+</pre></div>
+</div>
+</li>
+<li><p>Extract terms and factors from sums and products respectively of
+kernels.</p>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">EQ</span><span class="p">()</span> <span class="o">+</span> <span class="n">RQ</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span> <span class="o">+</span> <span class="n">Linear</span><span class="p">())</span><span class="o">.</span><span class="n">term</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">RQ(0.1)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">EQ</span><span class="p">()</span> <span class="o">*</span> <span class="n">Linear</span><span class="p">)</span><span class="o">.</span><span class="n">factor</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+<p>Kernels and means “wrapping” others can be “unwrapped” by indexing
+<code class="docutils literal notranslate"><span class="pre">k[0]</span></code> or <code class="docutils literal notranslate"><span class="pre">m[0]</span></code>.</p>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">reversed</span><span class="p">(</span><span class="n">Linear</span><span class="p">())</span>
+<span class="go">Reversed(Linear())</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">reversed</span><span class="p">(</span><span class="n">Linear</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">Linear()</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">EQ</span><span class="p">()</span><span class="o">.</span><span class="n">periodic</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">EQ() per 1</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">EQ</span><span class="p">()</span><span class="o">.</span><span class="n">periodic</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">EQ()</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<div class="section" id="displaying-kernels">
+<h4>Displaying Kernels<a class="headerlink" href="#displaying-kernels" title="Permalink to this headline">¶</a></h4>
+<p>Kernels and means have a <code class="docutils literal notranslate"><span class="pre">display</span></code> method. The <code class="docutils literal notranslate"><span class="pre">display</span></code> method
+accepts a callable formatter that will be applied before any value is
+printed. This comes in handy when pretty printing kernels.</p>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">((</span><span class="mf">2.12345</span> <span class="o">*</span> <span class="n">EQ</span><span class="p">())</span><span class="o">.</span><span class="n">display</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">x</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))</span>
+<span class="go">2.12 * EQ(), 0</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="properties-of-kernels">
+<h3>Properties of Kernels<a class="headerlink" href="#properties-of-kernels" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p>Kernels can be equated to check for equality. This will attempt basic
+algebraic manipulations. If the means and kernels are not equal <em>or</em>
+equality cannot be proved, <code class="docutils literal notranslate"><span class="pre">False</span></code> is returned.</p>
+<p>Example of equating kernels:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span> <span class="mi">2</span> <span class="o">*</span> <span class="n">EQ</span><span class="p">()</span> <span class="o">==</span> <span class="n">EQ</span><span class="p">()</span> <span class="o">+</span> <span class="n">EQ</span><span class="p">()</span>
+<span class="go">True</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">EQ</span><span class="p">()</span> <span class="o">+</span> <span class="n">Exp</span><span class="p">()</span> <span class="o">==</span> <span class="n">Exp</span><span class="p">()</span> <span class="o">+</span> <span class="n">EQ</span><span class="p">()</span>
+<span class="go">True</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="mi">2</span> <span class="o">*</span> <span class="n">Exp</span><span class="p">()</span> <span class="o">==</span> <span class="n">EQ</span><span class="p">()</span> <span class="o">+</span> <span class="n">Exp</span><span class="p">()</span>
+<span class="go">False</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">EQ</span><span class="p">()</span> <span class="o">+</span> <span class="n">Exp</span><span class="p">()</span> <span class="o">+</span> <span class="n">Linear</span><span class="p">()</span>  <span class="o">==</span> <span class="n">Linear</span><span class="p">()</span> <span class="o">+</span> <span class="n">Exp</span><span class="p">()</span> <span class="o">+</span> <span class="n">EQ</span><span class="p">()</span>  <span class="c1"># Too hard: cannot prove equality!</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+</li>
+<li><p>The stationarity of a kernel <code class="docutils literal notranslate"><span class="pre">k</span></code> can always be determined by
+querying <code class="docutils literal notranslate"><span class="pre">k.stationary</span></code>.</p>
+<p>Example of querying the stationarity:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">EQ</span><span class="p">()</span><span class="o">.</span><span class="n">stationary</span>
+<span class="go">True</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">EQ</span><span class="p">()</span> <span class="o">+</span> <span class="n">Linear</span><span class="p">())</span><span class="o">.</span><span class="n">stationary</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="api.html" class="btn btn-neutral float-right" title="Application Programming Interface" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2021, Wessel Bruinsma
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

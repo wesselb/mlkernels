@@ -1,0 +1,7 @@
+mlkernels.kernels.rq module
+===========================
+
+.. automodule:: mlkernels.kernels.rq
+   :members:
+   :undoc-members:
+   :show-inheritance:

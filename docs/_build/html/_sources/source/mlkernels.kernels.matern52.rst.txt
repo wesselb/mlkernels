@@ -1,0 +1,7 @@
+mlkernels.kernels.matern52 module
+=================================
+
+.. automodule:: mlkernels.kernels.matern52
+   :members:
+   :undoc-members:
+   :show-inheritance:

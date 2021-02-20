@@ -1,0 +1,7 @@
+mlkernels.kernels.log module
+============================
+
+.. automodule:: mlkernels.kernels.log
+   :members:
+   :undoc-members:
+   :show-inheritance:

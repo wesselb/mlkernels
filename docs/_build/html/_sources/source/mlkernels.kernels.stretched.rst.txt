@@ -1,0 +1,7 @@
+mlkernels.kernels.stretched module
+==================================
+
+.. automodule:: mlkernels.kernels.stretched
+   :members:
+   :undoc-members:
+   :show-inheritance:

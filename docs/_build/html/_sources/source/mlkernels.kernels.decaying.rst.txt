@@ -1,0 +1,7 @@
+mlkernels.kernels.decaying module
+=================================
+
+.. automodule:: mlkernels.kernels.decaying
+   :members:
+   :undoc-members:
+   :show-inheritance:

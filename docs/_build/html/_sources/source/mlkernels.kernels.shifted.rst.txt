@@ -1,0 +1,7 @@
+mlkernels.kernels.shifted module
+================================
+
+.. automodule:: mlkernels.kernels.shifted
+   :members:
+   :undoc-members:
+   :show-inheritance:
