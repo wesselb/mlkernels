@@ -13,15 +13,15 @@ class Kernel(Function):
     """
 
     def __call__(self, *args, **kw_args):
-        return self.pairwise(self, *args, **kw_args)
+        return self.pairwise(*args, **kw_args)
 
     def pairwise(self, *args, **kw_args):
         """Shortcut for :func:`.kernel.pairwise`."""
-        return pairwise(self, *args, kw_args)
+        return pairwise(self, *args, **kw_args)
 
     def elwise(self, *args, **kw_args):
         """Shortcut for :func:`.kernel.elwise`."""
-        return elwise(self, *args, kw_args)
+        return elwise(self, *args, **kw_args)
 
     def periodic(self, period=1):
         """Map to a periodic space.
@@ -98,7 +98,7 @@ def elwise(k, x):
 
 
 @_dispatch(Kernel, object)
-def periodicise(k, period):
+def periodicise(k, period):  # pragma: no cover
     """Map a kernel to a periodic space.
 
     Args:
@@ -108,4 +108,5 @@ def periodicise(k, period):
     Returns:
         :class:`.kernel.Kernel`: Periodic version of the kernel.
     """
+    # This method will be overwritten. Hence, this should never run.
     raise NotImplementedError(f"Cannot make {k} periodic with period {period}.")

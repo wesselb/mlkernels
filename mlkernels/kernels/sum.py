@@ -22,4 +22,4 @@ def pairwise(k, x, y):
 
 @_dispatch(SumKernel, object, object)
 def elwise(k, x, y):
-    return B.add(elwise(k[0], x, y), elwise(k[0], x, y))
+    return B.add(elwise(k[0], x, y), elwise(k[1], x, y))

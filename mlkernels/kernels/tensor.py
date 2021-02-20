@@ -30,7 +30,7 @@ def pairwise(k, x, y):
         return LowRank(left=uprank(f1(uprank(x))), right=uprank(f2(uprank(y))))
 
 
-@_dispatch(B.Numeric, B.Numeric)
+@_dispatch(TensorProductKernel, B.Numeric, B.Numeric)
 def elwise(k, x, y):
     f1, f2 = expand(k.fs)
     if x is y and f1 is f2:

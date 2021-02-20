@@ -9,7 +9,7 @@ from . import _dispatch
 from .. import Kernel
 from ..util import num_elements, uprank, expand
 
-__all__ = ["DerivativeKernel"]
+__all__ = ["perturb", "DerivativeKernel"]
 
 
 def dkx(k_elwise, i):

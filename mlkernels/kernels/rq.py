@@ -39,7 +39,7 @@ class RQ(Kernel):
 
 @_dispatch(RQ, B.Numeric, B.Numeric)
 def pairwise(k, x, y):
-    return Dense(k._comupte(B.pw_dists2(x, y)))
+    return Dense(k._compute(B.pw_dists2(x, y)))
 
 
 @_dispatch(RQ, B.Numeric, B.Numeric)

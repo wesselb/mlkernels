@@ -5,7 +5,7 @@ from plum import Dispatcher, Self
 from . import _dispatch
 from .. import Kernel
 
-__all__ = ["Matern12"]
+__all__ = ["Matern12", "Exp"]
 
 
 class Matern12(Kernel):
