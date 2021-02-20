@@ -16,4 +16,3 @@ def test_matern52():
 
     # Standard tests:
     standard_kernel_tests(k)
-
