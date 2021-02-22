@@ -11,13 +11,13 @@ Contents:
 
 - [Installation](#installation)
 - [Usage](#usage)
-    - [Structured Matrix Types](#structured-matrix-types)
-    - [AutoGrad, TensorFlow, PyTorch, or JAX? Your Choice!](#autograd-tensorflow-pytorch-or-jax-your-choice)
+- [AutoGrad, TensorFlow, PyTorch, or JAX? Your Choice!](#autograd-tensorflow-pytorch-or-jax-your-choice)
 - [Available Kernels](#available-kernels)
 - [Compositional Design](#compositional-design)
 - [Displaying Kernels](#displaying-kernels)
 - [Properties of Kernels](#properties-of-kernels)
 - [Implementing Your Own Kernel](#implementing-your-own-kernel)
+- [Structured Matrix Types](#structured-matrix-types)
 
 TLDR:
 
@@ -99,74 +99,8 @@ Inputs to kernels must be of one of the following three forms:
     If the input `x` is a _rank-2 tensor_, i.e. a matrix, then every _row_ of `x` is
     interpreted as a separate input location. In this case inputs are
     multi-dimensional, and the columns correspond to the various input dimensions.
-
-### Structured Matrix Types
-
-MLKernels uses [an extension of LAB](https://github.com/wesselb/matrix) to
-accelerate linear algebra with structured linear algebra primitives.
-By calling `k(x, y)` or `k.elwise(x, y)`, these structured matrix types are 
-automatically converted regular NumPy/TensorFlow/PyTorch/JAX arrays, so they won't 
-bother you.
-Would you want to preserve matrix structure, then you can use the exported functions
-`pairwise` and `elwise`.
-
-Example:
-
-```python
->>> k = 2 * Delta()
-
->>> x = np.linspace(0, 5, 10)
-
->>> from mlkernels import pairwise
-
->>> pairwise(k, x)  # Preserve structure.
-<diagonal matrix: shape=10x10, dtype=float64
- diag=[2. 2. 2. 2. 2. 2. 2. 2. 2. 2.]>
-
->>> k(x)  # Do not preserve structure.
-array([[2., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
-       [0., 2., 0., 0., 0., 0., 0., 0., 0., 0.],
-       [0., 0., 2., 0., 0., 0., 0., 0., 0., 0.],
-       [0., 0., 0., 2., 0., 0., 0., 0., 0., 0.],
-       [0., 0., 0., 0., 2., 0., 0., 0., 0., 0.],
-       [0., 0., 0., 0., 0., 2., 0., 0., 0., 0.],
-       [0., 0., 0., 0., 0., 0., 2., 0., 0., 0.],
-       [0., 0., 0., 0., 0., 0., 0., 2., 0., 0.],
-       [0., 0., 0., 0., 0., 0., 0., 0., 2., 0.],
-       [0., 0., 0., 0., 0., 0., 0., 0., 0., 2.]])
-```
-
-These structured matrices are compatible with [LAB](https://github.com/wesselb/lab):
-they know how to efficiently add, multiply, and do other linear algebra operations.
-
-```python
->>> import lab as B
-
->>> B.matmul(pairwise(k, x), pairwise(k, x))
-<diagonal matrix: shape=10x10, dtype=float64
- diag=[4. 4. 4. 4. 4. 4. 4. 4. 4. 4.]>
-```
-
-You can eventually convert structured primitives to regular 
-NumPy/TensorFlow/PyTorch/JAX arrays by calling `B.dense`:
-
-```python
->>> import lab as B
-
->>> B.dense(B.matmul(pairwise(k, x), pairwise(k, x)))
-array([[4., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
-       [0., 4., 0., 0., 0., 0., 0., 0., 0., 0.],
-       [0., 0., 4., 0., 0., 0., 0., 0., 0., 0.],
-       [0., 0., 0., 4., 0., 0., 0., 0., 0., 0.],
-       [0., 0., 0., 0., 4., 0., 0., 0., 0., 0.],
-       [0., 0., 0., 0., 0., 4., 0., 0., 0., 0.],
-       [0., 0., 0., 0., 0., 0., 4., 0., 0., 0.],
-       [0., 0., 0., 0., 0., 0., 0., 4., 0., 0.],
-       [0., 0., 0., 0., 0., 0., 0., 0., 4., 0.],
-       [0., 0., 0., 0., 0., 0., 0., 0., 0., 4.]])
-```
-
-### AutoGrad, TensorFlow, PyTorch, or JAX? Your Choice!
+    
+## AutoGrad, TensorFlow, PyTorch, or JAX? Your Choice!
 
 ```python
 from mlkernels.autograd import EQ, Linear
@@ -533,7 +467,74 @@ Example:
     >>> (EQ() + Linear()).stationary
     False
     ```
-  
+
+
+### Structured Matrix Types
+
+MLKernels uses [an extension of LAB](https://github.com/wesselb/matrix) to
+accelerate linear algebra with structured linear algebra primitives.
+By calling `k(x, y)` or `k.elwise(x, y)`, these structured matrix types are
+automatically converted regular NumPy/TensorFlow/PyTorch/JAX arrays, so they won't
+bother you.
+Would you want to preserve matrix structure, then you can use the exported functions
+`pairwise` and `elwise`.
+
+Example:
+
+```python
+>>> k = 2 * Delta()
+
+>>> x = np.linspace(0, 5, 10)
+
+>>> from mlkernels import pairwise
+
+>>> pairwise(k, x)  # Preserve structure.
+<diagonal matrix: shape=10x10, dtype=float64
+ diag=[2. 2. 2. 2. 2. 2. 2. 2. 2. 2.]>
+
+>>> k(x)  # Do not preserve structure.
+array([[2., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
+       [0., 2., 0., 0., 0., 0., 0., 0., 0., 0.],
+       [0., 0., 2., 0., 0., 0., 0., 0., 0., 0.],
+       [0., 0., 0., 2., 0., 0., 0., 0., 0., 0.],
+       [0., 0., 0., 0., 2., 0., 0., 0., 0., 0.],
+       [0., 0., 0., 0., 0., 2., 0., 0., 0., 0.],
+       [0., 0., 0., 0., 0., 0., 2., 0., 0., 0.],
+       [0., 0., 0., 0., 0., 0., 0., 2., 0., 0.],
+       [0., 0., 0., 0., 0., 0., 0., 0., 2., 0.],
+       [0., 0., 0., 0., 0., 0., 0., 0., 0., 2.]])
+```
+
+These structured matrices are compatible with [LAB](https://github.com/wesselb/lab):
+they know how to efficiently add, multiply, and do other linear algebra operations.
+
+```python
+>>> import lab as B
+
+>>> B.matmul(pairwise(k, x), pairwise(k, x))
+<diagonal matrix: shape=10x10, dtype=float64
+ diag=[4. 4. 4. 4. 4. 4. 4. 4. 4. 4.]>
+```
+
+You can eventually convert structured primitives to regular
+NumPy/TensorFlow/PyTorch/JAX arrays by calling `B.dense`:
+
+```python
+>>> import lab as B
+
+>>> B.dense(B.matmul(pairwise(k, x), pairwise(k, x)))
+array([[4., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
+       [0., 4., 0., 0., 0., 0., 0., 0., 0., 0.],
+       [0., 0., 4., 0., 0., 0., 0., 0., 0., 0.],
+       [0., 0., 0., 4., 0., 0., 0., 0., 0., 0.],
+       [0., 0., 0., 0., 4., 0., 0., 0., 0., 0.],
+       [0., 0., 0., 0., 0., 4., 0., 0., 0., 0.],
+       [0., 0., 0., 0., 0., 0., 4., 0., 0., 0.],
+       [0., 0., 0., 0., 0., 0., 0., 4., 0., 0.],
+       [0., 0., 0., 0., 0., 0., 0., 0., 4., 0.],
+       [0., 0., 0., 0., 0., 0., 0., 0., 0., 4.]])
+```
+
 
 ### Implementing Your Own Kernel
 
