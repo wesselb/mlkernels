@@ -464,8 +464,7 @@ Besides that, the following kernels are available:
     2
     ```
     
-    Kernels and means "wrapping" others can be "unwrapped" by indexing `k[0]`
-     or `m[0]`.
+    Kernels "wrapping" others can be "unwrapped" by indexing `k[0]`.
      
     Example:
     
