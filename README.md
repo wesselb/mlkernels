@@ -11,8 +11,8 @@ Contents:
 
 - [Installation](#installation)
 - [Usage](#usage)
-  - [Important Remark: Structured Matrix Types](#important-remark-structured-matrix-types)
-  - [AutoGrad, TensorFlow, PyTorch, or JAX? Your Choice!](#autograd-tensorflow-pytorch-or-jax-your-choice)
+    - [Structured Matrix Types](#structured-matrix-types)
+    - [AutoGrad, TensorFlow, PyTorch, or JAX? Your Choice!](#autograd-tensorflow-pytorch-or-jax-your-choice)
 - [Available Kernels](#available-kernels)
 - [Compositional Design](#compositional-design)
 - [Displaying Kernels](#displaying-kernels)
@@ -40,18 +40,6 @@ TLDR:
  left=[[0. ]
        [0.5]
        [1. ]]>
-
->>> import lab as B
-
->>> B.dense(EQ()(np.linspace(0, 1, 3)))
-array([[1.        , 0.8824969 , 0.60653066],
-       [0.8824969 , 1.        , 0.8824969 ],
-       [0.60653066, 0.8824969 , 1.        ]])
-
->>> B.dense(Linear()(np.linspace(0, 1, 3)))
-array([[0.  , 0.  , 0.  ],
-       [0.  , 0.25, 0.5 ],
-       [0.  , 0.5 , 1.  ]])
 ```
 
 ## Installation
@@ -64,91 +52,73 @@ See also [the instructions here](https://gist.github.com/wesselb/4b44bf87f378942
 
 ## Usage
 
-Inputs to kernels, henceforth referred to simply as _inputs_, 
-must be of one of the following three forms:
+Let `k` be a kernel, e.g. `k = EQ()`.
 
-* If the input `x` is a _rank-0 tensor_, i.e. a scalar, then `x` refers to a 
-single input location. For example, `0` simply refers to the sole input 
-location `0`.
-
-* If the input `x` is a _rank-1 tensor_, i.e. a vector, then every element of `x` is 
-interpreted as a separate input location. For example, `np.linspace(0, 1, 10)`
-generates 10 different input locations ranging from `0` to `1`.
-
-* If the input `x` is a _rank-2 tensor_, i.e. a matrix, then every _row_ of `x` is 
-interpreted as a separate input location. In this case inputs are 
-multi-dimensional, and the columns correspond to the various input dimensions.
-
-If `k` is a kernel, say `k = EQ()`, then `k(x, y)` constructs the _kernel 
-matrix_ for all pairs of points between `x` and `y`. `k(x)` is shorthand for
-`k(x, x)`. Furthermore, `k.elwise(x, y)` constructs the _kernel vector_ pairing
-the points in `x` and `y` element-wise, which will be a _rank-2 column vector_.
-Instead of calling the kernel, one can also use the functions `pairwise` and `elwise`:
-`pairwise(k, x, y)` and `elwise(k, x, y)`.
+*
+    `k(x, y)` constructs the _kernel matrix_ for all pairs of points between `x` and
+    `y`.
+*
+    `k(x)` is shorthand for `k(x, x)`.
+*
+    `k.elwise(x, y)` constructs the _kernel vector_ pairing the points in `x` and 
+    `y` element-wise, which will be a _rank-2 column vector_.
 
 Example:
 
 ```python
->>> EQ()(np.linspace(0, 1, 3))
-<dense matrix: shape=3x3, dtype=float64
- mat=[[1.    0.882 0.607]
-      [0.882 1.    0.882]
-      [0.607 0.882 1.   ]]>
+>>> k = EQ()
 
->>> pairwise(EQ(), np.linspace(0, 1, 3))
-<dense matrix: shape=3x3, dtype=float64
- mat=[[1.    0.882 0.607]
-      [0.882 1.    0.882]
-      [0.607 0.882 1.   ]]>
+>>> k(np.linspace(0, 1, 3))
+array([[1.        , 0.8824969 , 0.60653066],
+       [0.8824969 , 1.        , 0.8824969 ],
+       [0.60653066, 0.8824969 , 1.        ]])
  
->>> EQ().elwise(np.linspace(0, 1, 3), 0)
-array([[1.        ],
-       [0.8824969 ],
-       [0.60653066]])
-
->>> elwise(EQ(), np.linspace(0, 1, 3), 0)
+>>> k.elwise(np.linspace(0, 1, 3), 0)
 array([[1.        ],
        [0.8824969 ],
        [0.60653066]])
 ```
 
-### Important Remark: Structured Matrix Types
+Inputs to kernels must be of one of the following three forms:
+
+*
+    If the input `x` is a _rank-0 tensor_, i.e. a scalar, then `x` refers to a
+    single input location.
+    For example, `0` simply refers to the sole input location `0`.
+
+*
+    If the input `x` is a _rank-1 tensor_, i.e. a vector, then every element of `x` is
+    interpreted as a separate input location.
+    For example, `np.linspace(0, 1, 10)` generates 10 different input locations 
+    ranging from `0` to `1`.
+
+*
+    If the input `x` is a _rank-2 tensor_, i.e. a matrix, then every _row_ of `x` is
+    interpreted as a separate input location. In this case inputs are
+    multi-dimensional, and the columns correspond to the various input dimensions.
+
+### Structured Matrix Types
 
 MLKernels uses [an extension of LAB](https://github.com/wesselb/matrix) to
 accelerate linear algebra with structured linear algebra primitives.
-You will encounter these primitives:
+By calling `k(x, y)` or `k.elwise(x, y)`, these structured matrix types are 
+automatically converted regular NumPy/TensorFlow/PyTorch/JAX arrays, so they won't 
+bother you.
+Would you want to preserve matrix structure, then you can use the exported functions
+`pairwise` and `elwise`.
+
+Example:
 
 ```python
 >>> k = 2 * Delta()
 
 >>> x = np.linspace(0, 5, 10)
 
->>> k(x)
+>>> pairwise(k, x)  # Preserve structure.
 <diagonal matrix: shape=10x10, dtype=float64
  diag=[2. 2. 2. 2. 2. 2. 2. 2. 2. 2.]>
-```
 
-If you're using [LAB](https://github.com/wesselb/lab) to further process these matrices,
-then there is absolutely no need to worry:
-these structured matrix types know how to add, multiply, and do other linear algebra
-operations.
-
-```python
->>> import lab as B
-
->>> B.matmul(k(x), k(x))
-<diagonal matrix: shape=10x10, dtype=float64
- diag=[4. 4. 4. 4. 4. 4. 4. 4. 4. 4.]>
-```
-
-If you're not using [LAB](https://github.com/wesselb/lab), you can convert these
-structured primitives to regular NumPy/TensorFlow/PyTorch/JAX arrays by calling
-`B.dense` (`B` is from [LAB](https://github.com/wesselb/lab)):
-
-```python
->>> import lab as B
-
->>> B.dense(k(x))
+>>> k(x)            # Do not preserve structure.
 array([[2., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
        [0., 2., 0., 0., 0., 0., 0., 0., 0., 0.],
        [0., 0., 2., 0., 0., 0., 0., 0., 0., 0.],
@@ -159,6 +129,38 @@ array([[2., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
        [0., 0., 0., 0., 0., 0., 0., 2., 0., 0.],
        [0., 0., 0., 0., 0., 0., 0., 0., 2., 0.],
        [0., 0., 0., 0., 0., 0., 0., 0., 0., 2.]])
+```
+
+If you're using [LAB](https://github.com/wesselb/lab) to further process these matrices,
+then there is no need to worry:
+these structured matrix types know how to add, multiply, and do other linear algebra
+operations.
+
+```python
+>>> import lab as B
+
+>>> B.matmul(pairwise(k, x), pairwise(k, x))
+<diagonal matrix: shape=10x10, dtype=float64
+ diag=[4. 4. 4. 4. 4. 4. 4. 4. 4. 4.]>
+```
+
+You can convert these structured primitives to regular NumPy/TensorFlow/PyTorch/JAX 
+arrays by calling `B.dense` (`B` is from [LAB](https://github.com/wesselb/lab)):
+
+```python
+>>> import lab as B
+
+>>> B.dense(B.matmul(pairwise(k, x), pairwise(k, x)))
+array([[4., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
+       [0., 4., 0., 0., 0., 0., 0., 0., 0., 0.],
+       [0., 0., 4., 0., 0., 0., 0., 0., 0., 0.],
+       [0., 0., 0., 4., 0., 0., 0., 0., 0., 0.],
+       [0., 0., 0., 0., 4., 0., 0., 0., 0., 0.],
+       [0., 0., 0., 0., 0., 4., 0., 0., 0., 0.],
+       [0., 0., 0., 0., 0., 0., 4., 0., 0., 0.],
+       [0., 0., 0., 0., 0., 0., 0., 4., 0., 0.],
+       [0., 0., 0., 0., 0., 0., 0., 0., 4., 0.],
+       [0., 0., 0., 0., 0., 0., 0., 0., 0., 4.]])
 ```
 
 ### AutoGrad, TensorFlow, PyTorch, or JAX? Your Choice!
