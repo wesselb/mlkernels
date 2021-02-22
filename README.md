@@ -603,11 +603,16 @@ def elwise(k, x, y):
 >>> k = EQWithLengthScale(2)
 
 >>> k
-
 EQWithLengthScale(2)
 
 >>> k == EQWithLengthScale(2)
 True
+
+>>> 2 * k == k + EQWithLengthScale(2)
+True
+
+>>> k == Linear()
+False
 
 >>> k_composite = (2 * k + Linear()) * RQ(2.0)
 
