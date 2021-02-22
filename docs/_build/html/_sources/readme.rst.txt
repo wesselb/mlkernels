@@ -18,6 +18,7 @@ Contents:
 -  `Compositional Design <#compositional-design>`__
 -  `Displaying Kernels <#displaying-kernels>`__
 -  `Properties of Kernels <#properties-of-kernels>`__
+-  `Implementing Your Own Kernel <#implementing-your-own-kernel>`__
 
 TLDR:
 
@@ -136,10 +137,9 @@ Example:
            [0., 0., 0., 0., 0., 0., 0., 0., 2., 0.],
            [0., 0., 0., 0., 0., 0., 0., 0., 0., 2.]])
 
-If you're using `LAB <https://github.com/wesselb/lab>`__ to further
-process these matrices, then there is no need to worry: these structured
-matrix types know how to add, multiply, and do other linear algebra
-operations.
+These structured matrices are compatible with
+`LAB <https://github.com/wesselb/lab>`__: they know how to efficiently
+add, multiply, and do other linear algebra operations.
 
 .. code:: python
 
@@ -149,7 +149,7 @@ operations.
     <diagonal matrix: shape=10x10, dtype=float64
      diag=[4. 4. 4. 4. 4. 4. 4. 4. 4. 4.]>
 
-You can convert these structured primitives to regular
+You can eventually convert structured primitives to regular
 NumPy/TensorFlow/PyTorch/JAX arrays by calling ``B.dense``:
 
 .. code:: python
@@ -465,8 +465,7 @@ Compositional Design
        >>> (2 * EQ() * Linear).factor(0)
        2
 
-   Kernels and means "wrapping" others can be "unwrapped" by indexing
-   ``k[0]`` or ``m[0]``.
+   Kernels "wrapping" others can be "unwrapped" by indexing ``k[0]``.
 
    Example:
 
@@ -533,6 +532,112 @@ Properties of Kernels
 
        >>> (EQ() + Linear()).stationary
        False
+
+Implementing Your Own Kernel
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+An example is most helpful:
+
+.. code:: python
+
+    import lab as B
+    from algebra.util import identical
+    from matrix import Dense
+    from plum import Dispatcher, Self
+
+    from mlkernels import Kernel, pairwise, elwise
+
+
+    class EQWithLengthScale(Kernel):
+        """Exponentiated quadratic kernel with a length scale.
+
+        Args:
+            scale (scalar): Length scale of the kernel.
+        """
+
+        _dispatch = Dispatcher(in_class=Self)
+
+        def __init__(self, scale):
+            self.scale = scale
+
+        def _compute(self, dists2):
+            # This computes the kernel given squared distances. We use `B` to provide a 
+            # backend-agnostic implementation.
+            return B.exp(-0.5 * dists2 / self.scale ** 2)
+
+        def render(self, formatter):
+            # This method determines how the kernel is displayed.
+            return f"EQWithLengthScale({formatter(self.scale)})"
+
+        @property
+        def _stationary(self):
+            # This method can be defined to return `True` to indicate that the kernel is
+            # stationary. By default, kernels are assumed to not be stationary.
+            return True
+
+        @_dispatch(Self)
+        def __eq__(self, other):
+            # If `other` is of type `Self`, which refers to `MyEQ`, then this method checks
+            # whether `self` and `other` can be treated as identical for the purpose of
+            # algebraic simplifications. In this case, `self` and `other` are identical
+            # for the purpose of algebraic simplification if `self.scale` and `other.scale`
+            # are. We use `algebra.util.identical` to check this condition.
+            return identical(self.scale, other.scale)
+
+
+    # It remains to implement pairwise and element-wise computation of the kernel.
+
+
+    @pairwise.extend(EQWithLengthScale, B.Numeric, B.Numeric)
+    def pairwise(k, x, y):
+        return Dense(k._compute(B.pw_dists2(x, y)))
+
+
+    @elwise.extend(EQWithLengthScale, B.Numeric, B.Numeric)
+    def elwise(k, x, y):
+        return k._compute(B.ew_dists2(x, y))
+
+.. code:: python
+
+    >>> k = EQWithLengthScale(2)
+
+    >>> k
+    EQWithLengthScale(2)
+
+    >>> k == EQWithLengthScale(2)
+    True
+
+    >>> 2 * k == k + EQWithLengthScale(2)
+    True
+
+    >>> k == Linear()
+    False
+
+    >>> k_composite = (2 * k + Linear()) * RQ(2.0)
+
+    >>> k_composite
+    (2 * EQWithLengthScale(2) + Linear()) * RQ(2.0)
+
+    >>> k_composite(np.linspace(0, 1, 3))
+    array([[2.        , 1.71711909, 1.12959604],
+           [1.71711909, 2.25      , 2.16002566],
+           [1.12959604, 2.16002566, 3.        ]])
+
+Of course, in practice we do not need to implement variants of kernels
+which include length scales, because we always adjust the length scale
+by stretching a base kernel:
+
+.. code:: python
+
+    >>> EQ().stretch(2)(np.linspace(0, 1, 3))
+    array([[1.        , 0.96923323, 0.8824969 ],
+           [0.96923323, 1.        , 0.96923323],
+           [0.8824969 , 0.96923323, 1.        ]])
+
+    >>> EQWithLengthScale(2)(np.linspace(0, 1, 3))
+    array([[1.        , 0.96923323, 0.8824969 ],
+           [0.96923323, 1.        , 0.96923323],
+           [0.8824969 , 0.96923323, 1.        ]])
 
 .. |CI| image:: https://github.com/wesselb/mlkernels/workflows/CI/badge.svg
    :target: https://github.com/wesselb/mlkernels/actions?query=workflow%3ACI

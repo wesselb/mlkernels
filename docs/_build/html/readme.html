@@ -98,7 +98,10 @@
 <li class="toctree-l2"><a class="reference internal" href="#available-kernels">Available Kernels</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#compositional-design">Compositional Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#displaying-kernels">Displaying Kernels</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#properties-of-kernels">Properties of Kernels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#properties-of-kernels">Properties of Kernels</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#implementing-your-own-kernel">Implementing Your Own Kernel</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">Application Programming Interface</a></li>
@@ -185,6 +188,7 @@ Choice!</a></p></li>
 <li><p><a class="reference external" href="#compositional-design">Compositional Design</a></p></li>
 <li><p><a class="reference external" href="#displaying-kernels">Displaying Kernels</a></p></li>
 <li><p><a class="reference external" href="#properties-of-kernels">Properties of Kernels</a></p></li>
+<li><p><a class="reference external" href="#implementing-your-own-kernel">Implementing Your Own Kernel</a></p></li>
 </ul>
 <p>TLDR:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">mlkernels</span> <span class="kn">import</span> <span class="n">EQ</span><span class="p">,</span> <span class="n">Linear</span>
@@ -290,10 +294,9 @@ use the exported functions <code class="docutils literal notranslate"><span clas
 <span class="go">       [0., 0., 0., 0., 0., 0., 0., 0., 0., 2.]])</span>
 </pre></div>
 </div>
-<p>If you’re using <a class="reference external" href="https://github.com/wesselb/lab">LAB</a> to further
-process these matrices, then there is no need to worry: these structured
-matrix types know how to add, multiply, and do other linear algebra
-operations.</p>
+<p>These structured matrices are compatible with
+<a class="reference external" href="https://github.com/wesselb/lab">LAB</a>: they know how to efficiently
+add, multiply, and do other linear algebra operations.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">lab</span> <span class="k">as</span> <span class="nn">B</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">B</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">pairwise</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">pairwise</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span>
@@ -301,7 +304,7 @@ operations.</p>
 <span class="go"> diag=[4. 4. 4. 4. 4. 4. 4. 4. 4. 4.]&gt;</span>
 </pre></div>
 </div>
-<p>You can convert these structured primitives to regular
+<p>You can eventually convert structured primitives to regular
 NumPy/TensorFlow/PyTorch/JAX arrays by calling <code class="docutils literal notranslate"><span class="pre">B.dense</span></code>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">lab</span> <span class="k">as</span> <span class="nn">B</span>
 
@@ -571,8 +574,7 @@ kernels.</p>
 <span class="go">2</span>
 </pre></div>
 </div>
-<p>Kernels and means “wrapping” others can be “unwrapped” by indexing
-<code class="docutils literal notranslate"><span class="pre">k[0]</span></code> or <code class="docutils literal notranslate"><span class="pre">m[0]</span></code>.</p>
+<p>Kernels “wrapping” others can be “unwrapped” by indexing <code class="docutils literal notranslate"><span class="pre">k[0]</span></code>.</p>
 <p>Example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">reversed</span><span class="p">(</span><span class="n">Linear</span><span class="p">())</span>
 <span class="go">Reversed(Linear())</span>
@@ -634,6 +636,107 @@ querying <code class="docutils literal notranslate"><span class="pre">k.stationa
 </div>
 </li>
 </ul>
+<div class="section" id="implementing-your-own-kernel">
+<h3>Implementing Your Own Kernel<a class="headerlink" href="#implementing-your-own-kernel" title="Permalink to this headline">¶</a></h3>
+<p>An example is most helpful:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">lab</span> <span class="k">as</span> <span class="nn">B</span>
+<span class="kn">from</span> <span class="nn">algebra.util</span> <span class="kn">import</span> <span class="n">identical</span>
+<span class="kn">from</span> <span class="nn">matrix</span> <span class="kn">import</span> <span class="n">Dense</span>
+<span class="kn">from</span> <span class="nn">plum</span> <span class="kn">import</span> <span class="n">Dispatcher</span><span class="p">,</span> <span class="n">Self</span>
+
+<span class="kn">from</span> <span class="nn">mlkernels</span> <span class="kn">import</span> <span class="n">Kernel</span><span class="p">,</span> <span class="n">pairwise</span><span class="p">,</span> <span class="n">elwise</span>
+
+
+<span class="k">class</span> <span class="nc">EQWithLengthScale</span><span class="p">(</span><span class="n">Kernel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Exponentiated quadratic kernel with a length scale.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        scale (scalar): Length scale of the kernel.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_dispatch</span> <span class="o">=</span> <span class="n">Dispatcher</span><span class="p">(</span><span class="n">in_class</span><span class="o">=</span><span class="n">Self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span>
+
+    <span class="k">def</span> <span class="nf">_compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dists2</span><span class="p">):</span>
+        <span class="c1"># This computes the kernel given squared distances. We use `B` to provide a</span>
+        <span class="c1"># backend-agnostic implementation.</span>
+        <span class="k">return</span> <span class="n">B</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">dists2</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">formatter</span><span class="p">):</span>
+        <span class="c1"># This method determines how the kernel is displayed.</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;EQWithLengthScale(</span><span class="si">{</span><span class="n">formatter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_stationary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># This method can be defined to return `True` to indicate that the kernel is</span>
+        <span class="c1"># stationary. By default, kernels are assumed to not be stationary.</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="nd">@_dispatch</span><span class="p">(</span><span class="n">Self</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="c1"># If `other` is of type `Self`, which refers to `MyEQ`, then this method checks</span>
+        <span class="c1"># whether `self` and `other` can be treated as identical for the purpose of</span>
+        <span class="c1"># algebraic simplifications. In this case, `self` and `other` are identical</span>
+        <span class="c1"># for the purpose of algebraic simplification if `self.scale` and `other.scale`</span>
+        <span class="c1"># are. We use `algebra.util.identical` to check this condition.</span>
+        <span class="k">return</span> <span class="n">identical</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span>
+
+
+<span class="c1"># It remains to implement pairwise and element-wise computation of the kernel.</span>
+
+
+<span class="nd">@pairwise</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">EQWithLengthScale</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">Numeric</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">Numeric</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">pairwise</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Dense</span><span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">_compute</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">pw_dists2</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)))</span>
+
+
+<span class="nd">@elwise</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">EQWithLengthScale</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">Numeric</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">Numeric</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">elwise</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">k</span><span class="o">.</span><span class="n">_compute</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">ew_dists2</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">k</span> <span class="o">=</span> <span class="n">EQWithLengthScale</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">k</span>
+<span class="go">EQWithLengthScale(2)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">k</span> <span class="o">==</span> <span class="n">EQWithLengthScale</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">True</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="mi">2</span> <span class="o">*</span> <span class="n">k</span> <span class="o">==</span> <span class="n">k</span> <span class="o">+</span> <span class="n">EQWithLengthScale</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">True</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">k</span> <span class="o">==</span> <span class="n">Linear</span><span class="p">()</span>
+<span class="go">False</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">k_composite</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">k</span> <span class="o">+</span> <span class="n">Linear</span><span class="p">())</span> <span class="o">*</span> <span class="n">RQ</span><span class="p">(</span><span class="mf">2.0</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">k_composite</span>
+<span class="go">(2 * EQWithLengthScale(2) + Linear()) * RQ(2.0)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">k_composite</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="go">array([[2.        , 1.71711909, 1.12959604],</span>
+<span class="go">       [1.71711909, 2.25      , 2.16002566],</span>
+<span class="go">       [1.12959604, 2.16002566, 3.        ]])</span>
+</pre></div>
+</div>
+<p>Of course, in practice we do not need to implement variants of kernels
+which include length scales, because we always adjust the length scale
+by stretching a base kernel:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">EQ</span><span class="p">()</span><span class="o">.</span><span class="n">stretch</span><span class="p">(</span><span class="mi">2</span><span class="p">)(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="go">array([[1.        , 0.96923323, 0.8824969 ],</span>
+<span class="go">       [0.96923323, 1.        , 0.96923323],</span>
+<span class="go">       [0.8824969 , 0.96923323, 1.        ]])</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">EQWithLengthScale</span><span class="p">(</span><span class="mi">2</span><span class="p">)(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="go">array([[1.        , 0.96923323, 0.8824969 ],</span>
+<span class="go">       [0.96923323, 1.        , 0.96923323],</span>
+<span class="go">       [0.8824969 , 0.96923323, 1.        ]])</span>
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 
