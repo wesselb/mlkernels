@@ -157,17 +157,17 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-mlkernels.kernel">
-<span id="application-programming-interface"></span><h1>Application Programming Interface<a class="headerlink" href="#module-mlkernels.kernel" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="application-programming-interface">
+<h1>Application Programming Interface<a class="headerlink" href="#application-programming-interface" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt id="mlkernels.kernel.Kernel">
-<em class="property">class </em><code class="sig-prename descclassname">mlkernels.kernel.</code><code class="sig-name descname">Kernel</code><a class="reference internal" href="_modules/mlkernels/kernel.html#Kernel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.kernel.Kernel" title="Permalink to this definition">¶</a></dt>
+<dt id="mlkernels.Kernel">
+<em class="property">class </em><code class="sig-prename descclassname">mlkernels.</code><code class="sig-name descname">Kernel</code><a class="reference internal" href="_modules/mlkernels/kernel.html#Kernel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.Kernel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">algebra.function.Function</span></code></p>
 <p>Kernel function.</p>
 <p>Kernels can be added and multiplied.</p>
 <dl class="py method">
-<dt id="mlkernels.kernel.Kernel.__call__">
-<code class="sig-name descname">__call__</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kw_args</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mlkernels/kernel.html#Kernel.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.kernel.Kernel.__call__" title="Permalink to this definition">¶</a></dt>
+<dt id="mlkernels.Kernel.__call__">
+<code class="sig-name descname">__call__</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kw_args</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mlkernels/kernel.html#Kernel.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.Kernel.__call__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Construct the kernel matrix between all <cite>x</cite> and <cite>y</cite>.</p>
 <p>This method does <em>not</em> preserve matrix structure and simply returns a tensor.</p>
 <dl class="field-list simple">
@@ -186,14 +186,39 @@
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="mlkernels.kernel.Kernel.elwise">
-<code class="sig-name descname">elwise</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kw_args</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mlkernels/kernel.html#Kernel.elwise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.kernel.Kernel.elwise" title="Permalink to this definition">¶</a></dt>
-<dd><p>Construct the kernel vector <cite>x</cite> and <cite>y</cite> element-wise.</p>
-<p>This method does <em>not</em> preserve matrix structure and simply returns a tensor.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="mlkernels.pairwise">
+<code class="sig-prename descclassname">mlkernels.</code><code class="sig-name descname">pairwise</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mlkernels/kernel.html#pairwise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.pairwise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct the kernel matrix between all <cite>x</cite> and <cite>y</cite>.</p>
+<p>This method does preserve matrix structure and <em>may</em> return a structured matrix.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>k</strong> (<a class="reference internal" href="#mlkernels.Kernel" title="mlkernels.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">Kernel</span></code></a>) – Kernel.</p></li>
+<li><p><strong>x</strong> (<em>input</em>) – First argument.</p></li>
+<li><p><strong>y</strong> (<em>input</em><em>, </em><em>optional</em>) – Second argument. Defaults to first argument.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Kernel matrix.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>matrix or <code class="xref py py-class docutils literal notranslate"><span class="pre">matrix.AbstractMatrix</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="mlkernels.elwise">
+<code class="sig-prename descclassname">mlkernels.</code><code class="sig-name descname">elwise</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mlkernels/kernel.html#elwise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.elwise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct the kernel vector <cite>x</cite> and <cite>y</cite> element-wise.</p>
+<p>This method does preserve matrix structure and <em>may</em> return a structured matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>kernel</strong> (<a class="reference internal" href="#mlkernels.Kernel" title="mlkernels.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">Kernel</span></code></a>) – Kernel.</p></li>
 <li><p><strong>x</strong> (<em>input</em>) – First argument.</p></li>
 <li><p><strong>y</strong> (<em>input</em><em>, </em><em>optional</em>) – Second argument. Defaults to first argument.</p></li>
 </ul>
@@ -202,121 +227,7 @@
 <dd class="field-even"><p>Kernel vector as a rank-2 column vector.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>tensor</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="mlkernels.kernel.Kernel.pairwise">
-<code class="sig-name descname">pairwise</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kw_args</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mlkernels/kernel.html#Kernel.pairwise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.kernel.Kernel.pairwise" title="Permalink to this definition">¶</a></dt>
-<dd><p>Construct the kernel matrix between all <cite>x</cite> and <cite>y</cite>.</p>
-<p>This method does <em>not</em> preserve matrix structure and simply returns a tensor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<em>input</em>) – First argument.</p></li>
-<li><p><strong>y</strong> (<em>input</em><em>, </em><em>optional</em>) – Second argument. Defaults to first argument.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Kernel matrix.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>matrix</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="mlkernels.kernel.Kernel.periodic">
-<code class="sig-name descname">periodic</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">period</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mlkernels/kernel.html#Kernel.periodic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.kernel.Kernel.periodic" title="Permalink to this definition">¶</a></dt>
-<dd><p>Map to a periodic space.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>period</strong> (<em>tensor</em><em>, </em><em>optional</em>) – Period. Defaults to <cite>1</cite>.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Periodic version of the kernel.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="source/mlkernels.kernel.html#mlkernels.kernel.Kernel" title="mlkernels.kernel.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">kernel.Kernel</span></code></a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="mlkernels.kernel.Kernel.stationary">
-<em class="property">property </em><code class="sig-name descname">stationary</code><a class="headerlink" href="#mlkernels.kernel.Kernel.stationary" title="Permalink to this definition">¶</a></dt>
-<dd><p>Stationarity of the kernel.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="mlkernels.kernel.elwise">
-<code class="sig-prename descclassname">mlkernels.kernel.</code><code class="sig-name descname">elwise</code><a class="reference internal" href="_modules/mlkernels/kernel.html#elwise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.kernel.elwise" title="Permalink to this definition">¶</a></dt>
-<dd><p>Construct the kernel vector <cite>x</cite> and <cite>y</cite> element-wise.</p>
-<p>This method does preserve matrix structure and <em>may</em> return a structured matrix.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>kernel</strong> (<a class="reference internal" href="source/mlkernels.kernel.html#mlkernels.kernel.Kernel" title="mlkernels.kernel.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">Kernel</span></code></a>) – Kernel.</p></li>
-<li><p><strong>x</strong> (<em>input</em>) – First argument.</p></li>
-<li><p><strong>y</strong> (<em>input</em><em>, </em><em>optional</em>) – Second argument. Defaults to first argument.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>Kernel vector as a rank-2 column</dt><dd><p>vector.</p>
-</dd>
-</dl>
-</p>
-</dd>
-<dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>matrix or <code class="xref py py-class docutils literal notranslate"><span class="pre">matrix.AbstractMatrix</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="mlkernels.kernel.pairwise">
-<code class="sig-prename descclassname">mlkernels.kernel.</code><code class="sig-name descname">pairwise</code><a class="reference internal" href="_modules/mlkernels/kernel.html#pairwise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.kernel.pairwise" title="Permalink to this definition">¶</a></dt>
-<dd><p>Construct the kernel matrix between all <cite>x</cite> and <cite>y</cite>.</p>
-<p>This method does preserve matrix structure and <em>may</em> return a structured matrix.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>k</strong> (<a class="reference internal" href="source/mlkernels.kernel.html#mlkernels.kernel.Kernel" title="mlkernels.kernel.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">Kernel</span></code></a>) – Kernel.</p></li>
-<li><p><strong>x</strong> (<em>input</em>) – First argument.</p></li>
-<li><p><strong>y</strong> (<em>input</em><em>, </em><em>optional</em>) – Second argument. Defaults to first argument.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Kernel matrix.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>matrix or <code class="xref py py-class docutils literal notranslate"><span class="pre">matrix.AbstractMatrix</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="mlkernels.kernel.periodicise">
-<code class="sig-prename descclassname">mlkernels.kernel.</code><code class="sig-name descname">periodicise</code><a class="reference internal" href="_modules/mlkernels/kernel.html#periodicise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.kernel.periodicise" title="Permalink to this definition">¶</a></dt>
-<dd><p>Map a kernel to a periodic space.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>k</strong> (<a class="reference internal" href="source/mlkernels.kernel.html#mlkernels.kernel.Kernel" title="mlkernels.kernel.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">kernel.Kernel</span></code></a>) – Kernel to make periodic.</p></li>
-<li><p><strong>period</strong> (<em>tensor</em><em>, </em><em>optional</em>) – Period. Defaults to <cite>1</cite>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Periodic version of the kernel.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="source/mlkernels.kernel.html#mlkernels.kernel.Kernel" title="mlkernels.kernel.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">kernel.Kernel</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -324,15 +235,15 @@
 <div class="section" id="kernels">
 <h2>Kernels<a class="headerlink" href="#kernels" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
-<dt id="mlkernels.kernels.eq.EQ">
-<em class="property">class </em><code class="sig-prename descclassname">mlkernels.kernels.eq.</code><code class="sig-name descname">EQ</code><a class="reference internal" href="_modules/mlkernels/kernels/eq.html#EQ"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.kernels.eq.EQ" title="Permalink to this definition">¶</a></dt>
+<dt id="mlkernels.EQ">
+<em class="property">class </em><code class="sig-prename descclassname">mlkernels.</code><code class="sig-name descname">EQ</code><a class="reference internal" href="_modules/mlkernels/kernels/eq.html#EQ"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.EQ" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="source/mlkernels.kernel.html#mlkernels.kernel.Kernel" title="mlkernels.kernel.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlkernels.kernel.Kernel</span></code></a></p>
 <p>Exponentiated quadratic kernel.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="mlkernels.kernels.rq.RQ">
-<em class="property">class </em><code class="sig-prename descclassname">mlkernels.kernels.rq.</code><code class="sig-name descname">RQ</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">alpha</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mlkernels/kernels/rq.html#RQ"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.kernels.rq.RQ" title="Permalink to this definition">¶</a></dt>
+<dt id="mlkernels.RQ">
+<em class="property">class </em><code class="sig-prename descclassname">mlkernels.</code><code class="sig-name descname">RQ</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">alpha</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mlkernels/kernels/rq.html#RQ"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.RQ" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="source/mlkernels.kernel.html#mlkernels.kernel.Kernel" title="mlkernels.kernel.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlkernels.kernel.Kernel</span></code></a></p>
 <p>Rational quadratic kernel.</p>
 <dl class="field-list simple">
@@ -344,43 +255,43 @@ weight of the tails of the kernel. Must be positive.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="mlkernels.kernels.matern12.Matern12">
-<em class="property">class </em><code class="sig-prename descclassname">mlkernels.kernels.matern12.</code><code class="sig-name descname">Matern12</code><a class="reference internal" href="_modules/mlkernels/kernels/matern12.html#Matern12"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.kernels.matern12.Matern12" title="Permalink to this definition">¶</a></dt>
+<dt id="mlkernels.Matern12">
+<em class="property">class </em><code class="sig-prename descclassname">mlkernels.</code><code class="sig-name descname">Matern12</code><a class="reference internal" href="_modules/mlkernels/kernels/matern12.html#Matern12"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.Matern12" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="source/mlkernels.kernel.html#mlkernels.kernel.Kernel" title="mlkernels.kernel.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlkernels.kernel.Kernel</span></code></a></p>
 <p>Matern–1/2 kernel.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="mlkernels.kernels.matern12.Exp">
-<code class="sig-prename descclassname">mlkernels.kernels.matern12.</code><code class="sig-name descname">Exp</code><a class="headerlink" href="#mlkernels.kernels.matern12.Exp" title="Permalink to this definition">¶</a></dt>
+<dt id="mlkernels.Exp">
+<code class="sig-prename descclassname">mlkernels.</code><code class="sig-name descname">Exp</code><a class="headerlink" href="#mlkernels.Exp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for the Matern–1/2 kernel.</p>
 <p>alias of <a class="reference internal" href="source/mlkernels.kernels.matern12.html#mlkernels.kernels.matern12.Matern12" title="mlkernels.kernels.matern12.Matern12"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlkernels.kernels.matern12.Matern12</span></code></a></p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="mlkernels.kernels.matern32.Matern32">
-<em class="property">class </em><code class="sig-prename descclassname">mlkernels.kernels.matern32.</code><code class="sig-name descname">Matern32</code><a class="reference internal" href="_modules/mlkernels/kernels/matern32.html#Matern32"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.kernels.matern32.Matern32" title="Permalink to this definition">¶</a></dt>
+<dt id="mlkernels.Matern32">
+<em class="property">class </em><code class="sig-prename descclassname">mlkernels.</code><code class="sig-name descname">Matern32</code><a class="reference internal" href="_modules/mlkernels/kernels/matern32.html#Matern32"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.Matern32" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="source/mlkernels.kernel.html#mlkernels.kernel.Kernel" title="mlkernels.kernel.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlkernels.kernel.Kernel</span></code></a></p>
 <p>Matern–3/2 kernel.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="mlkernels.kernels.matern52.Matern52">
-<em class="property">class </em><code class="sig-prename descclassname">mlkernels.kernels.matern52.</code><code class="sig-name descname">Matern52</code><a class="reference internal" href="_modules/mlkernels/kernels/matern52.html#Matern52"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.kernels.matern52.Matern52" title="Permalink to this definition">¶</a></dt>
+<dt id="mlkernels.Matern52">
+<em class="property">class </em><code class="sig-prename descclassname">mlkernels.</code><code class="sig-name descname">Matern52</code><a class="reference internal" href="_modules/mlkernels/kernels/matern52.html#Matern52"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.Matern52" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="source/mlkernels.kernel.html#mlkernels.kernel.Kernel" title="mlkernels.kernel.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlkernels.kernel.Kernel</span></code></a></p>
 <p>Matern–5/2 kernel.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="mlkernels.kernels.linear.Linear">
-<em class="property">class </em><code class="sig-prename descclassname">mlkernels.kernels.linear.</code><code class="sig-name descname">Linear</code><a class="reference internal" href="_modules/mlkernels/kernels/linear.html#Linear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.kernels.linear.Linear" title="Permalink to this definition">¶</a></dt>
+<dt id="mlkernels.Linear">
+<em class="property">class </em><code class="sig-prename descclassname">mlkernels.</code><code class="sig-name descname">Linear</code><a class="reference internal" href="_modules/mlkernels/kernels/linear.html#Linear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.Linear" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="source/mlkernels.kernel.html#mlkernels.kernel.Kernel" title="mlkernels.kernel.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlkernels.kernel.Kernel</span></code></a></p>
 <p>Linear kernel.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="mlkernels.kernels.decaying.DecayingKernel">
-<em class="property">class </em><code class="sig-prename descclassname">mlkernels.kernels.decaying.</code><code class="sig-name descname">DecayingKernel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">alpha</span></em>, <em class="sig-param"><span class="n">beta</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mlkernels/kernels/decaying.html#DecayingKernel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.kernels.decaying.DecayingKernel" title="Permalink to this definition">¶</a></dt>
+<dt id="mlkernels.DecayingKernel">
+<em class="property">class </em><code class="sig-prename descclassname">mlkernels.</code><code class="sig-name descname">DecayingKernel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">alpha</span></em>, <em class="sig-param"><span class="n">beta</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mlkernels/kernels/decaying.html#DecayingKernel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.DecayingKernel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="source/mlkernels.kernel.html#mlkernels.kernel.Kernel" title="mlkernels.kernel.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlkernels.kernel.Kernel</span></code></a></p>
 <p>Decaying kernel.</p>
 <dl class="field-list simple">
@@ -396,15 +307,15 @@ decaying exponentials.</p></li>
 </dd></dl>
 
 <dl class="py class">
-<dt id="mlkernels.kernels.log.LogKernel">
-<em class="property">class </em><code class="sig-prename descclassname">mlkernels.kernels.log.</code><code class="sig-name descname">LogKernel</code><a class="reference internal" href="_modules/mlkernels/kernels/log.html#LogKernel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.kernels.log.LogKernel" title="Permalink to this definition">¶</a></dt>
+<dt id="mlkernels.LogKernel">
+<em class="property">class </em><code class="sig-prename descclassname">mlkernels.</code><code class="sig-name descname">LogKernel</code><a class="reference internal" href="_modules/mlkernels/kernels/log.html#LogKernel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.LogKernel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="source/mlkernels.kernel.html#mlkernels.kernel.Kernel" title="mlkernels.kernel.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlkernels.kernel.Kernel</span></code></a></p>
 <p>Logarithm kernel.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="mlkernels.kernels.tensor.TensorProductKernel">
-<em class="property">class </em><code class="sig-prename descclassname">mlkernels.kernels.tensor.</code><code class="sig-name descname">TensorProductKernel</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">fs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mlkernels/kernels/tensor.html#TensorProductKernel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.kernels.tensor.TensorProductKernel" title="Permalink to this definition">¶</a></dt>
+<dt id="mlkernels.TensorProductKernel">
+<em class="property">class </em><code class="sig-prename descclassname">mlkernels.</code><code class="sig-name descname">TensorProductKernel</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">fs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mlkernels/kernels/tensor.html#TensorProductKernel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.TensorProductKernel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="source/mlkernels.kernel.html#mlkernels.kernel.Kernel" title="mlkernels.kernel.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlkernels.kernel.Kernel</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">algebra.ops.tensor.TensorProductFunction</span></code></p>
 <p>Tensor product kernel.</p>
 </dd></dl>

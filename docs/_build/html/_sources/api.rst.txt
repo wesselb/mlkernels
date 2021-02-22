@@ -1,41 +1,43 @@
 Application Programming Interface
 =================================
 
-.. automodule:: mlkernels.kernel
-    :members:
-    :undoc-members:
+.. autoclass:: mlkernels.Kernel
     :show-inheritance:
     :special-members: __call__
+
+.. autofunction:: mlkernels.pairwise
+
+.. autofunction:: mlkernels.elwise
 
 Kernels
 -------
 
-.. autoclass:: mlkernels.kernels.eq.EQ
+.. autoclass:: mlkernels.EQ
     :show-inheritance:
 
-.. autoclass:: mlkernels.kernels.rq.RQ
+.. autoclass:: mlkernels.RQ
     :show-inheritance:
 
-.. autoclass:: mlkernels.kernels.matern12.Matern12
+.. autoclass:: mlkernels.Matern12
     :show-inheritance:
 
-.. autoclass:: mlkernels.kernels.matern12.Exp
+.. autoclass:: mlkernels.Exp
     :show-inheritance:
 
-.. autoclass:: mlkernels.kernels.matern32.Matern32
+.. autoclass:: mlkernels.Matern32
     :show-inheritance:
 
-.. autoclass:: mlkernels.kernels.matern52.Matern52
+.. autoclass:: mlkernels.Matern52
     :show-inheritance:
 
-.. autoclass:: mlkernels.kernels.linear.Linear
+.. autoclass:: mlkernels.Linear
     :show-inheritance:
 
-.. autoclass:: mlkernels.kernels.decaying.DecayingKernel
+.. autoclass:: mlkernels.DecayingKernel
     :show-inheritance:
 
-.. autoclass:: mlkernels.kernels.log.LogKernel
+.. autoclass:: mlkernels.LogKernel
     :show-inheritance:
 
-.. autoclass:: mlkernels.kernels.tensor.TensorProductKernel
+.. autoclass:: mlkernels.TensorProductKernel
     :show-inheritance:
