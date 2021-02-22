@@ -17,7 +17,11 @@ def test_stretched():
     assert EQ().stretch(2) != Matern12().stretch(2)
 
     # Standard tests:
-    standard_kernel_tests(k)
+    standard_kernel_tests(
+        k,
+        f1=lambda *xs: EQ().stretch(2.0)(*xs),
+        f2=lambda *xs: EQ()(*(x / 2.0 for x in xs)),
+    )
 
     k = EQ().stretch(1, 2)
 

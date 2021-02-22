@@ -18,18 +18,16 @@ def test_shifted():
     assert Linear().shift(2) != DecayingKernel(1, 1).shift(2)
 
     # Standard tests:
-    standard_kernel_tests(k)
+    standard_kernel_tests(
+        k,
+        f1=lambda *xs: Linear().shift(5)(*xs),
+        f2=lambda *xs: Linear()(*(x - 5 for x in xs)),
+    )
 
     k = (2 * EQ()).shift(5, 6)
 
     # Verify that the kernel has the right properties.
     assert not k.stationary
-
-    # Check computation.
-    x1 = B.randn(10, 2)
-    x2 = B.randn(5, 2)
-    k = Linear()
-    approx(k.shift(5)(x1, x2), k(x1 - 5, x2 - 5))
 
     # Check passing in a list.
     k = Linear().shift(np.array([1, 2]))

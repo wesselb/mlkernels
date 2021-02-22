@@ -1,6 +1,7 @@
 from mlkernels import EQ, RQ, Linear
+import lab as B
 
-from ..util import standard_kernel_tests
+from ..util import standard_kernel_tests, approx
 
 
 def test_product():
@@ -16,4 +17,8 @@ def test_product():
     assert EQ() * Linear() != RQ(1e-1) * Linear()
 
     # Standard tests:
-    standard_kernel_tests(k)
+    standard_kernel_tests(
+        k,
+        f1=lambda *xs: (EQ() * RQ(1e-1))(*xs),
+        f2=lambda *xs: EQ()(*xs) * RQ(1e-1)(*xs),
+    )

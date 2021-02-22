@@ -3,7 +3,7 @@ import numpy as np
 import pytest
 import tensorflow as tf
 
-from mlkernels import EQ, Matern12, Linear, perturb
+from mlkernels import EQ, Matern12, Linear, perturb, pairwise, elwise
 from ..util import approx, standard_kernel_tests
 
 
@@ -24,9 +24,9 @@ def test_derivative():
 
     # Check that a derivative must be specified.
     with pytest.raises(RuntimeError):
-        EQ().diff(None, None)(np.array([1.0]))
+        pairwise(EQ().diff(None, None), np.array([1.0]))
     with pytest.raises(RuntimeError):
-        EQ().diff(None, None).elwise(np.array([1.0]))
+        elwise(EQ().diff(None, None), np.array([1.0]))
 
 
 def test_derivative_eq():

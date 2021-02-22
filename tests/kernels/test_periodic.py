@@ -18,7 +18,11 @@ def test_periodic():
     assert Matern12().periodic(2) != EQ().periodic(2)
 
     # Standard tests:
-    standard_kernel_tests(k)
+    standard_kernel_tests(
+        k,
+        f1=lambda *xs: EQ().periodic(1.0)(*xs),
+        f2=lambda *xs: EQ().periodic(1.0)(*(x + 5.0 for x in xs)),
+    )
 
     k = 5 * k.stretch(5)
 

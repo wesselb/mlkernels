@@ -16,12 +16,32 @@ class Kernel(Function):
         return self.pairwise(*args, **kw_args)
 
     def pairwise(self, *args, **kw_args):
-        """Shortcut for :func:`.kernel.pairwise`."""
-        return pairwise(self, *args, **kw_args)
+        """Construct the kernel matrix between all `x` and `y`.
+
+        This method does *not* preserve matrix structure and simply returns a tensor.
+
+        Args:
+            x (input): First argument.
+            y (input, optional): Second argument. Defaults to first argument.
+
+        Returns:
+            matrix: Kernel matrix.
+        """
+        return B.dense(pairwise(self, *args, **kw_args))
 
     def elwise(self, *args, **kw_args):
-        """Shortcut for :func:`.kernel.elwise`."""
-        return elwise(self, *args, **kw_args)
+        """Construct the kernel vector `x` and `y` element-wise.
+
+        This method does *not* preserve matrix structure and simply returns a tensor.
+
+        Args:
+            x (input): First argument.
+            y (input, optional): Second argument. Defaults to first argument.
+
+        Returns:
+            tensor: Kernel vector as a rank 2 column vector.
+        """
+        return B.dense(elwise(self, *args, **kw_args))
 
     def periodic(self, period=1):
         """Map to a periodic space.
@@ -58,13 +78,15 @@ def get_algebra(a):
 def pairwise(k, x, y):
     """Construct the kernel matrix between all `x` and `y`.
 
+    This method does preserve matrix structure and *may* return a structured matrix.
+
     Args:
         k (:class:`.Kernel`): Kernel.
         x (input): First argument.
         y (input, optional): Second argument. Defaults to first argument.
 
     Returns:
-        matrix: Kernel matrix.
+        matrix or :class:`matrix.AbstractMatrix`: Kernel matrix.
     """
     raise RuntimeError(
         f'For kernel "{k}", could not resolve arguments "{x}" and "{y}".'
@@ -76,9 +98,19 @@ def pairwise(k, x):
     return pairwise(k, x, x)
 
 
+@_dispatch(Kernel)
+def pairwise(k):
+    def call(*args, **kw_args):
+        return pairwise(k, *args, **kw_args)
+
+    return call
+
+
 @_dispatch(Kernel, object, object)
 def elwise(k, x, y):
     """Construct the kernel vector `x` and `y` element-wise.
+
+    This method does preserve matrix structure and *may* return a structured matrix.
 
     Args:
         kernel (:class:`.Kernel`): Kernel.
@@ -86,7 +118,8 @@ def elwise(k, x, y):
         y (input, optional): Second argument. Defaults to first argument.
 
     Returns:
-        tensor: Kernel vector as a rank 2 column vector.
+        matrix or :class:`matrix.AbstractMatrix`: Kernel vector as a rank 2 column
+            vector.
     """
     # TODO: Throw warning.
     return B.expand_dims(B.diag(pairwise(k, x, y)), axis=1)
@@ -95,6 +128,14 @@ def elwise(k, x, y):
 @_dispatch(Kernel, object)
 def elwise(k, x):
     return elwise(k, x, x)
+
+
+@_dispatch(Kernel)
+def elwise(k):
+    def call(*args, **kw_args):
+        return elwise(k, *args, **kw_args)
+
+    return call
 
 
 @_dispatch(Kernel, object)

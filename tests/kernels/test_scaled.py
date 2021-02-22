@@ -1,6 +1,7 @@
-from mlkernels import EQ, Matern12
+import lab as B
 
-from ..util import standard_kernel_tests
+from mlkernels import EQ, Matern12
+from ..util import standard_kernel_tests, approx
 
 
 def test_scaled():
@@ -15,4 +16,8 @@ def test_scaled():
     assert 2 * EQ() != 2 * Matern12()
 
     # Standard tests:
-    standard_kernel_tests(k)
+    standard_kernel_tests(
+        k,
+        f1=lambda *xs: (5 * EQ())(*xs),
+        f2=lambda *xs: 5 * EQ()(*xs),
+    )

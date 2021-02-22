@@ -197,15 +197,15 @@ def pairwise(k, x, y):
 
     if i is not None and j is not None:
         # Derivative with respect to both `x` and `y`.
-        return Dense(dky(dkx_elwise(k.elwise, i), j)(x, y))
+        return Dense(dky(dkx_elwise(elwise(k), i), j)(x, y))
 
     elif i is not None and j is None:
         # Derivative with respect to `x`.
-        return Dense(dkx(k.elwise, i)(x, y))
+        return Dense(dkx(elwise(k), i)(x, y))
 
     elif i is None and j is not None:
         # Derivative with respect to `y`.
-        return Dense(dky(k.elwise, j)(x, y))
+        return Dense(dky(elwise(k), j)(x, y))
 
     else:
         raise RuntimeError("No derivative specified.")
@@ -221,15 +221,15 @@ def elwise(k, x, y):
 
     if i is not None and j is not None:
         # Derivative with respect to both `x` and `y`.
-        return dky_elwise(dkx_elwise(k.elwise, i), j)(x, y)
+        return dky_elwise(dkx_elwise(elwise(k), i), j)(x, y)
 
     elif i is not None and j is None:
         # Derivative with respect to `x`.
-        return dkx_elwise(k.elwise, i)(x, y)
+        return dkx_elwise(elwise(k), i)(x, y)
 
     elif i is None and j is not None:
         # Derivative with respect to `y`.
-        return dky_elwise(k.elwise, j)(x, y)
+        return dky_elwise(elwise(k), j)(x, y)
 
     else:
         raise RuntimeError("No derivative specified.")

@@ -1,6 +1,7 @@
-from mlkernels import EQ, RQ, Linear
+import lab as B
 
-from ..util import standard_kernel_tests
+from mlkernels import EQ, RQ, Linear
+from ..util import standard_kernel_tests, approx
 
 
 def test_sum():
@@ -18,4 +19,8 @@ def test_sum():
     assert EQ() + Linear() != RQ(1e-1) + Linear()
 
     # Standard tests:
-    standard_kernel_tests(k)
+    standard_kernel_tests(
+        k,
+        f1=lambda *xs: (EQ() + RQ(1e-1))(*xs),
+        f2=lambda *xs: EQ()(*xs) + RQ(1e-1)(*xs),
+    )
