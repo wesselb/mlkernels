@@ -116,6 +116,8 @@ Example:
 
 >>> x = np.linspace(0, 5, 10)
 
+>>> from mlkernels import pairwise
+
 >>> pairwise(k, x)  # Preserve structure.
 <diagonal matrix: shape=10x10, dtype=float64
  diag=[2. 2. 2. 2. 2. 2. 2. 2. 2. 2.]>
@@ -147,7 +149,7 @@ operations.
 ```
 
 You can convert these structured primitives to regular NumPy/TensorFlow/PyTorch/JAX 
-arrays by calling `B.dense` (`B` is from [LAB](https://github.com/wesselb/lab)):
+arrays by calling `B.dense`:
 
 ```python
 >>> import lab as B
@@ -211,6 +213,10 @@ Besides that, the following kernels are available:
     $$ k(x, y) = \left(
         1 + \sqrt{5}\|x - y\| + \frac{5}{3} \|x - y\|^2
        \right)\exp\left(-\sqrt{3}\|x - y\|\right); $$
+
+* `Linear()`, the linear kernel:
+
+  $$ k(x, y) = \langle x, y \rangle; $$
 
 * `Delta()`, the Kronecker delta kernel:
 
