@@ -9,16 +9,14 @@ Contents:
 
 -  `Installation <#installation>`__
 -  `Usage <#usage>`__
-
-   -  `Structured Matrix Types <#structured-matrix-types>`__
-   -  `AutoGrad, TensorFlow, PyTorch, or JAX? Your
-      Choice! <#autograd-tensorflow-pytorch-or-jax-your-choice>`__
-
+-  `AutoGrad, TensorFlow, PyTorch, or JAX? Your
+   Choice! <#autograd-tensorflow-pytorch-or-jax-your-choice>`__
 -  `Available Kernels <#available-kernels>`__
 -  `Compositional Design <#compositional-design>`__
 -  `Displaying Kernels <#displaying-kernels>`__
 -  `Properties of Kernels <#properties-of-kernels>`__
 -  `Implementing Your Own Kernel <#implementing-your-own-kernel>`__
+-  `Structured Matrix Types <#structured-matrix-types>`__
 
 TLDR:
 
@@ -100,76 +98,8 @@ Inputs to kernels must be of one of the following three forms:
    case inputs are multi-dimensional, and the columns correspond to the
    various input dimensions.
 
-Structured Matrix Types
-~~~~~~~~~~~~~~~~~~~~~~~
-
-MLKernels uses `an extension of
-LAB <https://github.com/wesselb/matrix>`__ to accelerate linear algebra
-with structured linear algebra primitives. By calling ``k(x, y)`` or
-``k.elwise(x, y)``, these structured matrix types are automatically
-converted regular NumPy/TensorFlow/PyTorch/JAX arrays, so they won't
-bother you. Would you want to preserve matrix structure, then you can
-use the exported functions ``pairwise`` and ``elwise``.
-
-Example:
-
-.. code:: python
-
-    >>> k = 2 * Delta()
-
-    >>> x = np.linspace(0, 5, 10)
-
-    >>> from mlkernels import pairwise
-
-    >>> pairwise(k, x)  # Preserve structure.
-    <diagonal matrix: shape=10x10, dtype=float64
-     diag=[2. 2. 2. 2. 2. 2. 2. 2. 2. 2.]>
-
-    >>> k(x)  # Do not preserve structure.
-    array([[2., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
-           [0., 2., 0., 0., 0., 0., 0., 0., 0., 0.],
-           [0., 0., 2., 0., 0., 0., 0., 0., 0., 0.],
-           [0., 0., 0., 2., 0., 0., 0., 0., 0., 0.],
-           [0., 0., 0., 0., 2., 0., 0., 0., 0., 0.],
-           [0., 0., 0., 0., 0., 2., 0., 0., 0., 0.],
-           [0., 0., 0., 0., 0., 0., 2., 0., 0., 0.],
-           [0., 0., 0., 0., 0., 0., 0., 2., 0., 0.],
-           [0., 0., 0., 0., 0., 0., 0., 0., 2., 0.],
-           [0., 0., 0., 0., 0., 0., 0., 0., 0., 2.]])
-
-These structured matrices are compatible with
-`LAB <https://github.com/wesselb/lab>`__: they know how to efficiently
-add, multiply, and do other linear algebra operations.
-
-.. code:: python
-
-    >>> import lab as B
-
-    >>> B.matmul(pairwise(k, x), pairwise(k, x))
-    <diagonal matrix: shape=10x10, dtype=float64
-     diag=[4. 4. 4. 4. 4. 4. 4. 4. 4. 4.]>
-
-You can eventually convert structured primitives to regular
-NumPy/TensorFlow/PyTorch/JAX arrays by calling ``B.dense``:
-
-.. code:: python
-
-    >>> import lab as B
-
-    >>> B.dense(B.matmul(pairwise(k, x), pairwise(k, x)))
-    array([[4., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
-           [0., 4., 0., 0., 0., 0., 0., 0., 0., 0.],
-           [0., 0., 4., 0., 0., 0., 0., 0., 0., 0.],
-           [0., 0., 0., 4., 0., 0., 0., 0., 0., 0.],
-           [0., 0., 0., 0., 4., 0., 0., 0., 0., 0.],
-           [0., 0., 0., 0., 0., 4., 0., 0., 0., 0.],
-           [0., 0., 0., 0., 0., 0., 4., 0., 0., 0.],
-           [0., 0., 0., 0., 0., 0., 0., 4., 0., 0.],
-           [0., 0., 0., 0., 0., 0., 0., 0., 4., 0.],
-           [0., 0., 0., 0., 0., 0., 0., 0., 0., 4.]])
-
 AutoGrad, TensorFlow, PyTorch, or JAX? Your Choice!
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+---------------------------------------------------
 
 .. code:: python
 
@@ -189,6 +119,10 @@ AutoGrad, TensorFlow, PyTorch, or JAX? Your Choice!
 
 Available Kernels
 -----------------
+
+See
+`here <https://wesselb.github.io/mlkernels/docs/_build/html/readme.html#available-kernels>`__
+for a nicely rendered version of the list below.
 
 Constants function as constant kernels. Besides that, the following
 kernels are available:
@@ -533,8 +467,76 @@ Properties of Kernels
        >>> (EQ() + Linear()).stationary
        False
 
+Structured Matrix Types
+~~~~~~~~~~~~~~~~~~~~~~~
+
+MLKernels uses `an extension of
+LAB <https://github.com/wesselb/matrix>`__ to accelerate linear algebra
+with structured linear algebra primitives. By calling ``k(x, y)`` or
+``k.elwise(x, y)``, these structured matrix types are automatically
+converted regular NumPy/TensorFlow/PyTorch/JAX arrays, so they won't
+bother you. Would you want to preserve matrix structure, then you can
+use the exported functions ``pairwise`` and ``elwise``.
+
+Example:
+
+.. code:: python
+
+    >>> k = 2 * Delta()
+
+    >>> x = np.linspace(0, 5, 10)
+
+    >>> from mlkernels import pairwise
+
+    >>> pairwise(k, x)  # Preserve structure.
+    <diagonal matrix: shape=10x10, dtype=float64
+     diag=[2. 2. 2. 2. 2. 2. 2. 2. 2. 2.]>
+
+    >>> k(x)  # Do not preserve structure.
+    array([[2., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
+           [0., 2., 0., 0., 0., 0., 0., 0., 0., 0.],
+           [0., 0., 2., 0., 0., 0., 0., 0., 0., 0.],
+           [0., 0., 0., 2., 0., 0., 0., 0., 0., 0.],
+           [0., 0., 0., 0., 2., 0., 0., 0., 0., 0.],
+           [0., 0., 0., 0., 0., 2., 0., 0., 0., 0.],
+           [0., 0., 0., 0., 0., 0., 2., 0., 0., 0.],
+           [0., 0., 0., 0., 0., 0., 0., 2., 0., 0.],
+           [0., 0., 0., 0., 0., 0., 0., 0., 2., 0.],
+           [0., 0., 0., 0., 0., 0., 0., 0., 0., 2.]])
+
+These structured matrices are compatible with
+`LAB <https://github.com/wesselb/lab>`__: they know how to efficiently
+add, multiply, and do other linear algebra operations.
+
+.. code:: python
+
+    >>> import lab as B
+
+    >>> B.matmul(pairwise(k, x), pairwise(k, x))
+    <diagonal matrix: shape=10x10, dtype=float64
+     diag=[4. 4. 4. 4. 4. 4. 4. 4. 4. 4.]>
+
+You can eventually convert structured primitives to regular
+NumPy/TensorFlow/PyTorch/JAX arrays by calling ``B.dense``:
+
+.. code:: python
+
+    >>> import lab as B
+
+    >>> B.dense(B.matmul(pairwise(k, x), pairwise(k, x)))
+    array([[4., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
+           [0., 4., 0., 0., 0., 0., 0., 0., 0., 0.],
+           [0., 0., 4., 0., 0., 0., 0., 0., 0., 0.],
+           [0., 0., 0., 4., 0., 0., 0., 0., 0., 0.],
+           [0., 0., 0., 0., 4., 0., 0., 0., 0., 0.],
+           [0., 0., 0., 0., 0., 4., 0., 0., 0., 0.],
+           [0., 0., 0., 0., 0., 0., 4., 0., 0., 0.],
+           [0., 0., 0., 0., 0., 0., 0., 4., 0., 0.],
+           [0., 0., 0., 0., 0., 0., 0., 0., 4., 0.],
+           [0., 0., 0., 0., 0., 0., 0., 0., 0., 4.]])
+
 Implementing Your Own Kernel
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------
 
 An example is most helpful:
 
@@ -561,7 +563,7 @@ An example is most helpful:
             self.scale = scale
 
         def _compute(self, dists2):
-            # This computes the kernel given squared distances. We use `B` to provide a 
+            # This computes the kernel given squared distances. We use `B` to provide a
             # backend-agnostic implementation.
             return B.exp(-0.5 * dists2 / self.scale ** 2)
 
@@ -577,11 +579,12 @@ An example is most helpful:
 
         @_dispatch(Self)
         def __eq__(self, other):
-            # If `other` is of type `EQWithLengthScale`, which refers to `MyEQ`, then this method checks
-            # whether `self` and `other` can be treated as identical for the purpose of
-            # algebraic simplifications. In this case, `self` and `other` are identical
-            # for the purpose of algebraic simplification if `self.scale` and `other.scale`
-            # are. We use `algebra.util.identical` to check this condition.
+            # If `other` is of type `EQWithLengthScale`, which refers to `MyEQ`, then this
+            # method checks whether `self` and `other` can be treated as identical for
+            # the purpose of algebraic simplifications. In this case, `self` and `other`
+            # are identical for the purpose of algebraic simplification if `self.scale`
+            # and `other.scale` are. We use `algebra.util.identical` to check this
+            # condition.
             return identical(self.scale, other.scale)
 
 

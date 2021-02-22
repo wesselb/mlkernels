@@ -90,18 +90,16 @@
               <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">MLKernels</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#structured-matrix-types">Structured Matrix Types</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#autograd-tensorflow-pytorch-or-jax-your-choice">AutoGrad, TensorFlow, PyTorch, or JAX? Your Choice!</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#autograd-tensorflow-pytorch-or-jax-your-choice">AutoGrad, TensorFlow, PyTorch, or JAX? Your Choice!</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#available-kernels">Available Kernels</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#compositional-design">Compositional Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#displaying-kernels">Displaying Kernels</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#properties-of-kernels">Properties of Kernels</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#implementing-your-own-kernel">Implementing Your Own Kernel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#structured-matrix-types">Structured Matrix Types</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#implementing-your-own-kernel">Implementing Your Own Kernel</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">Application Programming Interface</a></li>
@@ -177,18 +175,15 @@
 <p>Contents:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="#installation">Installation</a></p></li>
-<li><p><a class="reference external" href="#usage">Usage</a></p>
-<ul>
-<li><p><a class="reference external" href="#structured-matrix-types">Structured Matrix Types</a></p></li>
+<li><p><a class="reference external" href="#usage">Usage</a></p></li>
 <li><p><a class="reference external" href="#autograd-tensorflow-pytorch-or-jax-your-choice">AutoGrad, TensorFlow, PyTorch, or JAX? Your
 Choice!</a></p></li>
-</ul>
-</li>
 <li><p><a class="reference external" href="#available-kernels">Available Kernels</a></p></li>
 <li><p><a class="reference external" href="#compositional-design">Compositional Design</a></p></li>
 <li><p><a class="reference external" href="#displaying-kernels">Displaying Kernels</a></p></li>
 <li><p><a class="reference external" href="#properties-of-kernels">Properties of Kernels</a></p></li>
 <li><p><a class="reference external" href="#implementing-your-own-kernel">Implementing Your Own Kernel</a></p></li>
+<li><p><a class="reference external" href="#structured-matrix-types">Structured Matrix Types</a></p></li>
 </ul>
 <p>TLDR:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">mlkernels</span> <span class="kn">import</span> <span class="n">EQ</span><span class="p">,</span> <span class="n">Linear</span>
@@ -261,69 +256,9 @@ locations ranging from <code class="docutils literal notranslate"><span class="p
 case inputs are multi-dimensional, and the columns correspond to the
 various input dimensions.</p></li>
 </ul>
-<div class="section" id="structured-matrix-types">
-<h3>Structured Matrix Types<a class="headerlink" href="#structured-matrix-types" title="Permalink to this headline">¶</a></h3>
-<p>MLKernels uses <a class="reference external" href="https://github.com/wesselb/matrix">an extension of
-LAB</a> to accelerate linear algebra
-with structured linear algebra primitives. By calling <code class="docutils literal notranslate"><span class="pre">k(x,</span> <span class="pre">y)</span></code> or
-<code class="docutils literal notranslate"><span class="pre">k.elwise(x,</span> <span class="pre">y)</span></code>, these structured matrix types are automatically
-converted regular NumPy/TensorFlow/PyTorch/JAX arrays, so they won’t
-bother you. Would you want to preserve matrix structure, then you can
-use the exported functions <code class="docutils literal notranslate"><span class="pre">pairwise</span></code> and <code class="docutils literal notranslate"><span class="pre">elwise</span></code>.</p>
-<p>Example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">k</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">Delta</span><span class="p">()</span>
-
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">mlkernels</span> <span class="kn">import</span> <span class="n">pairwise</span>
-
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pairwise</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>  <span class="c1"># Preserve structure.</span>
-<span class="go">&lt;diagonal matrix: shape=10x10, dtype=float64</span>
-<span class="go"> diag=[2. 2. 2. 2. 2. 2. 2. 2. 2. 2.]&gt;</span>
-
-<span class="gp">&gt;&gt;&gt; </span><span class="n">k</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>  <span class="c1"># Do not preserve structure.</span>
-<span class="go">array([[2., 0., 0., 0., 0., 0., 0., 0., 0., 0.],</span>
-<span class="go">       [0., 2., 0., 0., 0., 0., 0., 0., 0., 0.],</span>
-<span class="go">       [0., 0., 2., 0., 0., 0., 0., 0., 0., 0.],</span>
-<span class="go">       [0., 0., 0., 2., 0., 0., 0., 0., 0., 0.],</span>
-<span class="go">       [0., 0., 0., 0., 2., 0., 0., 0., 0., 0.],</span>
-<span class="go">       [0., 0., 0., 0., 0., 2., 0., 0., 0., 0.],</span>
-<span class="go">       [0., 0., 0., 0., 0., 0., 2., 0., 0., 0.],</span>
-<span class="go">       [0., 0., 0., 0., 0., 0., 0., 2., 0., 0.],</span>
-<span class="go">       [0., 0., 0., 0., 0., 0., 0., 0., 2., 0.],</span>
-<span class="go">       [0., 0., 0., 0., 0., 0., 0., 0., 0., 2.]])</span>
-</pre></div>
-</div>
-<p>These structured matrices are compatible with
-<a class="reference external" href="https://github.com/wesselb/lab">LAB</a>: they know how to efficiently
-add, multiply, and do other linear algebra operations.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">lab</span> <span class="k">as</span> <span class="nn">B</span>
-
-<span class="gp">&gt;&gt;&gt; </span><span class="n">B</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">pairwise</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">pairwise</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span>
-<span class="go">&lt;diagonal matrix: shape=10x10, dtype=float64</span>
-<span class="go"> diag=[4. 4. 4. 4. 4. 4. 4. 4. 4. 4.]&gt;</span>
-</pre></div>
-</div>
-<p>You can eventually convert structured primitives to regular
-NumPy/TensorFlow/PyTorch/JAX arrays by calling <code class="docutils literal notranslate"><span class="pre">B.dense</span></code>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">lab</span> <span class="k">as</span> <span class="nn">B</span>
-
-<span class="gp">&gt;&gt;&gt; </span><span class="n">B</span><span class="o">.</span><span class="n">dense</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">pairwise</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">pairwise</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">)))</span>
-<span class="go">array([[4., 0., 0., 0., 0., 0., 0., 0., 0., 0.],</span>
-<span class="go">       [0., 4., 0., 0., 0., 0., 0., 0., 0., 0.],</span>
-<span class="go">       [0., 0., 4., 0., 0., 0., 0., 0., 0., 0.],</span>
-<span class="go">       [0., 0., 0., 4., 0., 0., 0., 0., 0., 0.],</span>
-<span class="go">       [0., 0., 0., 0., 4., 0., 0., 0., 0., 0.],</span>
-<span class="go">       [0., 0., 0., 0., 0., 4., 0., 0., 0., 0.],</span>
-<span class="go">       [0., 0., 0., 0., 0., 0., 4., 0., 0., 0.],</span>
-<span class="go">       [0., 0., 0., 0., 0., 0., 0., 4., 0., 0.],</span>
-<span class="go">       [0., 0., 0., 0., 0., 0., 0., 0., 4., 0.],</span>
-<span class="go">       [0., 0., 0., 0., 0., 0., 0., 0., 0., 4.]])</span>
-</pre></div>
-</div>
 </div>
 <div class="section" id="autograd-tensorflow-pytorch-or-jax-your-choice">
-<h3>AutoGrad, TensorFlow, PyTorch, or JAX? Your Choice!<a class="headerlink" href="#autograd-tensorflow-pytorch-or-jax-your-choice" title="Permalink to this headline">¶</a></h3>
+<h2>AutoGrad, TensorFlow, PyTorch, or JAX? Your Choice!<a class="headerlink" href="#autograd-tensorflow-pytorch-or-jax-your-choice" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mlkernels.autograd</span> <span class="kn">import</span> <span class="n">EQ</span><span class="p">,</span> <span class="n">Linear</span>
 </pre></div>
 </div>
@@ -337,9 +272,11 @@ NumPy/TensorFlow/PyTorch/JAX arrays by calling <code class="docutils literal not
 </pre></div>
 </div>
 </div>
-</div>
 <div class="section" id="available-kernels">
 <h2>Available Kernels<a class="headerlink" href="#available-kernels" title="Permalink to this headline">¶</a></h2>
+<p>See
+<a class="reference external" href="https://wesselb.github.io/mlkernels/docs/_build/html/readme.html#available-kernels">here</a>
+for a nicely rendered version of the list below.</p>
 <p>Constants function as constant kernels. Besides that, the following
 kernels are available:</p>
 <ul>
@@ -636,8 +573,70 @@ querying <code class="docutils literal notranslate"><span class="pre">k.stationa
 </div>
 </li>
 </ul>
+<div class="section" id="structured-matrix-types">
+<h3>Structured Matrix Types<a class="headerlink" href="#structured-matrix-types" title="Permalink to this headline">¶</a></h3>
+<p>MLKernels uses <a class="reference external" href="https://github.com/wesselb/matrix">an extension of
+LAB</a> to accelerate linear algebra
+with structured linear algebra primitives. By calling <code class="docutils literal notranslate"><span class="pre">k(x,</span> <span class="pre">y)</span></code> or
+<code class="docutils literal notranslate"><span class="pre">k.elwise(x,</span> <span class="pre">y)</span></code>, these structured matrix types are automatically
+converted regular NumPy/TensorFlow/PyTorch/JAX arrays, so they won’t
+bother you. Would you want to preserve matrix structure, then you can
+use the exported functions <code class="docutils literal notranslate"><span class="pre">pairwise</span></code> and <code class="docutils literal notranslate"><span class="pre">elwise</span></code>.</p>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">k</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">Delta</span><span class="p">()</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">mlkernels</span> <span class="kn">import</span> <span class="n">pairwise</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pairwise</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>  <span class="c1"># Preserve structure.</span>
+<span class="go">&lt;diagonal matrix: shape=10x10, dtype=float64</span>
+<span class="go"> diag=[2. 2. 2. 2. 2. 2. 2. 2. 2. 2.]&gt;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">k</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>  <span class="c1"># Do not preserve structure.</span>
+<span class="go">array([[2., 0., 0., 0., 0., 0., 0., 0., 0., 0.],</span>
+<span class="go">       [0., 2., 0., 0., 0., 0., 0., 0., 0., 0.],</span>
+<span class="go">       [0., 0., 2., 0., 0., 0., 0., 0., 0., 0.],</span>
+<span class="go">       [0., 0., 0., 2., 0., 0., 0., 0., 0., 0.],</span>
+<span class="go">       [0., 0., 0., 0., 2., 0., 0., 0., 0., 0.],</span>
+<span class="go">       [0., 0., 0., 0., 0., 2., 0., 0., 0., 0.],</span>
+<span class="go">       [0., 0., 0., 0., 0., 0., 2., 0., 0., 0.],</span>
+<span class="go">       [0., 0., 0., 0., 0., 0., 0., 2., 0., 0.],</span>
+<span class="go">       [0., 0., 0., 0., 0., 0., 0., 0., 2., 0.],</span>
+<span class="go">       [0., 0., 0., 0., 0., 0., 0., 0., 0., 2.]])</span>
+</pre></div>
+</div>
+<p>These structured matrices are compatible with
+<a class="reference external" href="https://github.com/wesselb/lab">LAB</a>: they know how to efficiently
+add, multiply, and do other linear algebra operations.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">lab</span> <span class="k">as</span> <span class="nn">B</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">B</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">pairwise</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">pairwise</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span>
+<span class="go">&lt;diagonal matrix: shape=10x10, dtype=float64</span>
+<span class="go"> diag=[4. 4. 4. 4. 4. 4. 4. 4. 4. 4.]&gt;</span>
+</pre></div>
+</div>
+<p>You can eventually convert structured primitives to regular
+NumPy/TensorFlow/PyTorch/JAX arrays by calling <code class="docutils literal notranslate"><span class="pre">B.dense</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">lab</span> <span class="k">as</span> <span class="nn">B</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">B</span><span class="o">.</span><span class="n">dense</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">pairwise</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">pairwise</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">)))</span>
+<span class="go">array([[4., 0., 0., 0., 0., 0., 0., 0., 0., 0.],</span>
+<span class="go">       [0., 4., 0., 0., 0., 0., 0., 0., 0., 0.],</span>
+<span class="go">       [0., 0., 4., 0., 0., 0., 0., 0., 0., 0.],</span>
+<span class="go">       [0., 0., 0., 4., 0., 0., 0., 0., 0., 0.],</span>
+<span class="go">       [0., 0., 0., 0., 4., 0., 0., 0., 0., 0.],</span>
+<span class="go">       [0., 0., 0., 0., 0., 4., 0., 0., 0., 0.],</span>
+<span class="go">       [0., 0., 0., 0., 0., 0., 4., 0., 0., 0.],</span>
+<span class="go">       [0., 0., 0., 0., 0., 0., 0., 4., 0., 0.],</span>
+<span class="go">       [0., 0., 0., 0., 0., 0., 0., 0., 4., 0.],</span>
+<span class="go">       [0., 0., 0., 0., 0., 0., 0., 0., 0., 4.]])</span>
+</pre></div>
+</div>
+</div>
+</div>
 <div class="section" id="implementing-your-own-kernel">
-<h3>Implementing Your Own Kernel<a class="headerlink" href="#implementing-your-own-kernel" title="Permalink to this headline">¶</a></h3>
+<h2>Implementing Your Own Kernel<a class="headerlink" href="#implementing-your-own-kernel" title="Permalink to this headline">¶</a></h2>
 <p>An example is most helpful:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">lab</span> <span class="k">as</span> <span class="nn">B</span>
 <span class="kn">from</span> <span class="nn">algebra.util</span> <span class="kn">import</span> <span class="n">identical</span>
@@ -676,11 +675,12 @@ querying <code class="docutils literal notranslate"><span class="pre">k.stationa
 
     <span class="nd">@_dispatch</span><span class="p">(</span><span class="n">Self</span><span class="p">)</span>
     <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="c1"># If `other` is of type `EQWithLengthScale`, which refers to `MyEQ`, then this method checks</span>
-        <span class="c1"># whether `self` and `other` can be treated as identical for the purpose of</span>
-        <span class="c1"># algebraic simplifications. In this case, `self` and `other` are identical</span>
-        <span class="c1"># for the purpose of algebraic simplification if `self.scale` and `other.scale`</span>
-        <span class="c1"># are. We use `algebra.util.identical` to check this condition.</span>
+        <span class="c1"># If `other` is of type `EQWithLengthScale`, which refers to `MyEQ`, then this</span>
+        <span class="c1"># method checks whether `self` and `other` can be treated as identical for</span>
+        <span class="c1"># the purpose of algebraic simplifications. In this case, `self` and `other`</span>
+        <span class="c1"># are identical for the purpose of algebraic simplification if `self.scale`</span>
+        <span class="c1"># and `other.scale` are. We use `algebra.util.identical` to check this</span>
+        <span class="c1"># condition.</span>
         <span class="k">return</span> <span class="n">identical</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span>
 
 
@@ -735,7 +735,6 @@ by stretching a base kernel:</p>
 <span class="go">       [0.96923323, 1.        , 0.96923323],</span>
 <span class="go">       [0.8824969 , 0.96923323, 1.        ]])</span>
 </pre></div>
-</div>
 </div>
 </div>
 </div>
