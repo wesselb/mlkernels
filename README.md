@@ -23,23 +23,25 @@ TLDR:
 ```python
 >>> from mlkernels import EQ, Linear
 
->>> 2 * EQ()
+>>> k1 = 2 * EQ()
+
+>>> k1
 2 * EQ()
 
->>> 2 + EQ() * Linear()
+>>> k2 = 2 + EQ() * Linear()
+
+>>> k2
 2 * 1 + EQ() * Linear()
 
->>> EQ()(np.linspace(0, 1, 3))
-<dense matrix: shape=3x3, dtype=float64
- mat=[[1.    0.882 0.607]
-      [0.882 1.    0.882]
-      [0.607 0.882 1.   ]]>
+>>> k1(np.linspace(0, 1, 3))
+array([[2.        , 1.76499381, 1.21306132],
+       [1.76499381, 2.        , 1.76499381],
+       [1.21306132, 1.76499381, 2.        ]])
 
->>> Linear()(np.linspace(0, 1, 3))
-<low-rank matrix: shape=3x3, dtype=float64, rank=1
- left=[[0. ]
-       [0.5]
-       [1. ]]>
+>>> k2(np.linspace(0, 1, 3))
+array([[2.        , 2.        , 2.        ],
+       [2.        , 2.25      , 2.44124845],
+       [2.        , 2.44124845, 3.        ]])
 ```
 
 ## Installation
