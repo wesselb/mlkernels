@@ -95,10 +95,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#available-kernels">Available Kernels</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#compositional-design">Compositional Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#displaying-kernels">Displaying Kernels</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#properties-of-kernels">Properties of Kernels</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#structured-matrix-types">Structured Matrix Types</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#properties-of-kernels">Properties of Kernels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#structured-matrix-types">Structured Matrix Types</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#implementing-your-own-kernel">Implementing Your Own Kernel</a></li>
 </ul>
 </li>
@@ -182,8 +180,8 @@ Choice!</a></p></li>
 <li><p><a class="reference external" href="#compositional-design">Compositional Design</a></p></li>
 <li><p><a class="reference external" href="#displaying-kernels">Displaying Kernels</a></p></li>
 <li><p><a class="reference external" href="#properties-of-kernels">Properties of Kernels</a></p></li>
-<li><p><a class="reference external" href="#implementing-your-own-kernel">Implementing Your Own Kernel</a></p></li>
 <li><p><a class="reference external" href="#structured-matrix-types">Structured Matrix Types</a></p></li>
+<li><p><a class="reference external" href="#implementing-your-own-kernel">Implementing Your Own Kernel</a></p></li>
 </ul>
 <p>TLDR:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">mlkernels</span> <span class="kn">import</span> <span class="n">EQ</span><span class="p">,</span> <span class="n">Linear</span>
@@ -573,8 +571,9 @@ querying <code class="docutils literal notranslate"><span class="pre">k.stationa
 </div>
 </li>
 </ul>
+</div>
 <div class="section" id="structured-matrix-types">
-<h3>Structured Matrix Types<a class="headerlink" href="#structured-matrix-types" title="Permalink to this headline">¶</a></h3>
+<h2>Structured Matrix Types<a class="headerlink" href="#structured-matrix-types" title="Permalink to this headline">¶</a></h2>
 <p>MLKernels uses <a class="reference external" href="https://github.com/wesselb/matrix">an extension of
 LAB</a> to accelerate linear algebra
 with structured linear algebra primitives. By calling <code class="docutils literal notranslate"><span class="pre">k(x,</span> <span class="pre">y)</span></code> or
@@ -632,7 +631,6 @@ NumPy/TensorFlow/PyTorch/JAX arrays by calling <code class="docutils literal not
 <span class="go">       [0., 0., 0., 0., 0., 0., 0., 0., 4., 0.],</span>
 <span class="go">       [0., 0., 0., 0., 0., 0., 0., 0., 0., 4.]])</span>
 </pre></div>
-</div>
 </div>
 </div>
 <div class="section" id="implementing-your-own-kernel">

@@ -15,8 +15,8 @@ Contents:
 -  `Compositional Design <#compositional-design>`__
 -  `Displaying Kernels <#displaying-kernels>`__
 -  `Properties of Kernels <#properties-of-kernels>`__
--  `Implementing Your Own Kernel <#implementing-your-own-kernel>`__
 -  `Structured Matrix Types <#structured-matrix-types>`__
+-  `Implementing Your Own Kernel <#implementing-your-own-kernel>`__
 
 TLDR:
 
@@ -468,7 +468,7 @@ Properties of Kernels
        False
 
 Structured Matrix Types
-~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------
 
 MLKernels uses `an extension of
 LAB <https://github.com/wesselb/matrix>`__ to accelerate linear algebra
