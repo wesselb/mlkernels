@@ -6,4 +6,7 @@ pytest
 pytest-cov
 coveralls
 black
+autograd
 tensorflow>=2
+torch
+jax

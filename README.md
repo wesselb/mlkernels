@@ -12,11 +12,47 @@ Contents:
 - [Installation](#installation)
 - [Usage](#usage)
   - [Important Remark: Structured Matrix Types](#important-remark-structured-matrix-types)
+  - [AutoGrad, TensorFlow, PyTorch, or JAX? Your Choice!](#autograd-tensorflow-pytorch-or-jax-your-choice)
 - [Available Kernels](#available-kernels)
 - [Compositional Design](#compositional-design)
 - [Displaying Kernels](#displaying-kernels)
 - [Properties of Kernels](#properties-of-kernels)
 
+TLDR:
+
+```python
+>>> from mlkernels import EQ, Linear
+
+>>> 2 * EQ()
+2 * EQ()
+
+>>> 2 + EQ() * Linear()
+2 * 1 + EQ() * Linear()
+
+>>> EQ()(np.linspace(0, 1, 3))
+<dense matrix: shape=3x3, dtype=float64
+ mat=[[1.    0.882 0.607]
+      [0.882 1.    0.882]
+      [0.607 0.882 1.   ]]>
+
+>>> Linear()(np.linspace(0, 1, 3))
+<low-rank matrix: shape=3x3, dtype=float64, rank=1
+ left=[[0. ]
+       [0.5]
+       [1. ]]>
+
+>>> import lab as B
+
+>>> B.dense(EQ()(np.linspace(0, 1, 3)))
+array([[1.        , 0.8824969 , 0.60653066],
+       [0.8824969 , 1.        , 0.8824969 ],
+       [0.60653066, 0.8824969 , 1.        ]])
+
+>>> B.dense(Linear()(np.linspace(0, 1, 3)))
+array([[0.  , 0.  , 0.  ],
+       [0.  , 0.25, 0.5 ],
+       [0.  , 0.5 , 1.  ]])
+```
 
 ## Installation
 
@@ -31,22 +67,22 @@ See also [the instructions here](https://gist.github.com/wesselb/4b44bf87f378942
 Inputs to kernels, henceforth referred to simply as _inputs_, 
 must be of one of the following three forms:
 
-* If the input `x` is a _rank 0 tensor_, i.e. a scalar, then `x` refers to a 
+* If the input `x` is a _rank-0 tensor_, i.e. a scalar, then `x` refers to a 
 single input location. For example, `0` simply refers to the sole input 
 location `0`.
 
-* If the input `x` is a _rank 1 tensor_, then every element of `x` is 
+* If the input `x` is a _rank-1 tensor_, i.e. a vector, then every element of `x` is 
 interpreted as a separate input location. For example, `np.linspace(0, 1, 10)`
 generates 10 different input locations ranging from `0` to `1`.
 
-* If the input `x` is a _rank 2 tensor_, then every _row_ of `x` is 
+* If the input `x` is a _rank-2 tensor_, i.e. a matrix, then every _row_ of `x` is 
 interpreted as a separate input location. In this case inputs are 
 multi-dimensional, and the columns correspond to the various input dimensions.
 
 If `k` is a kernel, say `k = EQ()`, then `k(x, y)` constructs the _kernel 
 matrix_ for all pairs of points between `x` and `y`. `k(x)` is shorthand for
 `k(x, x)`. Furthermore, `k.elwise(x, y)` constructs the _kernel vector_ pairing
-the points in `x` and `y` element wise, which will be a _rank 2 column vector_.
+the points in `x` and `y` element-wise, which will be a _rank-2 column vector_.
 Instead of calling the kernel, one can also use the functions `pairwise` and `elwise`:
 `pairwise(k, x, y)` and `elwise(k, x, y)`.
 
@@ -125,6 +161,24 @@ array([[2., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
        [0., 0., 0., 0., 0., 0., 0., 0., 0., 2.]])
 ```
 
+### AutoGrad, TensorFlow, PyTorch, or JAX? Your Choice!
+
+```python
+from mlkernels.autograd import EQ, Linear
+```
+
+```python
+from mlkernels.tensorflow import EQ, Linear
+```
+
+```python
+from mlkernels.torch import EQ, Linear
+```
+
+```python
+from mlkernels.jax import EQ, Linear
+```
+
 ## Available Kernels
 
 Constants function as constant kernels.
@@ -138,7 +192,7 @@ Besides that, the following kernels are available:
 
     $$ k(x, y) = \left( 1 + \frac{\|x - y\|^2}{2 \alpha} \right)^{-\alpha}; $$
 
-* `Exp()` or `Matern12()`, the exponential kernel:
+* `Matern12()` or `Exp()`, the Matern–1/2 kernel:
 
     $$ k(x, y) = \exp\left( -\|x - y\| \right); $$
 
@@ -181,13 +235,14 @@ Besides that, the following kernels are available:
 
 ## Compositional Design
 
-* Add and subtract kernels.
+*
+    Add and subtract kernels.
 
     Example:
     
     ```python
-    >>> EQ() + Exp()
-    EQ() + Exp()
+    >>> EQ() + Matern12()
+    EQ() + Matern12()
 
     >>> EQ() + EQ()
     2 * EQ()
@@ -198,20 +253,21 @@ Besides that, the following kernels are available:
     >>> EQ() + 0
     EQ()
 
-    >>> EQ() - Exp()
-    EQ() - Exp()
+    >>> EQ() - Matern12()
+    EQ() - Matern12()
 
     >>> EQ() - EQ()
     0
     ```
 
-* Multiply kernels.
+*
+    Multiply kernels.
     
     Example:
 
     ```python
-    >>> EQ() * Exp()
-    EQ() * Exp()
+    >>> EQ() * Matern12()
+    EQ() * Matern12()
 
     >>> 2 * EQ()
     2 * EQ()
@@ -220,7 +276,8 @@ Besides that, the following kernels are available:
     0
     ```
 
-* Shift kernels.
+*
+    Shift kernels.
 
     Definition:
     
@@ -240,7 +297,8 @@ Besides that, the following kernels are available:
     EQ() shift (1, 2)
     ```
 
-* Stretch kernels.
+*
+    Stretch kernels.
 
     Definition:
     
@@ -267,7 +325,8 @@ Besides that, the following kernels are available:
     EQ() > 2
     ```
 
-* Select particular input dimensions of kernels.
+*
+    Select particular input dimensions of kernels.
 
     Definition:
 
@@ -297,7 +356,8 @@ Besides that, the following kernels are available:
     EQ() : (None, [1])
     ```
 
-* Transform the inputs of kernels.
+*
+    Transform the inputs of kernels.
 
     Definition:
 
@@ -322,7 +382,8 @@ Besides that, the following kernels are available:
     EQ() transform (None, f)
     ```
 
-* Numerically, but efficiently, take derivatives of kernels.
+*
+    Numerically, but efficiently, take derivatives of kernels.
     This currently only works in TensorFlow.
 
     Definition:
@@ -423,7 +484,7 @@ Example:
 
 ```python
 >>> print((2.12345 * EQ()).display(lambda x: f"{x:.2f}"))
-2.12 * EQ(), 0
+2.12 * EQ()
 ```
 
 ## Properties of Kernels
@@ -440,13 +501,13 @@ Example:
     >>>  2 * EQ() == EQ() + EQ()
     True
 
-    >>> EQ() + Exp() == Exp() + EQ()
+    >>> EQ() + Matern12() == Matern12() + EQ()
     True
 
-    >>> 2 * Exp() == EQ() + Exp()
+    >>> 2 * Matern12() == EQ() + Matern12()
     False
 
-    >>> EQ() + Exp() + Linear()  == Linear() + Exp() + EQ()  # Too hard: cannot prove equality!
+    >>> EQ() + Matern12() + Linear()  == Linear() + Matern12() + EQ()  # Too hard: cannot prove equality!
     False
     ```
 
