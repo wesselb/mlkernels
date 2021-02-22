@@ -135,10 +135,8 @@ array([[2., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
        [0., 0., 0., 0., 0., 0., 0., 0., 0., 2.]])
 ```
 
-If you're using [LAB](https://github.com/wesselb/lab) to further process these matrices,
-then there is no need to worry:
-these structured matrix types know how to add, multiply, and do other linear algebra
-operations.
+These structured matrices are compatible with [LAB](https://github.com/wesselb/lab):
+they know how to efficiently add, multiply, and do other linear algebra operations.
 
 ```python
 >>> import lab as B
@@ -148,8 +146,8 @@ operations.
  diag=[4. 4. 4. 4. 4. 4. 4. 4. 4. 4.]>
 ```
 
-You can convert these structured primitives to regular NumPy/TensorFlow/PyTorch/JAX 
-arrays by calling `B.dense`:
+You can eventually convert structured primitives to regular 
+NumPy/TensorFlow/PyTorch/JAX arrays by calling `B.dense`:
 
 ```python
 >>> import lab as B
