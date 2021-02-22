@@ -539,7 +539,7 @@ array([[4., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
 ```
 
 
-### Implementing Your Own Kernel
+## Implementing Your Own Kernel
 
 An example is most helpful:
 
