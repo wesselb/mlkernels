@@ -120,6 +120,9 @@ from mlkernels.jax import EQ, Linear
 
 ## Available Kernels
 
+See [here](https://wesselb.github.io/mlkernels/docs/_build/html/readme.html#available-kernels)
+for a nicely rendered version of the list below.
+
 Constants function as constant kernels.
 Besides that, the following kernels are available:
 
