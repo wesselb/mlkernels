@@ -561,7 +561,7 @@ class EQWithLengthScale(Kernel):
         self.scale = scale
 
     def _compute(self, dists2):
-        # This computes the kernel given squared distances. We use `B` to provide a 
+        # This computes the kernel given squared distances. We use `B` to provide a
         # backend-agnostic implementation.
         return B.exp(-0.5 * dists2 / self.scale ** 2)
 
@@ -577,11 +577,12 @@ class EQWithLengthScale(Kernel):
 
     @_dispatch(Self)
     def __eq__(self, other):
-        # If `other` is of type `EQWithLengthScale`, which refers to `MyEQ`, then this method checks
-        # whether `self` and `other` can be treated as identical for the purpose of
-        # algebraic simplifications. In this case, `self` and `other` are identical
-        # for the purpose of algebraic simplification if `self.scale` and `other.scale`
-        # are. We use `algebra.util.identical` to check this condition.
+        # If `other` is of type `EQWithLengthScale`, which refers to `MyEQ`, then this
+        # method checks whether `self` and `other` can be treated as identical for
+        # the purpose of algebraic simplifications. In this case, `self` and `other`
+        # are identical for the purpose of algebraic simplification if `self.scale`
+        # and `other.scale` are. We use `algebra.util.identical` to check this
+        # condition.
         return identical(self.scale, other.scale)
 
 
@@ -596,7 +597,6 @@ def pairwise(k, x, y):
 @elwise.extend(EQWithLengthScale, B.Numeric, B.Numeric)
 def elwise(k, x, y):
     return k._compute(B.ew_dists2(x, y))
-
 ```
 
 ```python
