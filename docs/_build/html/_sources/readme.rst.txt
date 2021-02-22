@@ -5,59 +5,190 @@
 
 Kernels, the machine learning ones
 
+Contents:
+
+-  `Installation <#installation>`__
+-  `Usage <#usage>`__
+
+   -  `Structured Matrix Types <#structured-matrix-types>`__
+   -  `AutoGrad, TensorFlow, PyTorch, or JAX? Your
+      Choice! <#autograd-tensorflow-pytorch-or-jax-your-choice>`__
+
+-  `Available Kernels <#available-kernels>`__
+-  `Compositional Design <#compositional-design>`__
+-  `Displaying Kernels <#displaying-kernels>`__
+-  `Properties of Kernels <#properties-of-kernels>`__
+
+TLDR:
+
+.. code:: python
+
+    >>> from mlkernels import EQ, Linear
+
+    >>> k1 = 2 * EQ()
+
+    >>> k1
+    2 * EQ()
+
+    >>> k2 = 2 + EQ() * Linear()
+
+    >>> k2
+    2 * 1 + EQ() * Linear()
+
+    >>> k1(np.linspace(0, 1, 3))
+    array([[2.        , 1.76499381, 1.21306132],
+           [1.76499381, 2.        , 1.76499381],
+           [1.21306132, 1.76499381, 2.        ]])
+
+    >>> k2(np.linspace(0, 1, 3))
+    array([[2.        , 2.        , 2.        ],
+           [2.        , 2.25      , 2.44124845],
+           [2.        , 2.44124845, 3.        ]])
+
 Installation
 ------------
-
-See `the instructions
-here <https://gist.github.com/wesselb/4b44bf87f3789425f96e26c4308d0adc>`__.
-Then simply
 
 ::
 
     pip install mlkernels
 
+See also `the instructions
+here <https://gist.github.com/wesselb/4b44bf87f3789425f96e26c4308d0adc>`__.
+
 Usage
 -----
 
-Inputs to kernels, henceforth referred to simply as *inputs*, must be of
-one of the following three forms:
+Let ``k`` be a kernel, e.g. ``k = EQ()``.
 
--  If the input ``x`` is a *rank 0 tensor*, i.e. a scalar, then ``x``
-   refers to a single input location. For example, ``0`` simply refers
-   to the sole input location ``0``.
-
--  If the input ``x`` is a *rank 1 tensor*, then every element of ``x``
-   is interpreted as a separate input location. For example,
-   ``np.linspace(0, 1, 10)`` generates 10 different input locations
-   ranging from ``0`` to ``1``.
-
--  If the input ``x`` is a *rank 2 tensor*, then every *row* of ``x`` is
-   interpreted as a separate input location. In this case inputs are
-   multi-dimensional, and the columns correspond to the various input
-   dimensions.
-
-If ``k`` is a kernel, say ``k = EQ()``, then ``k(x, y)`` constructs the
-*kernel matrix* for all pairs of points between ``x`` and ``y``.
-``k(x)`` is shorthand for ``k(x, x)``. Furthermore, ``k.elwise(x, y)``
-constructs the *kernel vector* pairing the points in ``x`` and ``y``
-element wise, which will be a *rank 2 column vector*.
+-  ``k(x, y)`` constructs the *kernel matrix* for all pairs of points
+   between ``x`` and ``y``.
+-  ``k(x)`` is shorthand for ``k(x, x)``.
+-  ``k.elwise(x, y)`` constructs the *kernel vector* pairing the points
+   in ``x`` and ``y`` element-wise, which will be a *rank-2 column
+   vector*.
 
 Example:
 
 .. code:: python
 
-    >>> EQ()(np.linspace(0, 1, 3))
+    >>> k = EQ()
+
+    >>> k(np.linspace(0, 1, 3))
     array([[1.        , 0.8824969 , 0.60653066],
            [0.8824969 , 1.        , 0.8824969 ],
            [0.60653066, 0.8824969 , 1.        ]])
      
-    >>> EQ().elwise(np.linspace(0, 1, 3), 0)
+    >>> k.elwise(np.linspace(0, 1, 3), 0)
     array([[1.        ],
            [0.8824969 ],
            [0.60653066]])
 
+Inputs to kernels must be of one of the following three forms:
+
+-  If the input ``x`` is a *rank-0 tensor*, i.e. a scalar, then ``x``
+   refers to a single input location. For example, ``0`` simply refers
+   to the sole input location ``0``.
+
+-  If the input ``x`` is a *rank-1 tensor*, i.e. a vector, then every
+   element of ``x`` is interpreted as a separate input location. For
+   example, ``np.linspace(0, 1, 10)`` generates 10 different input
+   locations ranging from ``0`` to ``1``.
+
+-  If the input ``x`` is a *rank-2 tensor*, i.e. a matrix, then every
+   *row* of ``x`` is interpreted as a separate input location. In this
+   case inputs are multi-dimensional, and the columns correspond to the
+   various input dimensions.
+
+Structured Matrix Types
+~~~~~~~~~~~~~~~~~~~~~~~
+
+MLKernels uses `an extension of
+LAB <https://github.com/wesselb/matrix>`__ to accelerate linear algebra
+with structured linear algebra primitives. By calling ``k(x, y)`` or
+``k.elwise(x, y)``, these structured matrix types are automatically
+converted regular NumPy/TensorFlow/PyTorch/JAX arrays, so they won't
+bother you. Would you want to preserve matrix structure, then you can
+use the exported functions ``pairwise`` and ``elwise``.
+
+Example:
+
+.. code:: python
+
+    >>> k = 2 * Delta()
+
+    >>> x = np.linspace(0, 5, 10)
+
+    >>> from mlkernels import pairwise
+
+    >>> pairwise(k, x)  # Preserve structure.
+    <diagonal matrix: shape=10x10, dtype=float64
+     diag=[2. 2. 2. 2. 2. 2. 2. 2. 2. 2.]>
+
+    >>> k(x)            # Do not preserve structure.
+    array([[2., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
+           [0., 2., 0., 0., 0., 0., 0., 0., 0., 0.],
+           [0., 0., 2., 0., 0., 0., 0., 0., 0., 0.],
+           [0., 0., 0., 2., 0., 0., 0., 0., 0., 0.],
+           [0., 0., 0., 0., 2., 0., 0., 0., 0., 0.],
+           [0., 0., 0., 0., 0., 2., 0., 0., 0., 0.],
+           [0., 0., 0., 0., 0., 0., 2., 0., 0., 0.],
+           [0., 0., 0., 0., 0., 0., 0., 2., 0., 0.],
+           [0., 0., 0., 0., 0., 0., 0., 0., 2., 0.],
+           [0., 0., 0., 0., 0., 0., 0., 0., 0., 2.]])
+
+If you're using `LAB <https://github.com/wesselb/lab>`__ to further
+process these matrices, then there is no need to worry: these structured
+matrix types know how to add, multiply, and do other linear algebra
+operations.
+
+.. code:: python
+
+    >>> import lab as B
+
+    >>> B.matmul(pairwise(k, x), pairwise(k, x))
+    <diagonal matrix: shape=10x10, dtype=float64
+     diag=[4. 4. 4. 4. 4. 4. 4. 4. 4. 4.]>
+
+You can convert these structured primitives to regular
+NumPy/TensorFlow/PyTorch/JAX arrays by calling ``B.dense``:
+
+.. code:: python
+
+    >>> import lab as B
+
+    >>> B.dense(B.matmul(pairwise(k, x), pairwise(k, x)))
+    array([[4., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
+           [0., 4., 0., 0., 0., 0., 0., 0., 0., 0.],
+           [0., 0., 4., 0., 0., 0., 0., 0., 0., 0.],
+           [0., 0., 0., 4., 0., 0., 0., 0., 0., 0.],
+           [0., 0., 0., 0., 4., 0., 0., 0., 0., 0.],
+           [0., 0., 0., 0., 0., 4., 0., 0., 0., 0.],
+           [0., 0., 0., 0., 0., 0., 4., 0., 0., 0.],
+           [0., 0., 0., 0., 0., 0., 0., 4., 0., 0.],
+           [0., 0., 0., 0., 0., 0., 0., 0., 4., 0.],
+           [0., 0., 0., 0., 0., 0., 0., 0., 0., 4.]])
+
+AutoGrad, TensorFlow, PyTorch, or JAX? Your Choice!
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+    from mlkernels.autograd import EQ, Linear
+
+.. code:: python
+
+    from mlkernels.tensorflow import EQ, Linear
+
+.. code:: python
+
+    from mlkernels.torch import EQ, Linear
+
+.. code:: python
+
+    from mlkernels.jax import EQ, Linear
+
 Available Kernels
-~~~~~~~~~~~~~~~~~
+-----------------
 
 Constants function as constant kernels. Besides that, the following
 kernels are available:
@@ -70,7 +201,7 @@ kernels are available:
 
    .. math::  k(x, y) = \left( 1 + \frac{\|x - y\|^2}{2 \alpha} \right)^{-\alpha}; 
 
--  ``Exp()`` or ``Matern12()``, the exponential kernel:
+-  ``Matern12()`` or ``Exp()``, the Matern–1/2 kernel:
 
    .. math::  k(x, y) = \exp\left( -\|x - y\| \right); 
 
@@ -89,6 +220,10 @@ kernels are available:
        k(x, y) = \left(
           1 + \sqrt{5}\|x - y\| + \frac{5}{3} \|x - y\|^2
          \right)\exp\left(-\sqrt{3}\|x - y\|\right); 
+
+-  ``Linear()``, the linear kernel:
+
+.. math::  k(x, y) = \langle x, y \rangle; 
 
 -  ``Delta()``, the Kronecker delta kernel:
 
@@ -117,7 +252,7 @@ kernels are available:
    and ``f + k`` will translate to ``TensorProductKernel(f) + k``.
 
 Compositional Design
-~~~~~~~~~~~~~~~~~~~~
+--------------------
 
 -  Add and subtract kernels.
 
@@ -125,8 +260,8 @@ Compositional Design
 
    .. code:: python
 
-       >>> EQ() + Exp()
-       EQ() + Exp()
+       >>> EQ() + Matern12()
+       EQ() + Matern12()
 
        >>> EQ() + EQ()
        2 * EQ()
@@ -137,8 +272,8 @@ Compositional Design
        >>> EQ() + 0
        EQ()
 
-       >>> EQ() - Exp()
-       EQ() - Exp()
+       >>> EQ() - Matern12()
+       EQ() - Matern12()
 
        >>> EQ() - EQ()
        0
@@ -149,8 +284,8 @@ Compositional Design
 
    .. code:: python
 
-       >>> EQ() * Exp()
-       EQ() * Exp()
+       >>> EQ() * Matern12()
+       EQ() * Matern12()
 
        >>> 2 * EQ()
        2 * EQ()
@@ -350,7 +485,7 @@ Compositional Design
        EQ()
 
 Displaying Kernels
-^^^^^^^^^^^^^^^^^^
+------------------
 
 Kernels and means have a ``display`` method. The ``display`` method
 accepts a callable formatter that will be applied before any value is
@@ -361,10 +496,10 @@ Example:
 .. code:: python
 
     >>> print((2.12345 * EQ()).display(lambda x: f"{x:.2f}"))
-    2.12 * EQ(), 0
+    2.12 * EQ()
 
 Properties of Kernels
-~~~~~~~~~~~~~~~~~~~~~
+---------------------
 
 -  Kernels can be equated to check for equality. This will attempt basic
    algebraic manipulations. If the means and kernels are not equal *or*
@@ -377,13 +512,13 @@ Properties of Kernels
        >>>  2 * EQ() == EQ() + EQ()
        True
 
-       >>> EQ() + Exp() == Exp() + EQ()
+       >>> EQ() + Matern12() == Matern12() + EQ()
        True
 
-       >>> 2 * Exp() == EQ() + Exp()
+       >>> 2 * Matern12() == EQ() + Matern12()
        False
 
-       >>> EQ() + Exp() + Linear()  == Linear() + Exp() + EQ()  # Too hard: cannot prove equality!
+       >>> EQ() + Matern12() + Linear()  == Linear() + Matern12() + EQ()  # Too hard: cannot prove equality!
        False
 
 -  The stationarity of a kernel ``k`` can always be determined by

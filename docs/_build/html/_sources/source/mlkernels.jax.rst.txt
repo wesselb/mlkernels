@@ -1,0 +1,7 @@
+mlkernels.jax module
+====================
+
+.. automodule:: mlkernels.jax
+   :members:
+   :undoc-members:
+   :show-inheritance:

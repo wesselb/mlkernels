@@ -1,0 +1,7 @@
+mlkernels.torch module
+======================
+
+.. automodule:: mlkernels.torch
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -170,12 +170,32 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pairwise</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw_args</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Kernel.pairwise"><a class="viewcode-back" href="../../source/mlkernels.kernel.html#mlkernels.kernel.Kernel.pairwise">[docs]</a>    <span class="k">def</span> <span class="nf">pairwise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw_args</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Shortcut for :func:`.kernel.pairwise`.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">pairwise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw_args</span><span class="p">)</span></div>
+        <span class="sd">&quot;&quot;&quot;Construct the kernel matrix between all `x` and `y`.</span>
+
+<span class="sd">        This method does *not* preserve matrix structure and simply returns a tensor.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x (input): First argument.</span>
+<span class="sd">            y (input, optional): Second argument. Defaults to first argument.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            matrix: Kernel matrix.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">B</span><span class="o">.</span><span class="n">dense</span><span class="p">(</span><span class="n">pairwise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw_args</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="Kernel.elwise"><a class="viewcode-back" href="../../source/mlkernels.kernel.html#mlkernels.kernel.Kernel.elwise">[docs]</a>    <span class="k">def</span> <span class="nf">elwise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw_args</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Shortcut for :func:`.kernel.elwise`.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">elwise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw_args</span><span class="p">)</span></div>
+        <span class="sd">&quot;&quot;&quot;Construct the kernel vector `x` and `y` element-wise.</span>
+
+<span class="sd">        This method does *not* preserve matrix structure and simply returns a tensor.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x (input): First argument.</span>
+<span class="sd">            y (input, optional): Second argument. Defaults to first argument.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tensor: Kernel vector as a rank 2 column vector.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">B</span><span class="o">.</span><span class="n">dense</span><span class="p">(</span><span class="n">elwise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw_args</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="Kernel.periodic"><a class="viewcode-back" href="../../source/mlkernels.kernel.html#mlkernels.kernel.Kernel.periodic">[docs]</a>    <span class="k">def</span> <span class="nf">periodic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Map to a periodic space.</span>
@@ -212,27 +232,39 @@
 <span class="k">def</span> <span class="nf">pairwise</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Construct the kernel matrix between all `x` and `y`.</span>
 
+<span class="sd">    This method does preserve matrix structure and *may* return a structured matrix.</span>
+
 <span class="sd">    Args:</span>
 <span class="sd">        k (:class:`.Kernel`): Kernel.</span>
 <span class="sd">        x (input): First argument.</span>
 <span class="sd">        y (input, optional): Second argument. Defaults to first argument.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        matrix: Kernel matrix.</span>
+<span class="sd">        matrix or :class:`matrix.AbstractMatrix`: Kernel matrix.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
         <span class="sa">f</span><span class="s1">&#39;For kernel &quot;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">&quot;, could not resolve arguments &quot;</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s1">&quot; and &quot;</span><span class="si">{</span><span class="n">y</span><span class="si">}</span><span class="s1">&quot;.&#39;</span>
     <span class="p">)</span>
 
 
-<div class="viewcode-block" id="pairwise"><a class="viewcode-back" href="../../source/mlkernels.kernel.html#mlkernels.kernel.pairwise">[docs]</a><span class="nd">@_dispatch</span><span class="p">(</span><span class="n">Kernel</span><span class="p">,</span> <span class="nb">object</span><span class="p">)</span>
+<span class="nd">@_dispatch</span><span class="p">(</span><span class="n">Kernel</span><span class="p">,</span> <span class="nb">object</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">pairwise</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">pairwise</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">pairwise</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="pairwise"><a class="viewcode-back" href="../../source/mlkernels.kernel.html#mlkernels.kernel.pairwise">[docs]</a><span class="nd">@_dispatch</span><span class="p">(</span><span class="n">Kernel</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">pairwise</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw_args</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">pairwise</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw_args</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">call</span></div>
 
 
 <span class="nd">@_dispatch</span><span class="p">(</span><span class="n">Kernel</span><span class="p">,</span> <span class="nb">object</span><span class="p">,</span> <span class="nb">object</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">elwise</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Construct the kernel vector `x` and `y` element-wise.</span>
+
+<span class="sd">    This method does preserve matrix structure and *may* return a structured matrix.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        kernel (:class:`.Kernel`): Kernel.</span>
@@ -240,15 +272,24 @@
 <span class="sd">        y (input, optional): Second argument. Defaults to first argument.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        tensor: Kernel vector as a rank 2 column vector.</span>
+<span class="sd">        matrix or :class:`matrix.AbstractMatrix`: Kernel vector as a rank 2 column</span>
+<span class="sd">            vector.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># TODO: Throw warning.</span>
     <span class="k">return</span> <span class="n">B</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">pairwise</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="elwise"><a class="viewcode-back" href="../../source/mlkernels.kernel.html#mlkernels.kernel.elwise">[docs]</a><span class="nd">@_dispatch</span><span class="p">(</span><span class="n">Kernel</span><span class="p">,</span> <span class="nb">object</span><span class="p">)</span>
+<span class="nd">@_dispatch</span><span class="p">(</span><span class="n">Kernel</span><span class="p">,</span> <span class="nb">object</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">elwise</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">elwise</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">elwise</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="elwise"><a class="viewcode-back" href="../../source/mlkernels.kernel.html#mlkernels.kernel.elwise">[docs]</a><span class="nd">@_dispatch</span><span class="p">(</span><span class="n">Kernel</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">elwise</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw_args</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">elwise</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw_args</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">call</span></div>
 
 
 <div class="viewcode-block" id="periodicise"><a class="viewcode-back" href="../../source/mlkernels.kernel.html#mlkernels.kernel.periodicise">[docs]</a><span class="nd">@_dispatch</span><span class="p">(</span><span class="n">Kernel</span><span class="p">,</span> <span class="nb">object</span><span class="p">)</span>
