@@ -10,3 +10,4 @@ autograd
 tensorflow>=2
 torch
 jax
+jaxlib
