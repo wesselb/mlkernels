@@ -626,7 +626,7 @@ array([[2.        , 1.71711909, 1.12959604],
 ```
 
 Of course, in practice we do not need to implement variants of kernels which include 
-length scales, because always adjust the length scale by stretching a base kernel:
+length scales, because we always adjust the length scale by stretching a base kernel:
 
 ```python
 >>> EQ().stretch(2)(np.linspace(0, 1, 3))
