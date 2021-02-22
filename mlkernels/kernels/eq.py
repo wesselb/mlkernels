@@ -13,7 +13,7 @@ class EQ(Kernel):
 
     _dispatch = Dispatcher(in_class=Self)
 
-    def _compute(k, dists2):
+    def _compute(self, dists2):
         return B.exp(-0.5 * dists2)
 
     @property
