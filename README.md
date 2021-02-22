@@ -7,14 +7,24 @@
 
 Kernels, the machine learning ones
 
-## Installation
+Contents:
 
-See [the instructions here](https://gist.github.com/wesselb/4b44bf87f3789425f96e26c4308d0adc).
-Then simply
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Important Remark: Structured Matrix Types](#important-remark-structured-matrix-types)
+- [Available Kernels](#available-kernels)
+- [Compositional Design](#compositional-design)
+- [Displaying Kernels](#displaying-kernels)
+- [Properties of Kernels](#properties-of-kernels)
+
+
+## Installation
 
 ```
 pip install mlkernels
 ```
+
+See also [the instructions here](https://gist.github.com/wesselb/4b44bf87f3789425f96e26c4308d0adc).
 
 ## Usage
 
@@ -37,22 +47,85 @@ If `k` is a kernel, say `k = EQ()`, then `k(x, y)` constructs the _kernel
 matrix_ for all pairs of points between `x` and `y`. `k(x)` is shorthand for
 `k(x, x)`. Furthermore, `k.elwise(x, y)` constructs the _kernel vector_ pairing
 the points in `x` and `y` element wise, which will be a _rank 2 column vector_.
+Instead of calling the kernel, one can also use the functions `pairwise` and `elwise`:
+`pairwise(k, x, y)` and `elwise(k, x, y)`.
 
 Example:
 
 ```python
 >>> EQ()(np.linspace(0, 1, 3))
-array([[1.        , 0.8824969 , 0.60653066],
-       [0.8824969 , 1.        , 0.8824969 ],
-       [0.60653066, 0.8824969 , 1.        ]])
+<dense matrix: shape=3x3, dtype=float64
+ mat=[[1.    0.882 0.607]
+      [0.882 1.    0.882]
+      [0.607 0.882 1.   ]]>
+
+>>> pairwise(EQ(), np.linspace(0, 1, 3))
+<dense matrix: shape=3x3, dtype=float64
+ mat=[[1.    0.882 0.607]
+      [0.882 1.    0.882]
+      [0.607 0.882 1.   ]]>
  
 >>> EQ().elwise(np.linspace(0, 1, 3), 0)
 array([[1.        ],
        [0.8824969 ],
        [0.60653066]])
+
+>>> elwise(EQ(), np.linspace(0, 1, 3), 0)
+array([[1.        ],
+       [0.8824969 ],
+       [0.60653066]])
 ```
 
-### Available Kernels
+### Important Remark: Structured Matrix Types
+
+MLKernels uses [an extension of LAB](https://github.com/wesselb/matrix) to
+accelerate linear algebra with structured linear algebra primitives.
+You will encounter these primitives:
+
+```python
+>>> k = 2 * Delta()
+
+>>> x = np.linspace(0, 5, 10)
+
+>>> k(x)
+<diagonal matrix: shape=10x10, dtype=float64
+ diag=[2. 2. 2. 2. 2. 2. 2. 2. 2. 2.]>
+```
+
+If you're using [LAB](https://github.com/wesselb/lab) to further process these matrices,
+then there is absolutely no need to worry:
+these structured matrix types know how to add, multiply, and do other linear algebra
+operations.
+
+```python
+>>> import lab as B
+
+>>> B.matmul(k(x), k(x))
+<diagonal matrix: shape=10x10, dtype=float64
+ diag=[4. 4. 4. 4. 4. 4. 4. 4. 4. 4.]>
+```
+
+If you're not using [LAB](https://github.com/wesselb/lab), you can convert these
+structured primitives to regular NumPy/TensorFlow/PyTorch/JAX arrays by calling
+`B.dense` (`B` is from [LAB](https://github.com/wesselb/lab)):
+
+```python
+>>> import lab as B
+
+>>> B.dense(k(x))
+array([[2., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
+       [0., 2., 0., 0., 0., 0., 0., 0., 0., 0.],
+       [0., 0., 2., 0., 0., 0., 0., 0., 0., 0.],
+       [0., 0., 0., 2., 0., 0., 0., 0., 0., 0.],
+       [0., 0., 0., 0., 2., 0., 0., 0., 0., 0.],
+       [0., 0., 0., 0., 0., 2., 0., 0., 0., 0.],
+       [0., 0., 0., 0., 0., 0., 2., 0., 0., 0.],
+       [0., 0., 0., 0., 0., 0., 0., 2., 0., 0.],
+       [0., 0., 0., 0., 0., 0., 0., 0., 2., 0.],
+       [0., 0., 0., 0., 0., 0., 0., 0., 0., 2.]])
+```
+
+## Available Kernels
 
 Constants function as constant kernels.
 Besides that, the following kernels are available:
@@ -106,7 +179,7 @@ Besides that, the following kernels are available:
     translate to `TensorProductKernel(f) + k`.
 
 
-### Compositional Design
+## Compositional Design
 
 * Add and subtract kernels.
 
@@ -339,7 +412,7 @@ Besides that, the following kernels are available:
     EQ()
     ```
 
-#### Displaying Kernels
+## Displaying Kernels
 
 Kernels and means have a `display` method.
 The `display` method accepts a callable formatter that will be applied before any value
@@ -353,7 +426,7 @@ Example:
 2.12 * EQ(), 0
 ```
 
-### Properties of Kernels
+## Properties of Kernels
 
 *
     Kernels can be equated to check for equality.
