@@ -16,8 +16,8 @@ Contents:
 - [Compositional Design](#compositional-design)
 - [Displaying Kernels](#displaying-kernels)
 - [Properties of Kernels](#properties-of-kernels)
-- [Implementing Your Own Kernel](#implementing-your-own-kernel)
 - [Structured Matrix Types](#structured-matrix-types)
+- [Implementing Your Own Kernel](#implementing-your-own-kernel)
 
 TLDR:
 
@@ -472,7 +472,7 @@ Example:
     ```
 
 
-### Structured Matrix Types
+## Structured Matrix Types
 
 MLKernels uses [an extension of LAB](https://github.com/wesselb/matrix) to
 accelerate linear algebra with structured linear algebra primitives.
