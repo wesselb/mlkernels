@@ -122,7 +122,7 @@ Example:
 <diagonal matrix: shape=10x10, dtype=float64
  diag=[2. 2. 2. 2. 2. 2. 2. 2. 2. 2.]>
 
->>> k(x)            # Do not preserve structure.
+>>> k(x)  # Do not preserve structure.
 array([[2., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
        [0., 2., 0., 0., 0., 0., 0., 0., 0., 0.],
        [0., 0., 2., 0., 0., 0., 0., 0., 0., 0.],
