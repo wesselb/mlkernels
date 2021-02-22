@@ -166,8 +166,19 @@
 <span class="sd">    Kernels can be added and multiplied.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw_args</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pairwise</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw_args</span><span class="p">)</span>
+<div class="viewcode-block" id="Kernel.__call__"><a class="viewcode-back" href="../../api.html#mlkernels.kernel.Kernel.__call__">[docs]</a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw_args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct the kernel matrix between all `x` and `y`.</span>
+
+<span class="sd">        This method does *not* preserve matrix structure and simply returns a tensor.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x (input): First argument.</span>
+<span class="sd">            y (input, optional): Second argument. Defaults to first argument.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            matrix: Kernel matrix.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pairwise</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw_args</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Kernel.pairwise"><a class="viewcode-back" href="../../source/mlkernels.kernel.html#mlkernels.kernel.Kernel.pairwise">[docs]</a>    <span class="k">def</span> <span class="nf">pairwise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw_args</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct the kernel matrix between all `x` and `y`.</span>
@@ -193,7 +204,7 @@
 <span class="sd">            y (input, optional): Second argument. Defaults to first argument.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            tensor: Kernel vector as a rank 2 column vector.</span>
+<span class="sd">            tensor: Kernel vector as a rank-2 column vector.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">B</span><span class="o">.</span><span class="n">dense</span><span class="p">(</span><span class="n">elwise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw_args</span><span class="p">))</span></div>
 
@@ -272,7 +283,7 @@
 <span class="sd">        y (input, optional): Second argument. Defaults to first argument.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        matrix or :class:`matrix.AbstractMatrix`: Kernel vector as a rank 2 column</span>
+<span class="sd">        matrix or :class:`matrix.AbstractMatrix`: Kernel vector as a rank-2 column</span>
 <span class="sd">            vector.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># TODO: Throw warning.</span>
