@@ -6,4 +6,5 @@ pytest
 pytest-cov
 coveralls
 black
+numpy>=1.20  # We need the latest NumPy.
 tensorflow>=2
