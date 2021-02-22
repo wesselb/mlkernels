@@ -13,6 +13,17 @@ class Kernel(Function):
     """
 
     def __call__(self, *args, **kw_args):
+        """Construct the kernel matrix between all `x` and `y`.
+
+        This method does *not* preserve matrix structure and simply returns a tensor.
+
+        Args:
+            x (input): First argument.
+            y (input, optional): Second argument. Defaults to first argument.
+
+        Returns:
+            matrix: Kernel matrix.
+        """
         return self.pairwise(*args, **kw_args)
 
     def pairwise(self, *args, **kw_args):
@@ -39,7 +50,7 @@ class Kernel(Function):
             y (input, optional): Second argument. Defaults to first argument.
 
         Returns:
-            tensor: Kernel vector as a rank 2 column vector.
+            tensor: Kernel vector as a rank-2 column vector.
         """
         return B.dense(elwise(self, *args, **kw_args))
 
@@ -118,7 +129,7 @@ def elwise(k, x, y):
         y (input, optional): Second argument. Defaults to first argument.
 
     Returns:
-        matrix or :class:`matrix.AbstractMatrix`: Kernel vector as a rank 2 column
+        matrix or :class:`matrix.AbstractMatrix`: Kernel vector as a rank-2 column
             vector.
     """
     # TODO: Throw warning.
