@@ -577,7 +577,7 @@ class EQWithLengthScale(Kernel):
 
     @_dispatch(Self)
     def __eq__(self, other):
-        # If `other` is of type `Self`, which refers to `MyEQ`, then this method checks
+        # If `other` is of type `EQWithLengthScale`, which refers to `MyEQ`, then this method checks
         # whether `self` and `other` can be treated as identical for the purpose of
         # algebraic simplifications. In this case, `self` and `other` are identical
         # for the purpose of algebraic simplification if `self.scale` and `other.scale`
