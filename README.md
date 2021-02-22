@@ -471,7 +471,6 @@ Example:
     False
     ```
 
-
 ## Structured Matrix Types
 
 MLKernels uses [an extension of LAB](https://github.com/wesselb/matrix) to
@@ -538,7 +537,6 @@ array([[4., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
        [0., 0., 0., 0., 0., 0., 0., 0., 0., 4.]])
 ```
 
-
 ## Implementing Your Own Kernel
 
 An example is most helpful:
@@ -581,7 +579,7 @@ class EQWithLengthScale(Kernel):
 
     @_dispatch(Self)
     def __eq__(self, other):
-        # If `other` is of type `EQWithLengthScale`, which refers to `MyEQ`, then this
+        # If `other` is of type `Self`, which refers to `EQWithLengthScale`, then this
         # method checks whether `self` and `other` can be treated as identical for
         # the purpose of algebraic simplifications. In this case, `self` and `other`
         # are identical for the purpose of algebraic simplification if `self.scale`
