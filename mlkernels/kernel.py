@@ -129,8 +129,8 @@ def elwise(k, x, y):
         y (input, optional): Second argument. Defaults to first argument.
 
     Returns:
-        matrix or :class:`matrix.AbstractMatrix`: Kernel vector as a rank-2 column
-            vector.
+        matrix or :class:`matrix.AbstractMatrix`:
+            Kernel vector as a rank-2 column vector.
     """
     # TODO: Throw warning.
     return B.expand_dims(B.diag(pairwise(k, x, y)), axis=1)
