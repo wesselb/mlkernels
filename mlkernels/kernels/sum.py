@@ -15,11 +15,11 @@ class SumKernel(Kernel, SumFunction):
         return self[0].stationary and self[1].stationary
 
 
-@_dispatch(SumKernel, object, object)
-def pairwise(k, x, y):
+@_dispatch
+def pairwise(k: SumKernel, x, y):
     return B.add(pairwise(k[0], x, y), pairwise(k[1], x, y))
 
 
-@_dispatch(SumKernel, object, object)
-def elwise(k, x, y):
+@_dispatch
+def elwise(k: SumKernel, x, y):
     return B.add(elwise(k[0], x, y), elwise(k[1], x, y))

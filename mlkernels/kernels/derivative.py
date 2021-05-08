@@ -3,7 +3,7 @@ import numpy as np
 from algebra import DerivativeFunction
 from algebra.util import identical
 from matrix import Dense
-from plum import convert, Dispatcher, Self
+from plum import convert
 
 from . import _dispatch
 from .. import Kernel
@@ -173,22 +173,20 @@ def perturb(x):
 class DerivativeKernel(Kernel, DerivativeFunction):
     """Derivative of kernel."""
 
-    _dispatch = Dispatcher(in_class=Self)
-
     @property
     def _stationary(self):
         # NOTE: In the one-dimensional case, if derivatives with respect to both
         # arguments are taken, then the result is in fact stationary.
         return False
 
-    @_dispatch(Self)
-    def __eq__(self, other):
+    @_dispatch
+    def __eq__(self, other: "DerivativeKernel"):
         identical_derivs = identical(expand(self.derivs), expand(other.derivs))
         return self[0] == other[0] and identical_derivs
 
 
-@_dispatch(DerivativeKernel, B.Numeric, B.Numeric)
-def pairwise(k, x, y):
+@_dispatch
+def pairwise(k: DerivativeKernel, x: B.Numeric, y: B.Numeric):
     i, j = expand(k.derivs)
     k = k[0]
 
@@ -211,8 +209,8 @@ def pairwise(k, x, y):
         raise RuntimeError("No derivative specified.")
 
 
-@_dispatch(DerivativeKernel, B.Numeric, B.Numeric)
-def elwise(k, x, y):
+@_dispatch
+def elwise(k: DerivativeKernel, x: B.Numeric, y: B.Numeric):
     i, j = expand(k.derivs)
     k = k[0]
 

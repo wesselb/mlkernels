@@ -545,7 +545,7 @@ An example is most helpful:
 import lab as B
 from algebra.util import identical
 from matrix import Dense
-from plum import Dispatcher, Self
+from plum import dispatch
 
 from mlkernels import Kernel, pairwise, elwise
 
@@ -556,8 +556,6 @@ class EQWithLengthScale(Kernel):
     Args:
         scale (scalar): Length scale of the kernel.
     """
-
-    _dispatch = Dispatcher(in_class=Self)
 
     def __init__(self, scale):
         self.scale = scale
@@ -577,27 +575,26 @@ class EQWithLengthScale(Kernel):
         # stationary. By default, kernels are assumed to not be stationary.
         return True
 
-    @_dispatch(Self)
-    def __eq__(self, other):
-        # If `other` is of type `Self`, which refers to `EQWithLengthScale`, then this
-        # method checks whether `self` and `other` can be treated as identical for
-        # the purpose of algebraic simplifications. In this case, `self` and `other`
-        # are identical for the purpose of algebraic simplification if `self.scale`
-        # and `other.scale` are. We use `algebra.util.identical` to check this
-        # condition.
+    @dispatch
+    def __eq__(self, other: "EQWithLengthScale"):
+        # If `other` is also a `EQWithLengthScale`, then this method checks whether 
+        # `self` and `other` can be treated as identical for the purpose of 
+        # algebraic simplifications. In this case, `self` and `other` are identical 
+        # for the purpose of algebraic simplification if `self.scale` and `other.
+        # scale` are. We use `algebra.util.identical` to check this condition.
         return identical(self.scale, other.scale)
 
 
 # It remains to implement pairwise and element-wise computation of the kernel.
 
 
-@pairwise.extend(EQWithLengthScale, B.Numeric, B.Numeric)
-def pairwise(k, x, y):
+@pairwise.dispatch
+def pairwise(k: EQWithLengthScale, x: B.Numeric, y: B.Numeric):
     return Dense(k._compute(B.pw_dists2(x, y)))
 
 
-@elwise.extend(EQWithLengthScale, B.Numeric, B.Numeric)
-def elwise(k, x, y):
+@elwise.dispatch
+def elwise(k: EQWithLengthScale, x: B.Numeric, y: B.Numeric):
     return k._compute(B.ew_dists2(x, y))
 ```
 

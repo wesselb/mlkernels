@@ -15,11 +15,11 @@ class ProductKernel(Kernel, ProductFunction):
         return self[0].stationary and self[1].stationary
 
 
-@_dispatch(ProductKernel, object, object)
-def pairwise(k, x, y):
+@_dispatch
+def pairwise(k: ProductKernel, x, y):
     return B.multiply(pairwise(k[0], x, y), pairwise(k[1], x, y))
 
 
-@_dispatch(ProductKernel, object, object)
-def elwise(k, x, y):
+@_dispatch
+def elwise(k: ProductKernel, x, y):
     return B.multiply(elwise(k[0], x, y), elwise(k[1], x, y))

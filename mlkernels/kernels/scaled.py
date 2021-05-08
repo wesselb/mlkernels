@@ -15,11 +15,11 @@ class ScaledKernel(Kernel, ScaledFunction):
         return self[0].stationary
 
 
-@_dispatch(ScaledKernel, object, object)
-def pairwise(k, x, y):
+@_dispatch
+def pairwise(k: ScaledKernel, x, y):
     return B.multiply(k.scale, pairwise(k[0], x, y))
 
 
-@_dispatch(ScaledKernel, object, object)
-def elwise(k, x, y):
+@_dispatch
+def elwise(k: ScaledKernel, x, y):
     return B.multiply(k.scale, elwise(k[0], x, y))

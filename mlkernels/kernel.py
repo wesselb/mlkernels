@@ -80,13 +80,13 @@ class Kernel(Function):
 
 
 # Register the algebra.
-@get_algebra.extend(Kernel)
-def get_algebra(a):
+@get_algebra.dispatch
+def get_algebra(a: Kernel):
     return Kernel
 
 
-@_dispatch(Kernel, object, object)
-def pairwise(k, x, y):
+@_dispatch
+def pairwise(k: Kernel, x, y):
     """Construct the kernel matrix between all `x` and `y`.
 
     This method does preserve matrix structure and *may* return a structured matrix.
@@ -104,21 +104,21 @@ def pairwise(k, x, y):
     )
 
 
-@_dispatch(Kernel, object)
-def pairwise(k, x):
+@_dispatch
+def pairwise(k: Kernel, x):
     return pairwise(k, x, x)
 
 
-@_dispatch(Kernel)
-def pairwise(k):
+@_dispatch
+def pairwise(k: Kernel):
     def call(*args, **kw_args):
         return pairwise(k, *args, **kw_args)
 
     return call
 
 
-@_dispatch(Kernel, object, object)
-def elwise(k, x, y):
+@_dispatch
+def elwise(k: Kernel, x, y):
     """Construct the kernel vector `x` and `y` element-wise.
 
     This method does preserve matrix structure and *may* return a structured matrix.
@@ -136,21 +136,21 @@ def elwise(k, x, y):
     return B.expand_dims(B.diag(pairwise(k, x, y)), axis=1)
 
 
-@_dispatch(Kernel, object)
-def elwise(k, x):
+@_dispatch
+def elwise(k: Kernel, x):
     return elwise(k, x, x)
 
 
-@_dispatch(Kernel)
-def elwise(k):
+@_dispatch
+def elwise(k: Kernel):
     def call(*args, **kw_args):
         return elwise(k, *args, **kw_args)
 
     return call
 
 
-@_dispatch(Kernel, object)
-def periodicise(k, period):  # pragma: no cover
+@_dispatch
+def periodicise(k: Kernel, period):  # pragma: no cover
     """Map a kernel to a periodic space.
 
     Args:

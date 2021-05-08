@@ -1,7 +1,6 @@
 import lab as B
 from algebra.util import identical
 from matrix import Dense
-from plum import Dispatcher, Self
 
 from . import _dispatch
 from .. import Kernel
@@ -18,8 +17,6 @@ class Delta(Kernel):
             Defaults to `1e-10`.
     """
 
-    _dispatch = Dispatcher(in_class=Self)
-
     def __init__(self, epsilon=1e-10):
         self.epsilon = epsilon
 
@@ -31,21 +28,21 @@ class Delta(Kernel):
     def _stationary(self):
         return True
 
-    @_dispatch(Self)
-    def __eq__(self, other):
+    @_dispatch
+    def __eq__(self, other: "Delta"):
         return identical(self.epsilon, other.epsilon)
 
 
-@_dispatch(Delta, B.Numeric, B.Numeric)
-def pairwise(k, x, y):
+@_dispatch
+def pairwise(k: Delta, x: B.Numeric, y: B.Numeric):
     if x is y:
         return B.fill_diag(B.one(x), num_elements(x))
     else:
         return Dense(k._compute(B.pw_dists2(x, y)))
 
 
-@_dispatch(Delta, B.Numeric, B.Numeric)
-def elwise(k, x, y):
+@_dispatch
+def elwise(k: Delta, x: B.Numeric, y: B.Numeric):
     if x is y:
         return B.ones(B.dtype(x), num_elements(x), 1)
     else:

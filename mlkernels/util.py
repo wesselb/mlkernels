@@ -1,5 +1,6 @@
 from functools import wraps
 from types import FunctionType
+from typing import Union
 
 import lab as B
 
@@ -8,7 +9,7 @@ from . import _dispatch
 __all__ = ["uprank", "num_elements", "expand"]
 
 
-@_dispatch(object)
+@_dispatch
 def uprank(x):
     """Ensure that the rank of `x` is 2.
 
@@ -22,13 +23,13 @@ def uprank(x):
     return x
 
 
-@_dispatch(B.Numeric)
-def uprank(x):
+@_dispatch
+def uprank(x: B.Numeric):
     return B.uprank(x)
 
 
-@_dispatch(FunctionType)
-def uprank(f):
+@_dispatch
+def uprank(f: FunctionType):
     """A decorator to ensure that the rank of the arguments is two."""
 
     @wraps(f)
@@ -38,7 +39,7 @@ def uprank(f):
     return wrapped_f
 
 
-@_dispatch(object)
+@_dispatch
 def num_elements(x):
     """Determine the number of elements in an input.
 
@@ -57,8 +58,8 @@ def num_elements(x):
         return shape[0]
 
 
-@_dispatch({tuple, list})
-def expand(xs):
+@_dispatch
+def expand(xs: Union[tuple, list]):
     """Expand a sequence to the same element repeated twice if there is only one
     element.
 

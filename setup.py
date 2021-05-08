@@ -2,10 +2,10 @@ from setuptools import find_packages, setup
 
 requirements = [
     "numpy>=1.16",
-    "algebra",
-    "backends",
-    "backends-matrix",
-    "plum-dispatch",
+    "algebra>=1.0",
+    "backends>=1.0",
+    "backends-matrix>=1.0",
+    "plum-dispatch>=1.0",
 ]
 
 setup(

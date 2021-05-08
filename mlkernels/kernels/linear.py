@@ -1,6 +1,5 @@
 import lab as B
 from matrix import LowRank
-from plum import Dispatcher, Self
 
 from . import _dispatch
 from .. import Kernel
@@ -12,26 +11,24 @@ __all__ = ["Linear"]
 class Linear(Kernel):
     """Linear kernel."""
 
-    _dispatch = Dispatcher(in_class=Self)
-
     @property
     def _stationary(self):
         return False
 
-    @_dispatch(Self)
-    def __eq__(self, other):
+    @_dispatch
+    def __eq__(self, other: "Linear"):
         return True
 
 
-@_dispatch(Linear, B.Numeric, B.Numeric)
-def pairwise(k, x, y):
+@_dispatch
+def pairwise(k: Linear, x: B.Numeric, y: B.Numeric):
     if x is y:
         return LowRank(uprank(x))
     else:
         return LowRank(left=uprank(x), right=uprank(y))
 
 
-@_dispatch(Linear, B.Numeric, B.Numeric)
+@_dispatch
 @uprank
-def elwise(k, x, y):
+def elwise(k: Linear, x: B.Numeric, y: B.Numeric):
     return B.expand_dims(B.sum(B.multiply(x, y), axis=1), axis=1)

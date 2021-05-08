@@ -1,7 +1,6 @@
 import lab as B
 from algebra import WrappedFunction
 from algebra.util import to_tensor, identical
-from plum import Dispatcher, Self
 
 from . import _dispatch
 from .zero import ZeroKernel
@@ -18,8 +17,6 @@ class PeriodicKernel(Kernel, WrappedFunction):
         k (:class:`.kernel.Kernel`): Kernel to make periodic.
         scale (tensor): Period.
     """
-
-    _dispatch = Dispatcher(in_class=Self)
 
     def __init__(self, k, period):
         WrappedFunction.__init__(self, k)
@@ -40,29 +37,29 @@ class PeriodicKernel(Kernel, WrappedFunction):
     def render_wrap(self, e, formatter):
         return f"{e} per {formatter(self.period)}"
 
-    @_dispatch(Self)
-    def __eq__(self, other):
+    @_dispatch
+    def __eq__(self, other: "PeriodicKernel"):
         return self[0] == other[0] and identical(self.period, other.period)
 
 
-@_dispatch(PeriodicKernel, B.Numeric, B.Numeric)
-def pairwise(k, x, y):
+@_dispatch
+def pairwise(k: PeriodicKernel, x: B.Numeric, y: B.Numeric):
     return pairwise(k[0], *k._compute(x, y))
 
 
-@_dispatch(PeriodicKernel, B.Numeric, B.Numeric)
-def elwise(k, x, y):
+@_dispatch
+def elwise(k: PeriodicKernel, x: B.Numeric, y: B.Numeric):
     return elwise(k[0], *k._compute(x, y))
 
 
 # Periodicise kernels.
 
 
-@_dispatch(Kernel, object)
-def periodicise(a, b):
+@_dispatch
+def periodicise(a: Kernel, b):
     return PeriodicKernel(a, b)
 
 
-@_dispatch(ZeroKernel, object)
-def periodicise(a, b):
+@_dispatch
+def periodicise(a: ZeroKernel, b):
     return a

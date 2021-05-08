@@ -17,11 +17,11 @@ class OneKernel(Kernel, OneFunction):
         return True
 
 
-@_dispatch(OneKernel, B.Numeric, B.Numeric)
-def pairwise(k, x, y):
+@_dispatch
+def pairwise(k: OneKernel, x: B.Numeric, y: B.Numeric):
     return Constant(B.one(x), num_elements(x), num_elements(y))
 
 
-@_dispatch(OneKernel, B.Numeric, B.Numeric)
-def elwise(k, x, y):
+@_dispatch
+def elwise(k: OneKernel, x: B.Numeric, y: B.Numeric):
     return B.ones(B.dtype(x), num_elements(x), 1)

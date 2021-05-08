@@ -18,11 +18,11 @@ class ReversedKernel(Kernel, ReversedFunction):
         return self[0].stationary
 
 
-@_dispatch(ReversedKernel, object, object)
-def pairwise(k, x, y):
+@_dispatch
+def pairwise(k: ReversedKernel, x, y):
     return B.transpose(pairwise(k[0], y, x))
 
 
-@_dispatch(ReversedKernel, object, object)
-def elwise(k, x, y):
+@_dispatch
+def elwise(k: ReversedKernel, x, y):
     return elwise(k[0], y, x)

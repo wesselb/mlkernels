@@ -1,7 +1,6 @@
 import lab as B
 from algebra.util import identical
 from matrix import Dense
-from plum import Dispatcher, Self
 
 from . import _dispatch
 from .. import Kernel
@@ -17,8 +16,6 @@ class RQ(Kernel):
             weight of the tails of the kernel. Must be positive.
     """
 
-    _dispatch = Dispatcher(in_class=Self)
-
     def __init__(self, alpha):
         self.alpha = alpha
 
@@ -32,16 +29,16 @@ class RQ(Kernel):
     def _stationary(self):
         return True
 
-    @_dispatch(Self)
-    def __eq__(self, other):
+    @_dispatch
+    def __eq__(self, other: "RQ"):
         return identical(self.alpha, other.alpha)
 
 
-@_dispatch(RQ, B.Numeric, B.Numeric)
-def pairwise(k, x, y):
+@_dispatch
+def pairwise(k: RQ, x: B.Numeric, y: B.Numeric):
     return Dense(k._compute(B.pw_dists2(x, y)))
 
 
-@_dispatch(RQ, B.Numeric, B.Numeric)
-def elwise(k, x, y):
+@_dispatch
+def elwise(k: RQ, x: B.Numeric, y: B.Numeric):
     return k._compute(B.ew_dists2(x, y))

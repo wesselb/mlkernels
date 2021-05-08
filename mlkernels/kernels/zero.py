@@ -17,11 +17,11 @@ class ZeroKernel(Kernel, ZeroFunction):
         return True
 
 
-@_dispatch(ZeroKernel, B.Numeric, B.Numeric)
-def pairwise(k, x, y):
+@_dispatch
+def pairwise(k: ZeroKernel, x: B.Numeric, y: B.Numeric):
     return Zero(B.dtype(x), num_elements(x), num_elements(y))
 
 
-@_dispatch(ZeroKernel, B.Numeric, B.Numeric)
-def elwise(k, x, y):
+@_dispatch
+def elwise(k: ZeroKernel, x: B.Numeric, y: B.Numeric):
     return B.zeros(B.dtype(x), num_elements(x), 1)

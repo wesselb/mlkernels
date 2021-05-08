@@ -1,7 +1,6 @@
 import lab as B
 from algebra import SelectedFunction
 from algebra.util import identical
-from plum import Dispatcher, Self
 
 from . import _dispatch
 from .. import Kernel
@@ -13,8 +12,6 @@ __all__ = ["SelectedKernel"]
 class SelectedKernel(Kernel, SelectedFunction):
     """Kernel with particular input dimensions selected."""
 
-    _dispatch = Dispatcher(in_class=Self)
-
     @property
     def _stationary(self):
         if len(self.dims) == 1:
@@ -23,18 +20,18 @@ class SelectedKernel(Kernel, SelectedFunction):
             # NOTE: Can do something more clever here.
             return False
 
-    @_dispatch(Self)
-    def __eq__(self, other):
+    @_dispatch
+    def __eq__(self, other: "SelectedKernel"):
         return self[0] == other[0] and identical(expand(self.dims), expand(other.dims))
 
 
-@_dispatch(SelectedKernel, B.Numeric, B.Numeric)
-def pairwise(k, x, y):
+@_dispatch
+def pairwise(k: SelectedKernel, x: B.Numeric, y: B.Numeric):
     return pairwise(k[0], *_selectedkernel_compute(k, x, y))
 
 
-@_dispatch(SelectedKernel, B.Numeric, B.Numeric)
-def elwise(k, x, y):
+@_dispatch
+def elwise(k: SelectedKernel, x: B.Numeric, y: B.Numeric):
     return elwise(k[0], *_selectedkernel_compute(k, x, y))
 
 

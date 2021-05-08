@@ -1,19 +1,7 @@
 import lab as B
 import pytest
 
-from mlkernels import (
-    Kernel,
-    pairwise,
-    elwise,
-    EQ,
-    RQ,
-    Matern12,
-    Matern32,
-    Matern52,
-    Delta,
-    Linear,
-)
-from .util import approx
+from mlkernels import Kernel, pairwise, elwise, EQ
 
 
 def test_corner_cases():

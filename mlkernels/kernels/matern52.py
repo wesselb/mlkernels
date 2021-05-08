@@ -1,6 +1,5 @@
 import lab as B
 from matrix import Dense
-from plum import Dispatcher, Self
 
 from . import _dispatch
 from .. import Kernel
@@ -11,8 +10,6 @@ __all__ = ["Matern52"]
 class Matern52(Kernel):
     """Matern--5/2 kernel."""
 
-    _dispatch = Dispatcher(in_class=Self)
-
     def _compute(self, dists):
         r1 = 5 ** 0.5 * dists
         r2 = 5 * dists ** 2 / 3
@@ -22,16 +19,16 @@ class Matern52(Kernel):
     def _stationary(self):
         return True
 
-    @_dispatch(Self)
-    def __eq__(self, other):
+    @_dispatch
+    def __eq__(self, other: "Matern52"):
         return True
 
 
-@_dispatch(Matern52, B.Numeric, B.Numeric)
-def pairwise(k, x, y):
+@_dispatch
+def pairwise(k: Matern52, x: B.Numeric, y: B.Numeric):
     return Dense(k._compute(B.pw_dists(x, y)))
 
 
-@_dispatch(Matern52, B.Numeric, B.Numeric)
-def elwise(k, x, y):
+@_dispatch
+def elwise(k: Matern52, x: B.Numeric, y: B.Numeric):
     return k._compute(B.ew_dists(x, y))

@@ -1,3 +1,5 @@
+from typing import Union
+
 # noinspection PyUnresolvedReferences
 import lab.autograd as B
 from algebra import Element
@@ -14,23 +16,23 @@ __mul__array_box = ArrayBox.__mul__
 __add__array_box = ArrayBox.__add__
 
 
-@_dispatch(ArrayBox, object)
-def __mul__(self, other):
+@_dispatch
+def __mul__(self: ArrayBox, other):
     return __mul__array_box(self, other)
 
 
-@_dispatch(ArrayBox, {Element, AbstractMatrix})
-def __mul__(self, other):
+@_dispatch
+def __mul__(self: ArrayBox, other: Union[Element, AbstractMatrix]):
     return other.__rmul__(self)
 
 
-@_dispatch(ArrayBox, object)
-def __add__(self, other):
+@_dispatch
+def __add__(self: ArrayBox, other):
     return __add__array_box(self, other)
 
 
-@_dispatch(ArrayBox, {Element, AbstractMatrix})
-def __add__(self, other):
+@_dispatch
+def __add__(self: ArrayBox, other: Union[Element, AbstractMatrix]):
     return other.__radd__(self)
 
 
