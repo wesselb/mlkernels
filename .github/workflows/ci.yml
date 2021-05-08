@@ -19,7 +19,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get install gfortran
-          pip install --upgrade pip
+          pip install --upgrade pip setuptools numpy Cython
           pip install --no-cache-dir -U -r requirements.txt | cat
           pip install --upgrade numpy
       - name: Check style
@@ -31,7 +31,7 @@ jobs:
           COVERALLS_FLAG_NAME: ${{ matrix.python-version }}
           COVERALLS_PARALLEL: true
         run: |
-          pytest -v --cov=mlkernels --cov-report term-missing
+          JAX_ENABLE_X64=1 pytest -v --cov=mlkernels --cov-report term-missing
           coveralls --service=github
   coveralls:
     name: Finish coverage
