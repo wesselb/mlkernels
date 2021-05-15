@@ -1,3 +1,4 @@
+import algebra
 from algebra import Function
 
 from . import _dispatch
