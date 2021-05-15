@@ -9,6 +9,7 @@ def test_tensor_product():
 
     # Verify that the kernel has the right properties.
     assert not k.stationary
+    assert str(k) == "<lambda>"
 
     # Test equality.
     assert k == k
