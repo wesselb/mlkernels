@@ -22,6 +22,8 @@ Contents:
 TLDR:
 
 ```python
+>>> import lab as B
+
 >>> from mlkernels import EQ, Linear
 
 >>> k1 = 2 * EQ()
@@ -35,11 +37,18 @@ TLDR:
 2 * 1 + EQ() * Linear()
 
 >>> k1(np.linspace(0, 1, 3))
-array([[2.        , 1.76499381, 1.21306132],
-       [1.76499381, 2.        , 1.76499381],
-       [1.21306132, 1.76499381, 2.        ]])
+<dense matrix: shape=3x3, dtype=float64
+ mat=[[2.    1.765 1.213]
+      [1.765 2.    1.765]
+      [1.213 1.765 2.   ]]>
 
 >>> k2(np.linspace(0, 1, 3))
+<dense matrix: shape=3x3, dtype=float64
+ mat=[[2.    2.    2.   ]
+      [2.    2.25  2.441]
+      [2.    2.441 3.   ]]>
+
+>>> B.dense(k2(np.linspace(0, 1, 3)))  # Get a regular NumPy array.
 array([[2.        , 2.        , 2.        ],
        [2.        , 2.25      , 2.44124845],
        [2.        , 2.44124845, 3.        ]])
@@ -72,9 +81,10 @@ Example:
 >>> k = EQ()
 
 >>> k(np.linspace(0, 1, 3))
-array([[1.        , 0.8824969 , 0.60653066],
-       [0.8824969 , 1.        , 0.8824969 ],
-       [0.60653066, 0.8824969 , 1.        ]])
+<dense matrix: shape=3x3, dtype=float64
+ mat=[[1.    0.882 0.607]
+      [0.882 1.    0.882]
+      [0.607 0.882 1.   ]]>
  
 >>> k.elwise(np.linspace(0, 1, 3), 0)
 array([[1.        ],
@@ -475,26 +485,23 @@ Example:
 
 MLKernels uses [an extension of LAB](https://github.com/wesselb/matrix) to
 accelerate linear algebra with structured linear algebra primitives.
-By calling `k(x, y)` or `k.elwise(x, y)`, these structured matrix types are
-automatically converted regular NumPy/TensorFlow/PyTorch/JAX arrays, so they won't
-bother you.
-Would you want to preserve matrix structure, then you can use the exported functions
-`pairwise` and `elwise`.
 
 Example:
 
 ```python
+>>> import lab as B
+
 >>> k = 2 * Delta()
 
 >>> x = np.linspace(0, 5, 10)
 
 >>> from mlkernels import pairwise
 
->>> pairwise(k, x)  # Preserve structure.
+>>> k(x)  # Preserve structure.
 <diagonal matrix: shape=10x10, dtype=float64
  diag=[2. 2. 2. 2. 2. 2. 2. 2. 2. 2.]>
 
->>> k(x)  # Do not preserve structure.
+>>> B.dense(k(x))  # Do not preserve structure.
 array([[2., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
        [0., 2., 0., 0., 0., 0., 0., 0., 0., 0.],
        [0., 0., 2., 0., 0., 0., 0., 0., 0., 0.],
@@ -518,7 +525,7 @@ they know how to efficiently add, multiply, and do other linear algebra operatio
  diag=[4. 4. 4. 4. 4. 4. 4. 4. 4. 4.]>
 ```
 
-You can eventually convert structured primitives to regular
+As in the above exmaple, you can convert structured primitives to regular
 NumPy/TensorFlow/PyTorch/JAX arrays by calling `B.dense`:
 
 ```python
@@ -619,9 +626,10 @@ False
 (2 * EQWithLengthScale(2) + Linear()) * RQ(2.0)
 
 >>> k_composite(np.linspace(0, 1, 3))
-array([[2.        , 1.71711909, 1.12959604],
-       [1.71711909, 2.25      , 2.16002566],
-       [1.12959604, 2.16002566, 3.        ]])
+<dense matrix: shape=3x3, dtype=float64
+ mat=[[2.    1.717 1.13 ]
+      [1.717 2.25  2.16 ]
+      [1.13  2.16  3.   ]]>
 ```
 
 Of course, in practice we do not need to implement variants of kernels which include 
@@ -629,13 +637,15 @@ length scales, because we always adjust the length scale by stretching a base ke
 
 ```python
 >>> EQ().stretch(2)(np.linspace(0, 1, 3))
-array([[1.        , 0.96923323, 0.8824969 ],
-       [0.96923323, 1.        , 0.96923323],
-       [0.8824969 , 0.96923323, 1.        ]])
+<dense matrix: shape=3x3, dtype=float64
+ mat=[[1.    0.969 0.882]
+      [0.969 1.    0.969]
+      [0.882 0.969 1.   ]]>
 
 >>> EQWithLengthScale(2)(np.linspace(0, 1, 3))
-array([[1.        , 0.96923323, 0.8824969 ],
-       [0.96923323, 1.        , 0.96923323],
-       [0.8824969 , 0.96923323, 1.        ]])
+<dense matrix: shape=3x3, dtype=float64
+ mat=[[1.    0.969 0.882]
+      [0.969 1.    0.969]
+      [0.882 0.969 1.   ]]>
 ```
 

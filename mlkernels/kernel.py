@@ -15,8 +15,6 @@ class Kernel(Function):
     def __call__(self, *args, **kw_args):
         """Construct the kernel matrix between all `x` and `y`.
 
-        This method does *not* preserve matrix structure and simply returns a tensor.
-
         Args:
             x (input): First argument.
             y (input, optional): Second argument. Defaults to first argument.
@@ -29,8 +27,6 @@ class Kernel(Function):
     def pairwise(self, *args, **kw_args):
         """Construct the kernel matrix between all `x` and `y`.
 
-        This method does *not* preserve matrix structure and simply returns a tensor.
-
         Args:
             x (input): First argument.
             y (input, optional): Second argument. Defaults to first argument.
@@ -38,12 +34,10 @@ class Kernel(Function):
         Returns:
             matrix: Kernel matrix.
         """
-        return B.dense(pairwise(self, *args, **kw_args))
+        return pairwise(self, *args, **kw_args)
 
     def elwise(self, *args, **kw_args):
         """Construct the kernel vector `x` and `y` element-wise.
-
-        This method does *not* preserve matrix structure and simply returns a tensor.
 
         Args:
             x (input): First argument.
@@ -52,7 +46,7 @@ class Kernel(Function):
         Returns:
             tensor: Kernel vector as a rank-2 column vector.
         """
-        return B.dense(elwise(self, *args, **kw_args))
+        return elwise(self, *args, **kw_args)
 
     def periodic(self, period=1):
         """Map to a periodic space.

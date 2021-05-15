@@ -36,13 +36,6 @@ def standard_kernel_tests(k, shapes=None, dtype=np.float64, f1=None, f2=None):
 
         # Check `pairwise`.
 
-        # Check that types of the output are right. Strictly, the `pairwise` calls
-        # do not have to return a structured matrix, but here we require that they do.
-        assert isinstance(pairwise(k, x1, x2), AbstractMatrix)
-        assert isinstance(pairwise(k, x1), AbstractMatrix)
-        assert isinstance(k.pairwise(x1, x2), B.Numeric)
-        assert isinstance(k.pairwise(x1), B.Numeric)
-
         # Check argument duplication.
         approx(pairwise(k, x1, x1), pairwise(k, x1))
 
@@ -53,12 +46,6 @@ def standard_kernel_tests(k, shapes=None, dtype=np.float64, f1=None, f2=None):
         # Check `elwise`.
 
         x2 = B.randn(dtype, *shape1)
-
-        # Check that types of the output are right.
-        assert isinstance(elwise(k, x1, x2), (B.Numeric, AbstractMatrix))
-        assert isinstance(elwise(k, x1), (B.Numeric, AbstractMatrix))
-        assert isinstance(k.elwise(x1, x2), B.Numeric)
-        assert isinstance(k.elwise(x1), B.Numeric)
 
         # Check argument duplication.
         approx(elwise(k, x1, x1), elwise(k, x1))
