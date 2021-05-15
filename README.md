@@ -162,12 +162,12 @@ Besides that, the following kernels are available:
 
 * `Linear()`, the linear kernel:
 
-  $$ k(x, y) = \langle x, y \rangle; $$
+    $$ k(x, y) = \langle x, y \rangle; $$
 
-* `Delta()`, the Kronecker delta kernel:
+* `Delta(epsilon=1e-6)`, the Kronecker delta kernel:
 
     $$ k(x, y) = \begin{cases}
-        1 & \text{if } x = y, \\
+        1 & \text{if } \|x - y\| < \varepsilon, \\
         0 & \text{otherwise};
        \end{cases} $$
        
@@ -179,14 +179,23 @@ Besides that, the following kernels are available:
 
     $$ k(x, y) = \frac{\log(1 + \|x - y\|)}{\|x - y\|}; $$
 
+* `PosteriorKernel(k_ij, k_zi, k_zj, z, K_z)`:
+
+    $$ k(x, y) = k_{ij}(x, y) - k_{iz}(x, z) K_z^{-1} k_{zj}(x, y); $$
+  
+* `SubspaceKernel(k_zi, k_zj, z, A)`:
+  
+    $$ k(x, y) = k_{iz}(x, z) A^{-1} k_{zj}(x, y); $$
+
 * `TensorProductKernel(f)`:
 
     $$ k(x, y) = f(x)f(y). $$
 
-    Adding or multiplying a `FunctionType` `f` to or with a kernel will 
+    Adding or multiplying a `FunctionType` `f` to or with a kernel will
     automatically translate `f` to `TensorProductKernel(f)`. For example,
-    `f * k` will translate to `TensorProductKernel(f) * k`, and `f + k` will 
+    `f * k` will translate to `TensorProductKernel(f) * k`, and `f + k` will
     translate to `TensorProductKernel(f) + k`.
+  
 
 
 ## Compositional Design

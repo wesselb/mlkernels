@@ -15,7 +15,7 @@ class PeriodicKernel(Kernel, WrappedFunction):
 
     Args:
         k (:class:`.kernel.Kernel`): Kernel to make periodic.
-        scale (tensor): Period.
+        period (tensor): Period.
     """
 
     def __init__(self, k, period):

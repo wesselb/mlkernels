@@ -13,16 +13,16 @@ class Delta(Kernel):
     """Kronecker delta kernel.
 
     Args:
-        epsilon (float, optional): Tolerance for equality in squared distance.
-            Defaults to `1e-10`.
+        epsilon (float, optional): Tolerance for equality in distance.
+            Defaults to `1e-6`.
     """
 
-    def __init__(self, epsilon=1e-10):
+    def __init__(self, epsilon=1e-6):
         self.epsilon = epsilon
 
     def _compute(self, dists2):
         dtype = B.dtype(dists2)
-        return B.cast(dtype, B.lt(dists2, self.epsilon))
+        return B.cast(dtype, B.lt(dists2, self.epsilon ** 2))
 
     @property
     def _stationary(self):

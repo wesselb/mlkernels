@@ -11,6 +11,7 @@ from .matern32 import *
 from .matern52 import *
 from .one import *
 from .periodic import *
+from .posterior import *
 from .product import *
 from .reverse import *
 from .rq import *
@@ -18,6 +19,7 @@ from .scaled import *
 from .selected import *
 from .shifted import *
 from .stretched import *
+from .subspace import *
 from .sum import *
 from .tensor import *
 from .transformed import *
