@@ -2,6 +2,7 @@ import lab as B
 import tensorflow as tf
 
 from ..util import approx
+
 # noinspection PyUnresolvedReferences
 from ..util_mean import x, m_square, m_cube
 
