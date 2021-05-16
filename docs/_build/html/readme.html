@@ -92,12 +92,10 @@
 <li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#autograd-tensorflow-pytorch-or-jax-your-choice">AutoGrad, TensorFlow, PyTorch, or JAX? Your Choice!</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#available-kernels">Available Kernels</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#available-means">Available Means</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#available-kernels">Available Kernels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#available-means">Available Means</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#compositional-design">Compositional Design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#displaying-kernels">Displaying Kernels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#displaying-kernels-and-means">Displaying Kernels and Means</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#properties-of-kernels-and-means">Properties of Kernels and Means</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#structured-matrix-types">Structured Matrix Types</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#implementing-your-own-kernel">Implementing Your Own Kernel</a></li>
@@ -180,9 +178,11 @@
 <li><p><a class="reference external" href="#autograd-tensorflow-pytorch-or-jax-your-choice">AutoGrad, TensorFlow, PyTorch, or JAX? Your
 Choice!</a></p></li>
 <li><p><a class="reference external" href="#available-kernels">Available Kernels</a></p></li>
+<li><p><a class="reference external" href="#available-means">Available Means</a></p></li>
 <li><p><a class="reference external" href="#compositional-design">Compositional Design</a></p></li>
-<li><p><a class="reference external" href="#displaying-kernels">Displaying Kernels</a></p></li>
-<li><p><a class="reference external" href="#properties-of-kernels">Properties of Kernels</a></p></li>
+<li><p><a class="reference external" href="#displaying-kernels-and-means">Displaying Kernels and Means</a></p></li>
+<li><p><a class="reference external" href="#properties-of-kernels-and-means">Properties of Kernels and
+Means</a></p></li>
 <li><p><a class="reference external" href="#structured-matrix-types">Structured Matrix Types</a></p></li>
 <li><p><a class="reference external" href="#implementing-your-own-kernel">Implementing Your Own Kernel</a></p></li>
 </ul>
@@ -375,8 +375,9 @@ example, <code class="docutils literal notranslate"><span class="pre">f</span> <
 and <code class="docutils literal notranslate"><span class="pre">f</span> <span class="pre">+</span> <span class="pre">k</span></code> will translate to <code class="docutils literal notranslate"><span class="pre">TensorProductKernel(f)</span> <span class="pre">+</span> <span class="pre">k</span></code>.</p>
 </li>
 </ul>
+</div>
 <div class="section" id="available-means">
-<h3>Available Means<a class="headerlink" href="#available-means" title="Permalink to this headline">¶</a></h3>
+<h2>Available Means<a class="headerlink" href="#available-means" title="Permalink to this headline">¶</a></h2>
 <p>Constants function as constant means. Besides that, the following means
 are available:</p>
 <ul>
@@ -389,7 +390,6 @@ example, <code class="docutils literal notranslate"><span class="pre">f</span> <
 and <code class="docutils literal notranslate"><span class="pre">f</span> <span class="pre">+</span> <span class="pre">m</span></code> will translate to <code class="docutils literal notranslate"><span class="pre">TensorProductMean(f)</span> <span class="pre">+</span> <span class="pre">m</span></code>.</p>
 </li>
 </ul>
-</div>
 </div>
 <div class="section" id="compositional-design">
 <h2>Compositional Design<a class="headerlink" href="#compositional-design" title="Permalink to this headline">¶</a></h2>
@@ -586,8 +586,8 @@ This currently only works in TensorFlow.</p>
 </li>
 </ul>
 </div>
-<div class="section" id="displaying-kernels">
-<h2>Displaying Kernels<a class="headerlink" href="#displaying-kernels" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="displaying-kernels-and-means">
+<h2>Displaying Kernels and Means<a class="headerlink" href="#displaying-kernels-and-means" title="Permalink to this headline">¶</a></h2>
 <p>Kernels and means have a <code class="docutils literal notranslate"><span class="pre">display</span></code> method. The <code class="docutils literal notranslate"><span class="pre">display</span></code> method
 accepts a callable formatter that will be applied before any value is
 printed. This comes in handy when pretty printing kernels.</p>
@@ -600,7 +600,7 @@ printed. This comes in handy when pretty printing kernels.</p>
 <div class="section" id="properties-of-kernels-and-means">
 <h2>Properties of Kernels and Means<a class="headerlink" href="#properties-of-kernels-and-means" title="Permalink to this headline">¶</a></h2>
 <ul>
-<li><p>Kernels and Means can be equated to check for equality. This will
+<li><p>Kernels and means can be equated to check for equality. This will
 attempt basic algebraic manipulations. If the kernels and means are
 not equal <em>or</em> equality cannot be proved, then <code class="docutils literal notranslate"><span class="pre">False</span></code> is returned.</p>
 <p>Example of equating kernels:</p>

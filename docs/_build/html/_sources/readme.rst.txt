@@ -12,9 +12,11 @@ Contents:
 -  `AutoGrad, TensorFlow, PyTorch, or JAX? Your
    Choice! <#autograd-tensorflow-pytorch-or-jax-your-choice>`__
 -  `Available Kernels <#available-kernels>`__
+-  `Available Means <#available-means>`__
 -  `Compositional Design <#compositional-design>`__
--  `Displaying Kernels <#displaying-kernels>`__
--  `Properties of Kernels <#properties-of-kernels>`__
+-  `Displaying Kernels and Means <#displaying-kernels-and-means>`__
+-  `Properties of Kernels and
+   Means <#properties-of-kernels-and-means>`__
 -  `Structured Matrix Types <#structured-matrix-types>`__
 -  `Implementing Your Own Kernel <#implementing-your-own-kernel>`__
 
@@ -230,7 +232,7 @@ kernels are available:
    and ``f + k`` will translate to ``TensorProductKernel(f) + k``.
 
 Available Means
-^^^^^^^^^^^^^^^
+---------------
 
 Constants function as constant means. Besides that, the following means
 are available:
@@ -476,8 +478,8 @@ Compositional Design
        >>> EQ().periodic(1)[0]
        EQ()
 
-Displaying Kernels
-------------------
+Displaying Kernels and Means
+----------------------------
 
 Kernels and means have a ``display`` method. The ``display`` method
 accepts a callable formatter that will be applied before any value is
@@ -493,7 +495,7 @@ Example:
 Properties of Kernels and Means
 -------------------------------
 
--  Kernels and Means can be equated to check for equality. This will
+-  Kernels and means can be equated to check for equality. This will
    attempt basic algebraic manipulations. If the kernels and means are
    not equal *or* equality cannot be proved, then ``False`` is returned.
 
