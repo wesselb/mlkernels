@@ -5,7 +5,7 @@
 [![Latest Docs](https://img.shields.io/badge/docs-latest-blue.svg)](https://wesselb.github.io/mlkernels)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-Kernels, the machine learning ones
+Kernels, the machine learning ones (also, mean functions)
 
 Contents:
 
@@ -22,25 +22,35 @@ Contents:
 TLDR:
 
 ```python
->>> import lab as B
-
 >>> from mlkernels import EQ, Linear
 
->>> k1 = 2 * EQ()
+>>> k1 = 2 * Linear() + 1
 
 >>> k1
-2 * EQ()
+2 * Linear() + 1
+
+>>> k1(np.linspace(0, 1, 3))  # Structured matrices enable efficiency.
+<low-rank matrix: shape=3x3, dtype=float64, rank=2
+ left=[[0.  1. ]
+       [0.5 1. ]
+       [1.  1. ]]
+ middle=[[2. 0.]
+         [0. 1.]]
+ right=[[0.  1. ]
+        [0.5 1. ]
+        [1.  1. ]]>
+
+>>> import lab as B
+
+>>> B.dense(k1(np.linspace(0, 1, 3)))  # Discard structure: get a regular NumPy array.
+array([[1. , 1. , 1. ],
+       [1. , 1.5, 2. ],
+       [1. , 2. , 3. ]])
 
 >>> k2 = 2 + EQ() * Linear()
 
 >>> k2
 2 * 1 + EQ() * Linear()
-
->>> k1(np.linspace(0, 1, 3))
-<dense matrix: shape=3x3, dtype=float64
- mat=[[2.    1.765 1.213]
-      [1.765 2.    1.765]
-      [1.213 1.765 2.   ]]>
 
 >>> k2(np.linspace(0, 1, 3))
 <dense matrix: shape=3x3, dtype=float64
@@ -48,7 +58,7 @@ TLDR:
       [2.    2.25  2.441]
       [2.    2.441 3.   ]]>
 
->>> B.dense(k2(np.linspace(0, 1, 3)))  # Get a regular NumPy array.
+>>> B.dense(k1(np.linspace(0, 1, 3)))
 array([[2.        , 2.        , 2.        ],
        [2.        , 2.25      , 2.44124845],
        [2.        , 2.44124845, 3.        ]])
@@ -92,7 +102,24 @@ array([[1.        ],
        [0.60653066]])
 ```
 
-Inputs to kernels must be of one of the following three forms:
+Let `m` be a mean, e.g. `m = TensorProductMean(lambda x: x ** 2)`.
+
+*
+    `m(x)` constructs the _mean vector_ for the points in `x`, which will be a
+    _rank-2 column vector_.
+
+Example:
+
+```python
+>>> m = TensorProductMean(lambda x: x ** 2)
+
+>>> m(np.linspace(0, 1, 3))
+array([[0.  ],
+       [0.25],
+       [1.  ]])
+```
+
+Inputs to kernels and means must be of one of the following three forms:
 
 *
     If the input `x` is a _rank-0 tensor_, i.e. a scalar, then `x` refers to a
@@ -196,12 +223,24 @@ Besides that, the following kernels are available:
     `f * k` will translate to `TensorProductKernel(f) * k`, and `f + k` will
     translate to `TensorProductKernel(f) + k`.
   
+#### Available Means
 
+Constants function as constant means.
+Besides that, the following means are available:
+
+* `TensorProductMean(f)`:
+
+    $$ m(x) = f(x). $$
+
+    Adding or multiplying a `FunctionType` `f` to or with a mean will 
+    automatically translate `f` to `TensorProductMean(f)`. For example,
+    `f * m` will translate to `TensorProductMean(f) * m`, and `f + m` will 
+    translate to `TensorProductMean(f) + m`.
 
 ## Compositional Design
 
 *
-    Add and subtract kernels.
+    Add and subtract kernels and means.
 
     Example:
     
@@ -226,7 +265,7 @@ Besides that, the following kernels are available:
     ```
 
 *
-    Multiply kernels.
+    Multiply kernels and means.
     
     Example:
 
@@ -242,7 +281,7 @@ Besides that, the following kernels are available:
     ```
 
 *
-    Shift kernels.
+    Shift kernels and means.
 
     Definition:
     
@@ -263,7 +302,7 @@ Besides that, the following kernels are available:
     ```
 
 *
-    Stretch kernels.
+    Stretch kernels and means.
 
     Definition:
     
@@ -291,7 +330,7 @@ Besides that, the following kernels are available:
     ```
 
 *
-    Select particular input dimensions of kernels.
+    Select particular input dimensions of kernels and means.
 
     Definition:
 
@@ -322,7 +361,7 @@ Besides that, the following kernels are available:
     ```
 
 *
-    Transform the inputs of kernels.
+    Transform the inputs of kernels and means.
 
     Definition:
 
@@ -348,7 +387,7 @@ Besides that, the following kernels are available:
     ```
 
 *
-    Numerically, but efficiently, take derivatives of kernels.
+    Numerically, but efficiently, take derivatives of kernels and means.
     This currently only works in TensorFlow.
 
     Definition:
@@ -375,7 +414,7 @@ Besides that, the following kernels are available:
     ```
 
 *
-    Make kernels periodic.
+    Make kernels periodic. This is not implemented for means.
 
     Definition:
 
@@ -391,7 +430,7 @@ Besides that, the following kernels are available:
     ```
 
 * 
-    Reverse the arguments of kernels.
+    Reverse the arguments of kernels. This does not apply to means.
 
     Definition:
 
@@ -407,7 +446,7 @@ Besides that, the following kernels are available:
     ```
     
 *
-    Extract terms and factors from sums and products respectively of kernels.
+    Extract terms and factors from sums and products respectively.
     
     Example:
     
@@ -419,7 +458,7 @@ Besides that, the following kernels are available:
     2
     ```
     
-    Kernels "wrapping" others can be "unwrapped" by indexing `k[0]`.
+    Kernels and means "wrapping" others can be "unwrapped" by indexing `k[0]` or `m[0]`.
      
     Example:
     
@@ -451,13 +490,13 @@ Example:
 2.12 * EQ()
 ```
 
-## Properties of Kernels
+## Properties of Kernels and Means
 
 *
-    Kernels can be equated to check for equality.
+    Kernels and Means can be equated to check for equality.
     This will attempt basic algebraic manipulations.
-    If the means and kernels are not equal _or_ equality cannot be proved, `False` is
-    returned.
+    If the kernels and means are not equal _or_ equality cannot be proved,
+    then `False` is returned.
     
     Example of equating kernels:
 
