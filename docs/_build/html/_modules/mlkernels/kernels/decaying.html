@@ -155,7 +155,6 @@
 <span></span><span class="kn">import</span> <span class="nn">lab</span> <span class="k">as</span> <span class="nn">B</span>
 <span class="kn">from</span> <span class="nn">algebra.util</span> <span class="kn">import</span> <span class="n">identical</span>
 <span class="kn">from</span> <span class="nn">matrix</span> <span class="kn">import</span> <span class="n">Dense</span>
-<span class="kn">from</span> <span class="nn">plum</span> <span class="kn">import</span> <span class="n">Dispatcher</span><span class="p">,</span> <span class="n">Self</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_dispatch</span>
 <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">Kernel</span>
@@ -163,7 +162,7 @@
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;DecayingKernel&quot;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="DecayingKernel"><a class="viewcode-back" href="../../../source/mlkernels.kernels.decaying.html#mlkernels.kernels.decaying.DecayingKernel">[docs]</a><span class="k">class</span> <span class="nc">DecayingKernel</span><span class="p">(</span><span class="n">Kernel</span><span class="p">):</span>
+<div class="viewcode-block" id="DecayingKernel"><a class="viewcode-back" href="../../../source/mlkernels.kernels.decaying.html#mlkernels.DecayingKernel">[docs]</a><span class="k">class</span> <span class="nc">DecayingKernel</span><span class="p">(</span><span class="n">Kernel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Decaying kernel.</span>
 
 <span class="sd">    Args:</span>
@@ -172,8 +171,6 @@
 <span class="sd">        beta (tensor): Rate of the gamma distribution governing the distribution of</span>
 <span class="sd">            decaying exponentials.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">_dispatch</span> <span class="o">=</span> <span class="n">Dispatcher</span><span class="p">(</span><span class="n">in_class</span><span class="o">=</span><span class="n">Self</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span>
@@ -185,22 +182,22 @@
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">B</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">beta_norm</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
 
-<div class="viewcode-block" id="DecayingKernel.render"><a class="viewcode-back" href="../../../source/mlkernels.kernels.decaying.html#mlkernels.kernels.decaying.DecayingKernel.render">[docs]</a>    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">formatter</span><span class="p">):</span>
+<div class="viewcode-block" id="DecayingKernel.render"><a class="viewcode-back" href="../../../source/mlkernels.kernels.decaying.html#mlkernels.DecayingKernel.render">[docs]</a>    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">formatter</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;DecayingKernel(</span><span class="si">{</span><span class="n">formatter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">formatter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">beta</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span></div>
 
-    <span class="nd">@_dispatch</span><span class="p">(</span><span class="n">Self</span><span class="p">)</span>
-    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="nd">@_dispatch</span>
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="s2">&quot;DecayingKernel&quot;</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">identical</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span> <span class="ow">and</span> <span class="n">identical</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">beta</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">beta</span><span class="p">)</span></div>
 
 
-<span class="nd">@_dispatch</span><span class="p">(</span><span class="n">DecayingKernel</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">Numeric</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">Numeric</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">pairwise</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="nd">@_dispatch</span>
+<span class="k">def</span> <span class="nf">pairwise</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="n">DecayingKernel</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">B</span><span class="o">.</span><span class="n">Numeric</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">B</span><span class="o">.</span><span class="n">Numeric</span><span class="p">):</span>
     <span class="n">pw_sums_raised</span> <span class="o">=</span> <span class="n">B</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">pw_sums</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">k</span><span class="o">.</span><span class="n">beta</span><span class="p">),</span> <span class="n">y</span><span class="p">),</span> <span class="n">k</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">Dense</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">_compute_beta_raised</span><span class="p">(),</span> <span class="n">pw_sums_raised</span><span class="p">))</span>
 
 
-<span class="nd">@_dispatch</span><span class="p">(</span><span class="n">DecayingKernel</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">Numeric</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">Numeric</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">elwise</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="nd">@_dispatch</span>
+<span class="k">def</span> <span class="nf">elwise</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="n">DecayingKernel</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">B</span><span class="o">.</span><span class="n">Numeric</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">B</span><span class="o">.</span><span class="n">Numeric</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">B</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span>
         <span class="n">k</span><span class="o">.</span><span class="n">_compute_beta_raised</span><span class="p">(),</span>
         <span class="n">B</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">ew_sums</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">k</span><span class="o">.</span><span class="n">beta</span><span class="p">),</span> <span class="n">y</span><span class="p">),</span> <span class="n">k</span><span class="o">.</span><span class="n">alpha</span><span class="p">),</span>

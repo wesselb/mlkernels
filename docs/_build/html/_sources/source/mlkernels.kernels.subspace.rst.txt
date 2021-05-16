@@ -1,0 +1,7 @@
+mlkernels.kernels.subspace module
+=================================
+
+.. automodule:: mlkernels.kernels.subspace
+   :members:
+   :undoc-members:
+   :show-inheritance:

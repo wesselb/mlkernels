@@ -23,6 +23,7 @@ Submodules
    mlkernels.kernels.matern52
    mlkernels.kernels.one
    mlkernels.kernels.periodic
+   mlkernels.kernels.posterior
    mlkernels.kernels.product
    mlkernels.kernels.reverse
    mlkernels.kernels.rq
@@ -30,6 +31,7 @@ Submodules
    mlkernels.kernels.selected
    mlkernels.kernels.shifted
    mlkernels.kernels.stretched
+   mlkernels.kernels.subspace
    mlkernels.kernels.sum
    mlkernels.kernels.tensor
    mlkernels.kernels.transformed

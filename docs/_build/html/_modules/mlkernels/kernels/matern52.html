@@ -154,7 +154,6 @@
   <h1>Source code for mlkernels.kernels.matern52</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">lab</span> <span class="k">as</span> <span class="nn">B</span>
 <span class="kn">from</span> <span class="nn">matrix</span> <span class="kn">import</span> <span class="n">Dense</span>
-<span class="kn">from</span> <span class="nn">plum</span> <span class="kn">import</span> <span class="n">Dispatcher</span><span class="p">,</span> <span class="n">Self</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_dispatch</span>
 <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">Kernel</span>
@@ -162,10 +161,8 @@
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Matern52&quot;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="Matern52"><a class="viewcode-back" href="../../../source/mlkernels.kernels.matern52.html#mlkernels.kernels.matern52.Matern52">[docs]</a><span class="k">class</span> <span class="nc">Matern52</span><span class="p">(</span><span class="n">Kernel</span><span class="p">):</span>
+<div class="viewcode-block" id="Matern52"><a class="viewcode-back" href="../../../source/mlkernels.kernels.matern52.html#mlkernels.Matern52">[docs]</a><span class="k">class</span> <span class="nc">Matern52</span><span class="p">(</span><span class="n">Kernel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Matern--5/2 kernel.&quot;&quot;&quot;</span>
-
-    <span class="n">_dispatch</span> <span class="o">=</span> <span class="n">Dispatcher</span><span class="p">(</span><span class="n">in_class</span><span class="o">=</span><span class="n">Self</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dists</span><span class="p">):</span>
         <span class="n">r1</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">**</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">dists</span>
@@ -176,18 +173,18 @@
     <span class="k">def</span> <span class="nf">_stationary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">True</span>
 
-    <span class="nd">@_dispatch</span><span class="p">(</span><span class="n">Self</span><span class="p">)</span>
-    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="nd">@_dispatch</span>
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="s2">&quot;Matern52&quot;</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">True</span></div>
 
 
-<span class="nd">@_dispatch</span><span class="p">(</span><span class="n">Matern52</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">Numeric</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">Numeric</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">pairwise</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="nd">@_dispatch</span>
+<span class="k">def</span> <span class="nf">pairwise</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="n">Matern52</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">B</span><span class="o">.</span><span class="n">Numeric</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">B</span><span class="o">.</span><span class="n">Numeric</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">Dense</span><span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">_compute</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">pw_dists</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)))</span>
 
 
-<span class="nd">@_dispatch</span><span class="p">(</span><span class="n">Matern52</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">Numeric</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">Numeric</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">elwise</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="nd">@_dispatch</span>
+<span class="k">def</span> <span class="nf">elwise</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="n">Matern52</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">B</span><span class="o">.</span><span class="n">Numeric</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">B</span><span class="o">.</span><span class="n">Numeric</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">k</span><span class="o">.</span><span class="n">_compute</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">ew_dists</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
 </pre></div>
 

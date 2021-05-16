@@ -1,0 +1,7 @@
+mlkernels.means.tensor module
+=============================
+
+.. automodule:: mlkernels.means.tensor
+   :members:
+   :undoc-members:
+   :show-inheritance:

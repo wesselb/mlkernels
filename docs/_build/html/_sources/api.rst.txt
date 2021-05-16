@@ -33,10 +33,19 @@ Kernels
 .. autoclass:: mlkernels.Linear
     :show-inheritance:
 
+.. autoclass:: mlkernels.Delta
+    :show-inheritance:
+
 .. autoclass:: mlkernels.DecayingKernel
     :show-inheritance:
 
 .. autoclass:: mlkernels.LogKernel
+    :show-inheritance:
+
+.. autoclass:: mlkernels.PosteriorKernel
+    :show-inheritance:
+
+.. autoclass:: mlkernels.SubspaceKernel
     :show-inheritance:
 
 .. autoclass:: mlkernels.TensorProductKernel

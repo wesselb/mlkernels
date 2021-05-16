@@ -155,7 +155,6 @@
 <span></span><span class="kn">import</span> <span class="nn">lab</span> <span class="k">as</span> <span class="nn">B</span>
 <span class="kn">from</span> <span class="nn">algebra</span> <span class="kn">import</span> <span class="n">WrappedFunction</span>
 <span class="kn">from</span> <span class="nn">algebra.util</span> <span class="kn">import</span> <span class="n">to_tensor</span><span class="p">,</span> <span class="n">identical</span>
-<span class="kn">from</span> <span class="nn">plum</span> <span class="kn">import</span> <span class="n">Dispatcher</span><span class="p">,</span> <span class="n">Self</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_dispatch</span>
 <span class="kn">from</span> <span class="nn">.zero</span> <span class="kn">import</span> <span class="n">ZeroKernel</span>
@@ -170,10 +169,8 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        k (:class:`.kernel.Kernel`): Kernel to make periodic.</span>
-<span class="sd">        scale (tensor): Period.</span>
+<span class="sd">        period (tensor): Period.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">_dispatch</span> <span class="o">=</span> <span class="n">Dispatcher</span><span class="p">(</span><span class="n">in_class</span><span class="o">=</span><span class="n">Self</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">period</span><span class="p">):</span>
         <span class="n">WrappedFunction</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
@@ -194,31 +191,31 @@
 <div class="viewcode-block" id="PeriodicKernel.render_wrap"><a class="viewcode-back" href="../../../source/mlkernels.kernels.periodic.html#mlkernels.kernels.periodic.PeriodicKernel.render_wrap">[docs]</a>    <span class="k">def</span> <span class="nf">render_wrap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">formatter</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2"> per </span><span class="si">{</span><span class="n">formatter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">period</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span></div>
 
-    <span class="nd">@_dispatch</span><span class="p">(</span><span class="n">Self</span><span class="p">)</span>
-    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="nd">@_dispatch</span>
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="s2">&quot;PeriodicKernel&quot;</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">other</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">identical</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">period</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">period</span><span class="p">)</span></div>
 
 
-<span class="nd">@_dispatch</span><span class="p">(</span><span class="n">PeriodicKernel</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">Numeric</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">Numeric</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">pairwise</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="nd">@_dispatch</span>
+<span class="k">def</span> <span class="nf">pairwise</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="n">PeriodicKernel</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">B</span><span class="o">.</span><span class="n">Numeric</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">B</span><span class="o">.</span><span class="n">Numeric</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">pairwise</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">*</span><span class="n">k</span><span class="o">.</span><span class="n">_compute</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
 
 
-<span class="nd">@_dispatch</span><span class="p">(</span><span class="n">PeriodicKernel</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">Numeric</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">Numeric</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">elwise</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="nd">@_dispatch</span>
+<span class="k">def</span> <span class="nf">elwise</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="n">PeriodicKernel</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">B</span><span class="o">.</span><span class="n">Numeric</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">B</span><span class="o">.</span><span class="n">Numeric</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">elwise</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">*</span><span class="n">k</span><span class="o">.</span><span class="n">_compute</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
 
 
 <span class="c1"># Periodicise kernels.</span>
 
 
-<span class="nd">@_dispatch</span><span class="p">(</span><span class="n">Kernel</span><span class="p">,</span> <span class="nb">object</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">periodicise</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="nd">@_dispatch</span>
+<span class="k">def</span> <span class="nf">periodicise</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">Kernel</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">PeriodicKernel</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 
 
-<span class="nd">@_dispatch</span><span class="p">(</span><span class="n">ZeroKernel</span><span class="p">,</span> <span class="nb">object</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">periodicise</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="nd">@_dispatch</span>
+<span class="k">def</span> <span class="nf">periodicise</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ZeroKernel</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">a</span>
 </pre></div>
 

@@ -3,7 +3,7 @@
 
 |CI| |Coverage Status| |Latest Docs| |Code style: black|
 
-Kernels, the machine learning ones
+Kernels, the machine learning ones (also, mean functions)
 
 Contents:
 
@@ -24,22 +24,41 @@ TLDR:
 
     >>> from mlkernels import EQ, Linear
 
-    >>> k1 = 2 * EQ()
+    >>> k1 = 2 * Linear() + 1
 
     >>> k1
-    2 * EQ()
+    2 * Linear() + 1
+
+    >>> k1(np.linspace(0, 1, 3))  # Structured matrices enable efficiency.
+    <low-rank matrix: shape=3x3, dtype=float64, rank=2
+     left=[[0.  1. ]
+           [0.5 1. ]
+           [1.  1. ]]
+     middle=[[2. 0.]
+             [0. 1.]]
+     right=[[0.  1. ]
+            [0.5 1. ]
+            [1.  1. ]]>
+
+    >>> import lab as B
+
+    >>> B.dense(k1(np.linspace(0, 1, 3)))  # Discard structure: get a regular NumPy array.
+    array([[1. , 1. , 1. ],
+           [1. , 1.5, 2. ],
+           [1. , 2. , 3. ]])
 
     >>> k2 = 2 + EQ() * Linear()
 
     >>> k2
     2 * 1 + EQ() * Linear()
 
-    >>> k1(np.linspace(0, 1, 3))
-    array([[2.        , 1.76499381, 1.21306132],
-           [1.76499381, 2.        , 1.76499381],
-           [1.21306132, 1.76499381, 2.        ]])
-
     >>> k2(np.linspace(0, 1, 3))
+    <dense matrix: shape=3x3, dtype=float64
+     mat=[[2.    2.    2.   ]
+          [2.    2.25  2.441]
+          [2.    2.441 3.   ]]>
+
+    >>> B.dense(k1(np.linspace(0, 1, 3)))
     array([[2.        , 2.        , 2.        ],
            [2.        , 2.25      , 2.44124845],
            [2.        , 2.44124845, 3.        ]])
@@ -73,16 +92,33 @@ Example:
     >>> k = EQ()
 
     >>> k(np.linspace(0, 1, 3))
-    array([[1.        , 0.8824969 , 0.60653066],
-           [0.8824969 , 1.        , 0.8824969 ],
-           [0.60653066, 0.8824969 , 1.        ]])
+    <dense matrix: shape=3x3, dtype=float64
+     mat=[[1.    0.882 0.607]
+          [0.882 1.    0.882]
+          [0.607 0.882 1.   ]]>
      
     >>> k.elwise(np.linspace(0, 1, 3), 0)
     array([[1.        ],
            [0.8824969 ],
            [0.60653066]])
 
-Inputs to kernels must be of one of the following three forms:
+Let ``m`` be a mean, e.g. ``m = TensorProductMean(lambda x: x ** 2)``.
+
+-  ``m(x)`` constructs the *mean vector* for the points in ``x``, which
+   will be a *rank-2 column vector*.
+
+Example:
+
+.. code:: python
+
+    >>> m = TensorProductMean(lambda x: x ** 2)
+
+    >>> m(np.linspace(0, 1, 3))
+    array([[0.  ],
+           [0.25],
+           [1.  ]])
+
+Inputs to kernels and means must be of one of the following three forms:
 
 -  If the input ``x`` is a *rank-0 tensor*, i.e. a scalar, then ``x``
    refers to a single input location. For example, ``0`` simply refers
@@ -157,14 +193,14 @@ kernels are available:
 
 -  ``Linear()``, the linear kernel:
 
-.. math::  k(x, y) = \langle x, y \rangle; 
+   .. math::  k(x, y) = \langle x, y \rangle; 
 
--  ``Delta()``, the Kronecker delta kernel:
+-  ``Delta(epsilon=1e-6)``, the Kronecker delta kernel:
 
    .. math::
 
        k(x, y) = \begin{cases}
-          1 & \text{if } x = y, \\
+          1 & \text{if } \|x - y\| < \varepsilon, \\
           0 & \text{otherwise};
          \end{cases} 
 
@@ -176,6 +212,14 @@ kernels are available:
 
    .. math::  k(x, y) = \frac{\log(1 + \|x - y\|)}{\|x - y\|}; 
 
+-  ``PosteriorKernel(k_ij, k_zi, k_zj, z, K_z)``:
+
+   .. math::  k(x, y) = k_{ij}(x, y) - k_{iz}(x, z) K_z^{-1} k_{zj}(x, y); 
+
+-  ``SubspaceKernel(k_zi, k_zj, z, A)``:
+
+   .. math::  k(x, y) = k_{iz}(x, z) A^{-1} k_{zj}(x, y); 
+
 -  ``TensorProductKernel(f)``:
 
    .. math::  k(x, y) = f(x)f(y). 
@@ -185,10 +229,25 @@ kernels are available:
    example, ``f * k`` will translate to ``TensorProductKernel(f) * k``,
    and ``f + k`` will translate to ``TensorProductKernel(f) + k``.
 
+Available Means
+^^^^^^^^^^^^^^^
+
+Constants function as constant means. Besides that, the following means
+are available:
+
+-  ``TensorProductMean(f)``:
+
+   .. math::  m(x) = f(x). 
+
+   Adding or multiplying a ``FunctionType`` ``f`` to or with a mean will
+   automatically translate ``f`` to ``TensorProductMean(f)``. For
+   example, ``f * m`` will translate to ``TensorProductMean(f) * m``,
+   and ``f + m`` will translate to ``TensorProductMean(f) + m``.
+
 Compositional Design
 --------------------
 
--  Add and subtract kernels.
+-  Add and subtract kernels and means.
 
    Example:
 
@@ -212,7 +271,7 @@ Compositional Design
        >>> EQ() - EQ()
        0
 
--  Multiply kernels.
+-  Multiply kernels and means.
 
    Example:
 
@@ -227,7 +286,7 @@ Compositional Design
        >>> 0 * EQ()
        0
 
--  Shift kernels.
+-  Shift kernels and means.
 
    Definition:
 
@@ -247,7 +306,7 @@ Compositional Design
        >>> EQ().shift(1, 2)
        EQ() shift (1, 2)
 
--  Stretch kernels.
+-  Stretch kernels and means.
 
    Definition:
 
@@ -275,7 +334,7 @@ Compositional Design
        >>> EQ() > 2
        EQ() > 2
 
--  Select particular input dimensions of kernels.
+-  Select particular input dimensions of kernels and means.
 
    Definition:
 
@@ -305,7 +364,7 @@ Compositional Design
        >>> EQ().select(None, [1])
        EQ() : (None, [1])
 
--  Transform the inputs of kernels.
+-  Transform the inputs of kernels and means.
 
    Definition:
 
@@ -330,8 +389,8 @@ Compositional Design
        >>> EQ().transform(None, f)
        EQ() transform (None, f)
 
--  Numerically, but efficiently, take derivatives of kernels. This
-   currently only works in TensorFlow.
+-  Numerically, but efficiently, take derivatives of kernels and means.
+   This currently only works in TensorFlow.
 
    Definition:
 
@@ -356,7 +415,7 @@ Compositional Design
        >>> EQ().diff(None, 1)
        d(None, 1) EQ()
 
--  Make kernels periodic.
+-  Make kernels periodic. This is not implemented for means.
 
    Definition:
 
@@ -371,7 +430,7 @@ Compositional Design
        >>> EQ().periodic(1)
        EQ() per 1
 
--  Reverse the arguments of kernels.
+-  Reverse the arguments of kernels. This does not apply to means.
 
    Definition:
 
@@ -386,8 +445,7 @@ Compositional Design
        >>> reversed(Linear())
        Reversed(Linear())
 
--  Extract terms and factors from sums and products respectively of
-   kernels.
+-  Extract terms and factors from sums and products respectively.
 
    Example:
 
@@ -399,7 +457,8 @@ Compositional Design
        >>> (2 * EQ() * Linear).factor(0)
        2
 
-   Kernels "wrapping" others can be "unwrapped" by indexing ``k[0]``.
+   Kernels and means "wrapping" others can be "unwrapped" by indexing
+   ``k[0]`` or ``m[0]``.
 
    Example:
 
@@ -431,12 +490,12 @@ Example:
     >>> print((2.12345 * EQ()).display(lambda x: f"{x:.2f}"))
     2.12 * EQ()
 
-Properties of Kernels
----------------------
+Properties of Kernels and Means
+-------------------------------
 
--  Kernels can be equated to check for equality. This will attempt basic
-   algebraic manipulations. If the means and kernels are not equal *or*
-   equality cannot be proved, ``False`` is returned.
+-  Kernels and Means can be equated to check for equality. This will
+   attempt basic algebraic manipulations. If the kernels and means are
+   not equal *or* equality cannot be proved, then ``False`` is returned.
 
    Example of equating kernels:
 
@@ -472,15 +531,13 @@ Structured Matrix Types
 
 MLKernels uses `an extension of
 LAB <https://github.com/wesselb/matrix>`__ to accelerate linear algebra
-with structured linear algebra primitives. By calling ``k(x, y)`` or
-``k.elwise(x, y)``, these structured matrix types are automatically
-converted regular NumPy/TensorFlow/PyTorch/JAX arrays, so they won't
-bother you. Would you want to preserve matrix structure, then you can
-use the exported functions ``pairwise`` and ``elwise``.
+with structured linear algebra primitives.
 
 Example:
 
 .. code:: python
+
+    >>> import lab as B
 
     >>> k = 2 * Delta()
 
@@ -488,11 +545,11 @@ Example:
 
     >>> from mlkernels import pairwise
 
-    >>> pairwise(k, x)  # Preserve structure.
+    >>> k(x)  # Preserve structure.
     <diagonal matrix: shape=10x10, dtype=float64
      diag=[2. 2. 2. 2. 2. 2. 2. 2. 2. 2.]>
 
-    >>> k(x)  # Do not preserve structure.
+    >>> B.dense(k(x))  # Do not preserve structure.
     array([[2., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
            [0., 2., 0., 0., 0., 0., 0., 0., 0., 0.],
            [0., 0., 2., 0., 0., 0., 0., 0., 0., 0.],
@@ -516,8 +573,8 @@ add, multiply, and do other linear algebra operations.
     <diagonal matrix: shape=10x10, dtype=float64
      diag=[4. 4. 4. 4. 4. 4. 4. 4. 4. 4.]>
 
-You can eventually convert structured primitives to regular
-NumPy/TensorFlow/PyTorch/JAX arrays by calling ``B.dense``:
+As in the above exmaple, you can convert structured primitives to
+regular NumPy/TensorFlow/PyTorch/JAX arrays by calling ``B.dense``:
 
 .. code:: python
 
@@ -545,7 +602,7 @@ An example is most helpful:
     import lab as B
     from algebra.util import identical
     from matrix import Dense
-    from plum import Dispatcher, Self
+    from plum import dispatch
 
     from mlkernels import Kernel, pairwise, elwise
 
@@ -556,8 +613,6 @@ An example is most helpful:
         Args:
             scale (scalar): Length scale of the kernel.
         """
-
-        _dispatch = Dispatcher(in_class=Self)
 
         def __init__(self, scale):
             self.scale = scale
@@ -577,27 +632,26 @@ An example is most helpful:
             # stationary. By default, kernels are assumed to not be stationary.
             return True
 
-        @_dispatch(Self)
-        def __eq__(self, other):
-            # If `other` is of type `Self`, which refers to `EQWithLengthScale`, then this
-            # method checks whether `self` and `other` can be treated as identical for
-            # the purpose of algebraic simplifications. In this case, `self` and `other`
-            # are identical for the purpose of algebraic simplification if `self.scale`
-            # and `other.scale` are. We use `algebra.util.identical` to check this
-            # condition.
+        @dispatch
+        def __eq__(self, other: "EQWithLengthScale"):
+            # If `other` is also a `EQWithLengthScale`, then this method checks whether 
+            # `self` and `other` can be treated as identical for the purpose of 
+            # algebraic simplifications. In this case, `self` and `other` are identical 
+            # for the purpose of algebraic simplification if `self.scale` and `other.
+            # scale` are. We use `algebra.util.identical` to check this condition.
             return identical(self.scale, other.scale)
 
 
     # It remains to implement pairwise and element-wise computation of the kernel.
 
 
-    @pairwise.extend(EQWithLengthScale, B.Numeric, B.Numeric)
-    def pairwise(k, x, y):
+    @pairwise.dispatch
+    def pairwise(k: EQWithLengthScale, x: B.Numeric, y: B.Numeric):
         return Dense(k._compute(B.pw_dists2(x, y)))
 
 
-    @elwise.extend(EQWithLengthScale, B.Numeric, B.Numeric)
-    def elwise(k, x, y):
+    @elwise.dispatch
+    def elwise(k: EQWithLengthScale, x: B.Numeric, y: B.Numeric):
         return k._compute(B.ew_dists2(x, y))
 
 .. code:: python
@@ -622,9 +676,10 @@ An example is most helpful:
     (2 * EQWithLengthScale(2) + Linear()) * RQ(2.0)
 
     >>> k_composite(np.linspace(0, 1, 3))
-    array([[2.        , 1.71711909, 1.12959604],
-           [1.71711909, 2.25      , 2.16002566],
-           [1.12959604, 2.16002566, 3.        ]])
+    <dense matrix: shape=3x3, dtype=float64
+     mat=[[2.    1.717 1.13 ]
+          [1.717 2.25  2.16 ]
+          [1.13  2.16  3.   ]]>
 
 Of course, in practice we do not need to implement variants of kernels
 which include length scales, because we always adjust the length scale
@@ -633,14 +688,16 @@ by stretching a base kernel:
 .. code:: python
 
     >>> EQ().stretch(2)(np.linspace(0, 1, 3))
-    array([[1.        , 0.96923323, 0.8824969 ],
-           [0.96923323, 1.        , 0.96923323],
-           [0.8824969 , 0.96923323, 1.        ]])
+    <dense matrix: shape=3x3, dtype=float64
+     mat=[[1.    0.969 0.882]
+          [0.969 1.    0.969]
+          [0.882 0.969 1.   ]]>
 
     >>> EQWithLengthScale(2)(np.linspace(0, 1, 3))
-    array([[1.        , 0.96923323, 0.8824969 ],
-           [0.96923323, 1.        , 0.96923323],
-           [0.8824969 , 0.96923323, 1.        ]])
+    <dense matrix: shape=3x3, dtype=float64
+     mat=[[1.    0.969 0.882]
+          [0.969 1.    0.969]
+          [0.882 0.969 1.   ]]>
 
 .. |CI| image:: https://github.com/wesselb/mlkernels/workflows/CI/badge.svg
    :target: https://github.com/wesselb/mlkernels/actions?query=workflow%3ACI

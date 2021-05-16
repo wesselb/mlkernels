@@ -169,7 +169,6 @@
 <dt id="mlkernels.Kernel.__call__">
 <code class="sig-name descname">__call__</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kw_args</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mlkernels/kernel.html#Kernel.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.Kernel.__call__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Construct the kernel matrix between all <cite>x</cite> and <cite>y</cite>.</p>
-<p>This method does <em>not</em> preserve matrix structure and simply returns a tensor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -290,6 +289,19 @@ weight of the tails of the kernel. Must be positive.</p>
 </dd></dl>
 
 <dl class="py class">
+<dt id="mlkernels.Delta">
+<em class="property">class </em><code class="sig-prename descclassname">mlkernels.</code><code class="sig-name descname">Delta</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">epsilon</span><span class="o">=</span><span class="default_value">1e-06</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mlkernels/kernels/delta.html#Delta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.Delta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="source/mlkernels.kernel.html#mlkernels.kernel.Kernel" title="mlkernels.kernel.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlkernels.kernel.Kernel</span></code></a></p>
+<p>Kronecker delta kernel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>epsilon</strong> (<em>float</em><em>, </em><em>optional</em>) – Tolerance for equality in distance.
+Defaults to <cite>1e-6</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
 <dt id="mlkernels.DecayingKernel">
 <em class="property">class </em><code class="sig-prename descclassname">mlkernels.</code><code class="sig-name descname">DecayingKernel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">alpha</span></em>, <em class="sig-param"><span class="n">beta</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mlkernels/kernels/decaying.html#DecayingKernel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.DecayingKernel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="source/mlkernels.kernel.html#mlkernels.kernel.Kernel" title="mlkernels.kernel.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlkernels.kernel.Kernel</span></code></a></p>
@@ -311,6 +323,46 @@ decaying exponentials.</p></li>
 <em class="property">class </em><code class="sig-prename descclassname">mlkernels.</code><code class="sig-name descname">LogKernel</code><a class="reference internal" href="_modules/mlkernels/kernels/log.html#LogKernel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.LogKernel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="source/mlkernels.kernel.html#mlkernels.kernel.Kernel" title="mlkernels.kernel.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlkernels.kernel.Kernel</span></code></a></p>
 <p>Logarithm kernel.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="mlkernels.PosteriorKernel">
+<em class="property">class </em><code class="sig-prename descclassname">mlkernels.</code><code class="sig-name descname">PosteriorKernel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">k_ij</span></em>, <em class="sig-param"><span class="n">k_zi</span></em>, <em class="sig-param"><span class="n">k_zj</span></em>, <em class="sig-param"><span class="n">z</span></em>, <em class="sig-param"><span class="n">K_z</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mlkernels/kernels/posterior.html#PosteriorKernel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.PosteriorKernel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="source/mlkernels.kernel.html#mlkernels.kernel.Kernel" title="mlkernels.kernel.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlkernels.kernel.Kernel</span></code></a></p>
+<p>Posterior kernel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>k_ij</strong> (<a class="reference internal" href="source/mlkernels.kernel.html#mlkernels.kernel.Kernel" title="mlkernels.kernel.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">kernel.Kernel</span></code></a>) – Kernel between processes corresponding to the
+left input and the right input respectively.</p></li>
+<li><p><strong>k_zi</strong> (<a class="reference internal" href="source/mlkernels.kernel.html#mlkernels.kernel.Kernel" title="mlkernels.kernel.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">kernel.Kernel</span></code></a>) – Kernel between processes corresponding to the
+data and the left input respectively.</p></li>
+<li><p><strong>k_zj</strong> (<a class="reference internal" href="source/mlkernels.kernel.html#mlkernels.kernel.Kernel" title="mlkernels.kernel.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">kernel.Kernel</span></code></a>) – Kernel between processes corresponding to the
+data and the right input respectively.</p></li>
+<li><p><strong>z</strong> (<em>input</em>) – Locations of data.</p></li>
+<li><p><strong>K_z</strong> (<em>matrix</em>) – Kernel matrix of data.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="mlkernels.SubspaceKernel">
+<em class="property">class </em><code class="sig-prename descclassname">mlkernels.</code><code class="sig-name descname">SubspaceKernel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">k_zi</span></em>, <em class="sig-param"><span class="n">k_zj</span></em>, <em class="sig-param"><span class="n">z</span></em>, <em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mlkernels/kernels/subspace.html#SubspaceKernel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.SubspaceKernel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="source/mlkernels.kernel.html#mlkernels.kernel.Kernel" title="mlkernels.kernel.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlkernels.kernel.Kernel</span></code></a></p>
+<p>Kernel for a subspace of the RKHS.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>k_zi</strong> (<a class="reference internal" href="source/mlkernels.kernel.html#mlkernels.kernel.Kernel" title="mlkernels.kernel.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">kernel.Kernel</span></code></a>) – Kernel between the processes corresponding to
+the left input and the inducing points respectively.</p></li>
+<li><p><strong>k_zj</strong> (<a class="reference internal" href="source/mlkernels.kernel.html#mlkernels.kernel.Kernel" title="mlkernels.kernel.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">kernel.Kernel</span></code></a>) – Kernel between the processes corresponding to
+the right input and the inducing points respectively.</p></li>
+<li><p><strong>z</strong> (<em>input</em>) – Locations of the inducing points.</p></li>
+<li><p><strong>A</strong> (<em>matrix</em>) – Generalised inducing point kernel matrix.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py class">

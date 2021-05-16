@@ -1,0 +1,7 @@
+mlkernels.means.scaled module
+=============================
+
+.. automodule:: mlkernels.means.scaled
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,7 @@
+mlkernels.means.derivative module
+=================================
+
+.. automodule:: mlkernels.means.derivative
+   :members:
+   :undoc-members:
+   :show-inheritance:

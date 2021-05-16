@@ -1,0 +1,7 @@
+mlkernels.kernels.posterior module
+==================================
+
+.. automodule:: mlkernels.kernels.posterior
+   :members:
+   :undoc-members:
+   :show-inheritance:
