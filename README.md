@@ -322,13 +322,6 @@ Besides that, the following means are available:
     >>> EQ().stretch(2, 3)
     EQ() > (2, 3)
     ```
-    
-    The `>` operator is implemented to provide a shorthand for stretching:
-    
-    ```python
-    >>> EQ() > 2
-    EQ() > 2
-    ```
 
 *
     Select particular input dimensions of kernels and means.
@@ -636,8 +629,8 @@ class EQWithLengthScale(Kernel):
         # If `other` is also a `EQWithLengthScale`, then this method checks whether 
         # `self` and `other` can be treated as identical for the purpose of 
         # algebraic simplifications. In this case, `self` and `other` are identical 
-        # for the purpose of algebraic simplification if `self.scale` and `other.
-        # scale` are. We use `algebra.util.identical` to check this condition.
+        # for the purpose of algebraic simplification if `self.scale` and
+        # `other.scale` are. We use `algebra.util.identical` to check this condition.
         return identical(self.scale, other.scale)
 
 

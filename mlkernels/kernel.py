@@ -83,8 +83,6 @@ def get_algebra(a: Kernel):
 def pairwise(k: Kernel, x, y):
     """Construct the kernel matrix between all `x` and `y`.
 
-    This method does preserve matrix structure and *may* return a structured matrix.
-
     Args:
         k (:class:`.Kernel`): Kernel.
         x (input): First argument.
@@ -114,8 +112,6 @@ def pairwise(k: Kernel):
 @_dispatch
 def elwise(k: Kernel, x, y):
     """Construct the kernel vector `x` and `y` element-wise.
-
-    This method does preserve matrix structure and *may* return a structured matrix.
 
     Args:
         kernel (:class:`.Kernel`): Kernel.
