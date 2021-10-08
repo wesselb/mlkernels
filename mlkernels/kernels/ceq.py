@@ -21,6 +21,9 @@ class CEQ(Kernel):
     def _compute(self, dists):
         return (1 - B.erf(self.alpha * dists / 4)) * B.exp(-0.5 * dists ** 2)
 
+    def render(self, formatter):
+        return f"CEQ({formatter(self.alpha)})"
+
     @property
     def _stationary(self):
         return True

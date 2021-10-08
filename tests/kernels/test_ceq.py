@@ -9,7 +9,7 @@ def test_eq():
     # Verify that the kernel has the right properties.
     assert k.alpha == 1.0
     assert k.stationary
-    assert str(k) == "CEQ()"
+    assert str(k) == "CEQ(1.0)"
 
     # Test equality.
     assert CEQ(1.0) == CEQ(1.0)
