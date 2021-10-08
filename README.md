@@ -120,7 +120,7 @@ array([[0.  ],
        [1.  ]])
 ```
 
-Inputs to kernels and means must be of one of the following three forms:
+Inputs to kernels and means are interpreted in the following way:
 
 *
     If the input `x` is a _rank-0 tensor_, i.e. a scalar, then `x` refers to a
@@ -137,6 +137,43 @@ Inputs to kernels and means must be of one of the following three forms:
     If the input `x` is a _rank-2 tensor_, i.e. a matrix, then every _row_ of `x` is
     interpreted as a separate input location. In this case inputs are
     multi-dimensional, and the columns correspond to the various input dimensions.
+    
+*
+    If the input `x` is a _tensor of rank 3 or higher_, then the input is
+    interpreted as a batch of matrices where the matrix dimensions are the
+    two outermost dimensions.
+    
+Example:
+
+```python
+>>> k = EQ()
+
+>>> k(0)  # One scalar input
+<dense matrix: batch=(), shape=(1, 1), dtype=float64
+ mat=[[1.]]>
+
+>>> k(np.linspace(0, 1, 3))  # Three single-dimensional inputs
+<dense matrix: batch=(), shape=(3, 3), dtype=float64
+ mat=[[1.    0.882 0.607]
+      [0.882 1.    0.882]
+      [0.607 0.882 1.   ]]>
+
+>>> k(np.random.randn(3, 2))  # Three two-dimensional inputs
+<dense matrix: batch=(), shape=(3, 3), dtype=float64
+ mat=[[1.    0.606 0.399]
+      [0.606 1.    0.931]
+      [0.399 0.931 1.   ]]>
+
+>>> k(np.random.randn(2, 3, 2))  # A batch of two times three two-dimensional inputs
+<dense matrix: batch=(2,), shape=(3, 3), dtype=float64
+ mat=[[[1.    0.15  0.559]
+       [0.15  1.    0.678]
+       [0.559 0.678 1.   ]]
+
+      [[1.    0.891 0.627]
+       [0.891 1.    0.638]
+       [0.627 0.638 1.   ]]]>
+```
     
 ## AutoGrad, TensorFlow, PyTorch, or JAX? Your Choice!
 
@@ -167,6 +204,10 @@ Besides that, the following kernels are available:
 * `EQ()`, the exponentiated quadratic:
 
     $$ k(x, y) = \exp\left( -\frac{1}{2}\|x - y\|^2 \right); $$
+ 
+* `CEQ()`, the causal exponentiated quadratic:
+
+  $$ k(x, y) = \left(1 - \erf\left( \frac{1}{4}\|x - y\| \right)\right)\exp\left( -\frac{1}{2}\|x - y\|^2 \right); $$
 
 * `RQ(alpha)`, the rational quadratic:
 
@@ -382,7 +423,8 @@ Besides that, the following means are available:
 
 *
     Numerically, but efficiently, take derivatives of kernels and means.
-    This currently only works in TensorFlow.
+    This currently only works in TensorFlow and does not yet support batched
+    inputs.
 
     Definition:
 
