@@ -13,7 +13,7 @@ def test_eq():
 
     # Test equality.
     assert CEQ(1.0) == CEQ(1.0)
-    assert CEQ(1.0) == CEQ(2.0)
+    assert CEQ(1.0) != CEQ(2.0)
     assert CEQ(1.0) != Linear()
 
     # Standard tests:
