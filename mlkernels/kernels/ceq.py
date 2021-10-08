@@ -1,4 +1,5 @@
 import lab as B
+from algebra.util import identical
 from matrix import Dense
 
 from . import _dispatch
@@ -8,10 +9,17 @@ __all__ = ["CEQ"]
 
 
 class CEQ(Kernel):
-    """Causal exponentiated quadratic kernel."""
+    """Causal exponentiated quadratic kernel.
+
+    Args:
+        alpha (scalar): Roughness factor.
+    """
+
+    def __init__(self, alpha):
+        self.alpha = alpha
 
     def _compute(self, dists):
-        return (1 - B.erf(dists / 4)) * B.exp(-0.5 * dists ** 2)
+        return (1 - B.erf(self.alpha * dists / 4)) * B.exp(-0.5 * dists ** 2)
 
     @property
     def _stationary(self):
@@ -19,7 +27,7 @@ class CEQ(Kernel):
 
     @_dispatch
     def __eq__(self, other: "CEQ"):
-        return True
+        return identical(self.alpha, other.alpha)
 
 
 @_dispatch

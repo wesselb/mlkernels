@@ -4,15 +4,17 @@ from ..util import standard_kernel_tests
 
 
 def test_eq():
-    k = CEQ()
+    k = CEQ(1.0)
 
     # Verify that the kernel has the right properties.
+    assert k.alpha == 1.0
     assert k.stationary
     assert str(k) == "CEQ()"
 
     # Test equality.
-    assert CEQ() == CEQ()
-    assert CEQ() != Linear()
+    assert CEQ(1.0) == CEQ(1.0)
+    assert CEQ(1.0) == CEQ(2.0)
+    assert CEQ(1.0) != Linear()
 
     # Standard tests:
     standard_kernel_tests(k)
