@@ -1,5 +1,5 @@
-# noinspection PyUnresolvedReferences
-from .. import _dispatch
+from .. import _dispatch  # noqa
+from .ceq import *
 from .decaying import *
 from .delta import *
 from .derivative import *
