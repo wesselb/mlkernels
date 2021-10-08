@@ -8,6 +8,7 @@ coveralls
 black
 autograd
 tensorflow>=2
+tensorflow-probability
 torch
 jax
 jaxlib
