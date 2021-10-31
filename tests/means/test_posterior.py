@@ -8,7 +8,7 @@ from ..util import approx
 from ..util_mean import x, m_square
 
 
-def test_posterior_mean(x):
+def test_posterior(x):
     z = B.randn(3, B.shape(B.uprank(x), 1))
     y = B.randn(3, 1)
     m = PosteriorMean(m_square, m_square, EQ(), z, EQ()(z), y)

@@ -7,7 +7,7 @@ from ..util import approx
 from ..util_mean import x, m_square, m_cube
 
 
-def test_posterior_mean(x):
+def test_derivative(x):
     # Check that the mean computes correctly.
     x = tf.constant(x)
     approx(m_square.diff(0)(x), 2 * B.uprank(x)[:, :1])

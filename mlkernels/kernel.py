@@ -123,7 +123,7 @@ def elwise(k: Kernel, x, y):
             Kernel vector as a rank-2 column vector.
     """
     # TODO: Throw warning.
-    return B.expand_dims(B.diag(pairwise(k, x, y)), axis=1)
+    return B.expand_dims(B.diag(pairwise(k, x, y)), axis=-1)
 
 
 @_dispatch

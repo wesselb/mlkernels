@@ -20,7 +20,12 @@ def test_derivative():
 
     # Standard tests:
     for k in [EQ().diff(0), EQ().diff(None, 0), EQ().diff(0, None)]:
-        standard_kernel_tests(k, dtype=tf.float64)
+        standard_kernel_tests(k, dtype=tf.float64, batch_shapes=False)
+    # Batch mode inputs is not yet implemented.
+    with pytest.raises(NotImplementedError):
+        k(np.random.randn(3, 5, 1))
+    with pytest.raises(NotImplementedError):
+        k.elwise(np.random.randn(3, 5, 1))
 
     # Check that a derivative must be specified.
     with pytest.raises(RuntimeError):

@@ -31,4 +31,4 @@ def pairwise(k: Linear, x: B.Numeric, y: B.Numeric):
 @_dispatch
 @uprank
 def elwise(k: Linear, x: B.Numeric, y: B.Numeric):
-    return B.expand_dims(B.sum(B.multiply(x, y), axis=1), axis=1)
+    return B.expand_dims(B.sum(B.multiply(x, y), axis=-1), axis=-1)

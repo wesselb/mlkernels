@@ -187,6 +187,11 @@ class DerivativeKernel(Kernel, DerivativeFunction):
 
 @_dispatch
 def pairwise(k: DerivativeKernel, x: B.Numeric, y: B.Numeric):
+    if B.rank(x) > 2 or B.rank(y) > 2:
+        raise NotImplementedError(
+            "`DerivativeKernel` does not yet support batch mode inputs."
+        )
+
     i, j = expand(k.derivs)
     k = k[0]
 
@@ -211,6 +216,11 @@ def pairwise(k: DerivativeKernel, x: B.Numeric, y: B.Numeric):
 
 @_dispatch
 def elwise(k: DerivativeKernel, x: B.Numeric, y: B.Numeric):
+    if B.rank(x) > 2 or B.rank(y) > 2:
+        raise NotImplementedError(
+            "`DerivativeKernel` does not yet support batch mode inputs."
+        )
+
     i, j = expand(k.derivs)
     k = k[0]
 

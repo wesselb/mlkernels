@@ -1,5 +1,6 @@
-from mlkernels import TensorProductMean
+import lab as B
 
+from mlkernels import TensorProductMean, num_elements
 from ..util import approx
 
 # noinspection PyUnresolvedReferences
@@ -11,6 +12,7 @@ def test_tensor(x):
 
     # Test correctness.
     approx(m(x), f_square(x))
+    assert B.shape(m(x)) == (num_elements(x), 1)
 
     # Test properties.
     assert str(m) == "f_square"

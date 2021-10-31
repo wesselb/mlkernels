@@ -14,4 +14,4 @@ class SelectedMean(Mean, SelectedFunction):
     @_dispatch
     @uprank
     def __call__(self, x):
-        return self[0](B.take(x, self.dims[0], axis=1))
+        return self[0](B.take(x, self.dims[0], axis=-1))

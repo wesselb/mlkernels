@@ -19,9 +19,14 @@ class OneKernel(Kernel, OneFunction):
 
 @_dispatch
 def pairwise(k: OneKernel, x: B.Numeric, y: B.Numeric):
-    return Constant(B.one(x), num_elements(x), num_elements(y))
+    return Constant(
+        B.one(x, y),
+        *B.shape_batch_broadcast(x, y),
+        num_elements(x),
+        num_elements(y),
+    )
 
 
 @_dispatch
 def elwise(k: OneKernel, x: B.Numeric, y: B.Numeric):
-    return B.ones(B.dtype(x), num_elements(x), 1)
+    return B.ones(B.dtype(x, y), *B.shape_batch_broadcast(x, y), num_elements(x), 1)

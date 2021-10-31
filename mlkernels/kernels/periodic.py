@@ -26,7 +26,7 @@ class PeriodicKernel(Kernel, WrappedFunction):
         @uprank
         def feature_map(z):
             z = B.divide(B.multiply(B.multiply(z, 2), B.pi), self.period)
-            return B.concat(B.sin(z), B.cos(z), axis=1)
+            return B.concat(B.sin(z), B.cos(z), axis=-1)
 
         return feature_map(x), feature_map(y)
 

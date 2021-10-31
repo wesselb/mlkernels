@@ -43,7 +43,7 @@ def uprank(f: FunctionType):
 def num_elements(x):
     """Determine the number of elements in an input.
 
-    Deals with scalars, vectors, and matrices.
+    Deals with scalars, vectors, matrices, and batches of matrices.
 
     Args:
         x (tensor): Input.
@@ -51,11 +51,7 @@ def num_elements(x):
     Returns:
         int: Number of elements.
     """
-    shape = B.shape(x)
-    if shape == ():
-        return 1
-    else:
-        return shape[0]
+    return B.shape_matrix(x, 0)
 
 
 @_dispatch

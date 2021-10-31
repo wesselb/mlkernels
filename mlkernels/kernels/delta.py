@@ -36,7 +36,7 @@ class Delta(Kernel):
 @_dispatch
 def pairwise(k: Delta, x: B.Numeric, y: B.Numeric):
     if x is y:
-        return B.fill_diag(B.one(x), num_elements(x))
+        return B.fill_diag(B.ones(B.dtype(x), *B.shape_batch(x)), num_elements(x))
     else:
         return Dense(k._compute(B.pw_dists2(x, y)))
 
@@ -44,6 +44,6 @@ def pairwise(k: Delta, x: B.Numeric, y: B.Numeric):
 @_dispatch
 def elwise(k: Delta, x: B.Numeric, y: B.Numeric):
     if x is y:
-        return B.ones(B.dtype(x), num_elements(x), 1)
+        return B.ones(B.dtype(x), *B.shape_batch(x), num_elements(x), 1)
     else:
         return k._compute(B.ew_dists2(x, y))

@@ -19,9 +19,19 @@ class ZeroKernel(Kernel, ZeroFunction):
 
 @_dispatch
 def pairwise(k: ZeroKernel, x: B.Numeric, y: B.Numeric):
-    return Zero(B.dtype(x), num_elements(x), num_elements(y))
+    return Zero(
+        B.dtype(x, y),
+        *B.shape_batch_broadcast(x, y),
+        num_elements(x),
+        num_elements(y),
+    )
 
 
 @_dispatch
 def elwise(k: ZeroKernel, x: B.Numeric, y: B.Numeric):
-    return B.zeros(B.dtype(x), num_elements(x), 1)
+    return B.zeros(
+        B.dtype(x, y),
+        *B.shape_batch_broadcast(x, y),
+        num_elements(x),
+        1,
+    )

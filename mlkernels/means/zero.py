@@ -13,4 +13,4 @@ class ZeroMean(Mean, ZeroFunction):
 
     @_dispatch
     def __call__(self, x: B.Numeric):
-        return B.zeros(B.dtype(x), num_elements(x), 1)
+        return B.zeros(B.dtype(x), *B.shape_batch(x), num_elements(x), 1)

@@ -38,6 +38,6 @@ def elwise(k: SelectedKernel, x: B.Numeric, y: B.Numeric):
 @uprank
 def _selectedkernel_compute(k, x, y):
     dims1, dims2 = expand(k.dims)
-    x = x if dims1 is None else B.take(x, dims1, axis=1)
-    y = y if dims2 is None else B.take(y, dims2, axis=1)
+    x = x if dims1 is None else B.take(x, dims1, axis=-1)
+    y = y if dims2 is None else B.take(y, dims2, axis=-1)
     return x, y
