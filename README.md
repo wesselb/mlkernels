@@ -207,7 +207,7 @@ Besides that, the following kernels are available:
  
 * `CEQ(alpha)`, the causal exponentiated quadratic:
 
-  $$ k(x, y) = \left(1 - \erf\left( \frac{\alpha}{4}\|x - y\| \right)\right)\exp\left( -\frac{1}{2}\|x - y\|^2 \right); $$
+  $$ k(x, y) = \left(1 - \operatorname{erf}\left( \frac{\alpha}{4}\|x - y\| \right)\right)\exp\left( -\frac{1}{2}\|x - y\|^2 \right); $$
 
 * `RQ(alpha)`, the rational quadratic:
 
