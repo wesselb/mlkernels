@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>MLKernels &mdash; mlkernels 0.1.0 documentation</title>
   
@@ -13,10 +13,15 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
 
   
   
+
   
+  
+
   
 
   
@@ -26,11 +31,11 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -52,7 +57,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home" alt="Documentation Home"> mlkernels
+            <a href="index.html" class="icon icon-home"> mlkernels
           
 
           
@@ -142,6 +147,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -153,7 +160,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="_sources/readme.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -239,7 +246,7 @@ here</a>.</p>
 </div>
 <div class="section" id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
-<p>Let <code class="docutils literal notranslate"><span class="pre">k</span></code> be a kernel, e.g. <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">=</span> <span class="pre">EQ()</span></code>.</p>
+<p>Let <code class="docutils literal notranslate"><span class="pre">k</span></code> be a kernel, e.g. <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">=</span> <span class="pre">EQ()</span></code>.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">k(x,</span> <span class="pre">y)</span></code> constructs the <em>kernel matrix</em> for all pairs of points
 between <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code>.</p></li>
@@ -263,7 +270,7 @@ vector</em>.</p></li>
 <span class="go">       [0.60653066]])</span>
 </pre></div>
 </div>
-<p>Let <code class="docutils literal notranslate"><span class="pre">m</span></code> be a mean, e.g. <code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">=</span> <span class="pre">TensorProductMean(lambda</span> <span class="pre">x:</span> <span class="pre">x</span> <span class="pre">**</span> <span class="pre">2)</span></code>.</p>
+<p>Let <code class="docutils literal notranslate"><span class="pre">m</span></code> be a mean, e.g. <code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">=</span> <span class="pre">TensorProductMean(lambda</span> <span class="pre">x:</span> <span class="pre">x</span> <span class="pre">**</span> <span class="pre">2)</span></code>.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">m(x)</span></code> constructs the <em>mean vector</em> for the points in <code class="docutils literal notranslate"><span class="pre">x</span></code>, which
 will be a <em>rank-2 column vector</em>.</p></li>
@@ -277,20 +284,53 @@ will be a <em>rank-2 column vector</em>.</p></li>
 <span class="go">       [1.  ]])</span>
 </pre></div>
 </div>
-<p>Inputs to kernels and means must be of one of the following three forms:</p>
+<p>Inputs to kernels and means are interpreted in the following way:</p>
 <ul class="simple">
-<li><p>If the input <code class="docutils literal notranslate"><span class="pre">x</span></code> is a <em>rank-0 tensor</em>, i.e. a scalar, then <code class="docutils literal notranslate"><span class="pre">x</span></code>
+<li><p>If the input <code class="docutils literal notranslate"><span class="pre">x</span></code> is a <em>rank-0 tensor</em>, i.e. a scalar, then <code class="docutils literal notranslate"><span class="pre">x</span></code>
 refers to a single input location. For example, <code class="docutils literal notranslate"><span class="pre">0</span></code> simply refers
 to the sole input location <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
-<li><p>If the input <code class="docutils literal notranslate"><span class="pre">x</span></code> is a <em>rank-1 tensor</em>, i.e. a vector, then every
+<li><p>If the input <code class="docutils literal notranslate"><span class="pre">x</span></code> is a <em>rank-1 tensor</em>, i.e. a vector, then every
 element of <code class="docutils literal notranslate"><span class="pre">x</span></code> is interpreted as a separate input location. For
 example, <code class="docutils literal notranslate"><span class="pre">np.linspace(0,</span> <span class="pre">1,</span> <span class="pre">10)</span></code> generates 10 different input
 locations ranging from <code class="docutils literal notranslate"><span class="pre">0</span></code> to <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></li>
-<li><p>If the input <code class="docutils literal notranslate"><span class="pre">x</span></code> is a <em>rank-2 tensor</em>, i.e. a matrix, then every
+<li><p>If the input <code class="docutils literal notranslate"><span class="pre">x</span></code> is a <em>rank-2 tensor</em>, i.e. a matrix, then every
 <em>row</em> of <code class="docutils literal notranslate"><span class="pre">x</span></code> is interpreted as a separate input location. In this
 case inputs are multi-dimensional, and the columns correspond to the
 various input dimensions.</p></li>
+<li><p>If the input <code class="docutils literal notranslate"><span class="pre">x</span></code> is a <em>tensor of rank 3 or higher</em>, then the input
+is interpreted as a batch of matrices where the matrix dimensions are
+the two outermost dimensions.</p></li>
 </ul>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">k</span> <span class="o">=</span> <span class="n">EQ</span><span class="p">()</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">k</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># One scalar input</span>
+<span class="go">&lt;dense matrix: batch=(), shape=(1, 1), dtype=float64</span>
+<span class="go"> mat=[[1.]]&gt;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">k</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>  <span class="c1"># Three single-dimensional inputs</span>
+<span class="go">&lt;dense matrix: batch=(), shape=(3, 3), dtype=float64</span>
+<span class="go"> mat=[[1.    0.882 0.607]</span>
+<span class="go">      [0.882 1.    0.882]</span>
+<span class="go">      [0.607 0.882 1.   ]]&gt;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">k</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>  <span class="c1"># Three two-dimensional inputs</span>
+<span class="go">&lt;dense matrix: batch=(), shape=(3, 3), dtype=float64</span>
+<span class="go"> mat=[[1.    0.606 0.399]</span>
+<span class="go">      [0.606 1.    0.931]</span>
+<span class="go">      [0.399 0.931 1.   ]]&gt;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">k</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>  <span class="c1"># A batch of two times three two-dimensional inputs</span>
+<span class="go">&lt;dense matrix: batch=(2,), shape=(3, 3), dtype=float64</span>
+<span class="go"> mat=[[[1.    0.15  0.559]</span>
+<span class="go">       [0.15  1.    0.678]</span>
+<span class="go">       [0.559 0.678 1.   ]]</span>
+
+<span class="go">      [[1.    0.891 0.627]</span>
+<span class="go">       [0.891 1.    0.638]</span>
+<span class="go">       [0.627 0.638 1.   ]]]&gt;</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="autograd-tensorflow-pytorch-or-jax-your-choice">
 <h2>AutoGrad, TensorFlow, PyTorch, or JAX? Your Choice!<a class="headerlink" href="#autograd-tensorflow-pytorch-or-jax-your-choice" title="Permalink to this headline">¶</a></h2>
@@ -319,6 +359,10 @@ kernels are available:</p>
 <div class="math notranslate nohighlight">
 \[k(x, y) = \exp\left( -\frac{1}{2}\|x - y\|^2 \right);\]</div>
 </li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CEQ(alpha)</span></code>, the causal exponentiated quadratic:</p>
+<div class="math notranslate nohighlight">
+\[k(x, y) = \left(1 - \erf\left( \frac{\alpha}{4}\|x - y\| \right)\right)\exp\left( -\frac{1}{2}\|x - y\|^2 \right);\]</div>
+</li>
 <li><p><code class="docutils literal notranslate"><span class="pre">RQ(alpha)</span></code>, the rational quadratic:</p>
 <div class="math notranslate nohighlight">
 \[k(x, y) = \left( 1 + \frac{\|x - y\|^2}{2 \alpha} \right)^{-\alpha};\]</div>
@@ -330,14 +374,14 @@ kernels are available:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">Matern32()</span></code>, the Matern–3/2 kernel:</p>
 <div class="math notranslate nohighlight">
 \[k(x, y) = \left(
-   1 + \sqrt{3}\|x - y\|
-   \right)\exp\left(-\sqrt{3}\|x - y\|\right);\]</div>
+     1 + \sqrt{3}\|x - y\|
+     \right)\exp\left(-\sqrt{3}\|x - y\|\right);\]</div>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Matern52()</span></code>, the Matern–5/2 kernel:</p>
 <div class="math notranslate nohighlight">
 \[k(x, y) = \left(
-   1 + \sqrt{5}\|x - y\| + \frac{5}{3} \|x - y\|^2
-  \right)\exp\left(-\sqrt{3}\|x - y\|\right);\]</div>
+     1 + \sqrt{5}\|x - y\| + \frac{5}{3} \|x - y\|^2
+    \right)\exp\left(-\sqrt{3}\|x - y\|\right);\]</div>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Linear()</span></code>, the linear kernel:</p>
 <div class="math notranslate nohighlight">
@@ -346,9 +390,9 @@ kernels are available:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">Delta(epsilon=1e-6)</span></code>, the Kronecker delta kernel:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}k(x, y) = \begin{cases}
-   1 &amp; \text{if } \|x - y\| &lt; \varepsilon, \\
-   0 &amp; \text{otherwise};
-  \end{cases}\end{split}\]</div>
+     1 &amp; \text{if } \|x - y\| &lt; \varepsilon, \\
+     0 &amp; \text{otherwise};
+    \end{cases}\end{split}\]</div>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">DecayingKernel(alpha,</span> <span class="pre">beta)</span></code>:</p>
 <div class="math notranslate nohighlight">
@@ -460,12 +504,6 @@ and <code class="docutils literal notranslate"><span class="pre">f</span> <span 
 <span class="go">EQ() &gt; (2, 3)</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> operator is implemented to provide a shorthand for
-stretching:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">EQ</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">2</span>
-<span class="go">EQ() &gt; 2</span>
-</pre></div>
-</div>
 </li>
 <li><p>Select particular input dimensions of kernels and means.</p>
 <p>Definition:</p>
@@ -515,7 +553,8 @@ stretching:</p>
 </div>
 </li>
 <li><p>Numerically, but efficiently, take derivatives of kernels and means.
-This currently only works in TensorFlow.</p>
+This currently only works in TensorFlow and does not yet support
+batched inputs.</p>
 <p>Definition:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">k</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="mi">0</span><span class="p">)(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">==</span> <span class="n">d</span><span class="o">/</span><span class="n">d</span><span class="p">(</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span> <span class="n">d</span><span class="o">/</span><span class="n">d</span><span class="p">(</span><span class="n">y</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span> <span class="n">k</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
@@ -731,8 +770,8 @@ regular NumPy/TensorFlow/PyTorch/JAX arrays by calling <code class="docutils lit
         <span class="c1"># If `other` is also a `EQWithLengthScale`, then this method checks whether</span>
         <span class="c1"># `self` and `other` can be treated as identical for the purpose of</span>
         <span class="c1"># algebraic simplifications. In this case, `self` and `other` are identical</span>
-        <span class="c1"># for the purpose of algebraic simplification if `self.scale` and `other.</span>
-        <span class="c1"># scale` are. We use `algebra.util.identical` to check this condition.</span>
+        <span class="c1"># for the purpose of algebraic simplification if `self.scale` and</span>
+        <span class="c1"># `other.scale` are. We use `algebra.util.identical` to check this condition.</span>
         <span class="k">return</span> <span class="n">identical</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span>
 
 
@@ -799,37 +838,29 @@ by stretching a base kernel:</p>
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="api.html" class="btn btn-neutral float-right" title="Application Programming Interface" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="index.html" class="btn btn-neutral float-left" title="Welcome" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="api.html" class="btn btn-neutral float-right" title="Application Programming Interface" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2021, Wessel Bruinsma
+        &#169; Copyright 2021, Wessel Bruinsma.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Application Programming Interface &mdash; mlkernels 0.1.0 documentation</title>
   
@@ -13,10 +13,15 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
 
   
   
+
   
+  
+
   
 
   
@@ -26,11 +31,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -51,7 +55,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home" alt="Documentation Home"> mlkernels
+            <a href="index.html" class="icon icon-home"> mlkernels
           
 
           
@@ -132,6 +136,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -143,7 +149,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -160,14 +166,14 @@
   <div class="section" id="application-programming-interface">
 <h1>Application Programming Interface<a class="headerlink" href="#application-programming-interface" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt id="mlkernels.Kernel">
-<em class="property">class </em><code class="sig-prename descclassname">mlkernels.</code><code class="sig-name descname">Kernel</code><a class="reference internal" href="_modules/mlkernels/kernel.html#Kernel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.Kernel" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mlkernels.Kernel">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">mlkernels.</span></span><span class="sig-name descname"><span class="pre">Kernel</span></span><a class="reference internal" href="_modules/mlkernels/kernel.html#Kernel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlkernels.Kernel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">algebra.function.Function</span></code></p>
 <p>Kernel function.</p>
 <p>Kernels can be added and multiplied.</p>
 <dl class="py method">
-<dt id="mlkernels.Kernel.__call__">
-<code class="sig-name descname">__call__</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kw_args</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mlkernels/kernel.html#Kernel.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.Kernel.__call__" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mlkernels.Kernel.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw_args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mlkernels/kernel.html#Kernel.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlkernels.Kernel.__call__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Construct the kernel matrix between all <cite>x</cite> and <cite>y</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -188,10 +194,9 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="mlkernels.pairwise">
-<code class="sig-prename descclassname">mlkernels.</code><code class="sig-name descname">pairwise</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mlkernels/kernel.html#pairwise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.pairwise" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mlkernels.pairwise">
+<span class="sig-prename descclassname"><span class="pre">mlkernels.</span></span><span class="sig-name descname"><span class="pre">pairwise</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mlkernels/kernel.html#pairwise"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlkernels.pairwise" title="Permalink to this definition">¶</a></dt>
 <dd><p>Construct the kernel matrix between all <cite>x</cite> and <cite>y</cite>.</p>
-<p>This method does preserve matrix structure and <em>may</em> return a structured matrix.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -210,10 +215,9 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="mlkernels.elwise">
-<code class="sig-prename descclassname">mlkernels.</code><code class="sig-name descname">elwise</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mlkernels/kernel.html#elwise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.elwise" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mlkernels.elwise">
+<span class="sig-prename descclassname"><span class="pre">mlkernels.</span></span><span class="sig-name descname"><span class="pre">elwise</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mlkernels/kernel.html#elwise"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlkernels.elwise" title="Permalink to this definition">¶</a></dt>
 <dd><p>Construct the kernel vector <cite>x</cite> and <cite>y</cite> element-wise.</p>
-<p>This method does preserve matrix structure and <em>may</em> return a structured matrix.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -234,15 +238,15 @@
 <div class="section" id="kernels">
 <h2>Kernels<a class="headerlink" href="#kernels" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
-<dt id="mlkernels.EQ">
-<em class="property">class </em><code class="sig-prename descclassname">mlkernels.</code><code class="sig-name descname">EQ</code><a class="reference internal" href="_modules/mlkernels/kernels/eq.html#EQ"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.EQ" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mlkernels.EQ">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">mlkernels.</span></span><span class="sig-name descname"><span class="pre">EQ</span></span><a class="reference internal" href="_modules/mlkernels/kernels/eq.html#EQ"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlkernels.EQ" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="source/mlkernels.kernel.html#mlkernels.kernel.Kernel" title="mlkernels.kernel.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlkernels.kernel.Kernel</span></code></a></p>
 <p>Exponentiated quadratic kernel.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="mlkernels.RQ">
-<em class="property">class </em><code class="sig-prename descclassname">mlkernels.</code><code class="sig-name descname">RQ</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">alpha</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mlkernels/kernels/rq.html#RQ"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.RQ" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mlkernels.RQ">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">mlkernels.</span></span><span class="sig-name descname"><span class="pre">RQ</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mlkernels/kernels/rq.html#RQ"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlkernels.RQ" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="source/mlkernels.kernel.html#mlkernels.kernel.Kernel" title="mlkernels.kernel.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlkernels.kernel.Kernel</span></code></a></p>
 <p>Rational quadratic kernel.</p>
 <dl class="field-list simple">
@@ -254,43 +258,43 @@ weight of the tails of the kernel. Must be positive.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="mlkernels.Matern12">
-<em class="property">class </em><code class="sig-prename descclassname">mlkernels.</code><code class="sig-name descname">Matern12</code><a class="reference internal" href="_modules/mlkernels/kernels/matern12.html#Matern12"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.Matern12" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mlkernels.Matern12">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">mlkernels.</span></span><span class="sig-name descname"><span class="pre">Matern12</span></span><a class="reference internal" href="_modules/mlkernels/kernels/matern12.html#Matern12"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlkernels.Matern12" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="source/mlkernels.kernel.html#mlkernels.kernel.Kernel" title="mlkernels.kernel.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlkernels.kernel.Kernel</span></code></a></p>
 <p>Matern–1/2 kernel.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="mlkernels.Exp">
-<code class="sig-prename descclassname">mlkernels.</code><code class="sig-name descname">Exp</code><a class="headerlink" href="#mlkernels.Exp" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mlkernels.Exp">
+<span class="sig-prename descclassname"><span class="pre">mlkernels.</span></span><span class="sig-name descname"><span class="pre">Exp</span></span><a class="headerlink" href="#mlkernels.Exp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for the Matern–1/2 kernel.</p>
 <p>alias of <a class="reference internal" href="source/mlkernels.kernels.matern12.html#mlkernels.kernels.matern12.Matern12" title="mlkernels.kernels.matern12.Matern12"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlkernels.kernels.matern12.Matern12</span></code></a></p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="mlkernels.Matern32">
-<em class="property">class </em><code class="sig-prename descclassname">mlkernels.</code><code class="sig-name descname">Matern32</code><a class="reference internal" href="_modules/mlkernels/kernels/matern32.html#Matern32"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.Matern32" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mlkernels.Matern32">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">mlkernels.</span></span><span class="sig-name descname"><span class="pre">Matern32</span></span><a class="reference internal" href="_modules/mlkernels/kernels/matern32.html#Matern32"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlkernels.Matern32" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="source/mlkernels.kernel.html#mlkernels.kernel.Kernel" title="mlkernels.kernel.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlkernels.kernel.Kernel</span></code></a></p>
 <p>Matern–3/2 kernel.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="mlkernels.Matern52">
-<em class="property">class </em><code class="sig-prename descclassname">mlkernels.</code><code class="sig-name descname">Matern52</code><a class="reference internal" href="_modules/mlkernels/kernels/matern52.html#Matern52"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.Matern52" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mlkernels.Matern52">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">mlkernels.</span></span><span class="sig-name descname"><span class="pre">Matern52</span></span><a class="reference internal" href="_modules/mlkernels/kernels/matern52.html#Matern52"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlkernels.Matern52" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="source/mlkernels.kernel.html#mlkernels.kernel.Kernel" title="mlkernels.kernel.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlkernels.kernel.Kernel</span></code></a></p>
 <p>Matern–5/2 kernel.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="mlkernels.Linear">
-<em class="property">class </em><code class="sig-prename descclassname">mlkernels.</code><code class="sig-name descname">Linear</code><a class="reference internal" href="_modules/mlkernels/kernels/linear.html#Linear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.Linear" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mlkernels.Linear">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">mlkernels.</span></span><span class="sig-name descname"><span class="pre">Linear</span></span><a class="reference internal" href="_modules/mlkernels/kernels/linear.html#Linear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlkernels.Linear" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="source/mlkernels.kernel.html#mlkernels.kernel.Kernel" title="mlkernels.kernel.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlkernels.kernel.Kernel</span></code></a></p>
 <p>Linear kernel.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="mlkernels.Delta">
-<em class="property">class </em><code class="sig-prename descclassname">mlkernels.</code><code class="sig-name descname">Delta</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">epsilon</span><span class="o">=</span><span class="default_value">1e-06</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mlkernels/kernels/delta.html#Delta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.Delta" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mlkernels.Delta">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">mlkernels.</span></span><span class="sig-name descname"><span class="pre">Delta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mlkernels/kernels/delta.html#Delta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlkernels.Delta" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="source/mlkernels.kernel.html#mlkernels.kernel.Kernel" title="mlkernels.kernel.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlkernels.kernel.Kernel</span></code></a></p>
 <p>Kronecker delta kernel.</p>
 <dl class="field-list simple">
@@ -302,8 +306,8 @@ Defaults to <cite>1e-6</cite>.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="mlkernels.DecayingKernel">
-<em class="property">class </em><code class="sig-prename descclassname">mlkernels.</code><code class="sig-name descname">DecayingKernel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">alpha</span></em>, <em class="sig-param"><span class="n">beta</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mlkernels/kernels/decaying.html#DecayingKernel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.DecayingKernel" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mlkernels.DecayingKernel">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">mlkernels.</span></span><span class="sig-name descname"><span class="pre">DecayingKernel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mlkernels/kernels/decaying.html#DecayingKernel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlkernels.DecayingKernel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="source/mlkernels.kernel.html#mlkernels.kernel.Kernel" title="mlkernels.kernel.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlkernels.kernel.Kernel</span></code></a></p>
 <p>Decaying kernel.</p>
 <dl class="field-list simple">
@@ -319,15 +323,15 @@ decaying exponentials.</p></li>
 </dd></dl>
 
 <dl class="py class">
-<dt id="mlkernels.LogKernel">
-<em class="property">class </em><code class="sig-prename descclassname">mlkernels.</code><code class="sig-name descname">LogKernel</code><a class="reference internal" href="_modules/mlkernels/kernels/log.html#LogKernel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.LogKernel" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mlkernels.LogKernel">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">mlkernels.</span></span><span class="sig-name descname"><span class="pre">LogKernel</span></span><a class="reference internal" href="_modules/mlkernels/kernels/log.html#LogKernel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlkernels.LogKernel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="source/mlkernels.kernel.html#mlkernels.kernel.Kernel" title="mlkernels.kernel.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlkernels.kernel.Kernel</span></code></a></p>
 <p>Logarithm kernel.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="mlkernels.PosteriorKernel">
-<em class="property">class </em><code class="sig-prename descclassname">mlkernels.</code><code class="sig-name descname">PosteriorKernel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">k_ij</span></em>, <em class="sig-param"><span class="n">k_zi</span></em>, <em class="sig-param"><span class="n">k_zj</span></em>, <em class="sig-param"><span class="n">z</span></em>, <em class="sig-param"><span class="n">K_z</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mlkernels/kernels/posterior.html#PosteriorKernel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.PosteriorKernel" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mlkernels.PosteriorKernel">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">mlkernels.</span></span><span class="sig-name descname"><span class="pre">PosteriorKernel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k_ij</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_zi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_zj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K_z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mlkernels/kernels/posterior.html#PosteriorKernel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlkernels.PosteriorKernel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="source/mlkernels.kernel.html#mlkernels.kernel.Kernel" title="mlkernels.kernel.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlkernels.kernel.Kernel</span></code></a></p>
 <p>Posterior kernel.</p>
 <dl class="field-list simple">
@@ -347,8 +351,8 @@ data and the right input respectively.</p></li>
 </dd></dl>
 
 <dl class="py class">
-<dt id="mlkernels.SubspaceKernel">
-<em class="property">class </em><code class="sig-prename descclassname">mlkernels.</code><code class="sig-name descname">SubspaceKernel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">k_zi</span></em>, <em class="sig-param"><span class="n">k_zj</span></em>, <em class="sig-param"><span class="n">z</span></em>, <em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mlkernels/kernels/subspace.html#SubspaceKernel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.SubspaceKernel" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mlkernels.SubspaceKernel">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">mlkernels.</span></span><span class="sig-name descname"><span class="pre">SubspaceKernel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k_zi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_zj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mlkernels/kernels/subspace.html#SubspaceKernel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlkernels.SubspaceKernel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="source/mlkernels.kernel.html#mlkernels.kernel.Kernel" title="mlkernels.kernel.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlkernels.kernel.Kernel</span></code></a></p>
 <p>Kernel for a subspace of the RKHS.</p>
 <dl class="field-list simple">
@@ -366,8 +370,8 @@ the right input and the inducing points respectively.</p></li>
 </dd></dl>
 
 <dl class="py class">
-<dt id="mlkernels.TensorProductKernel">
-<em class="property">class </em><code class="sig-prename descclassname">mlkernels.</code><code class="sig-name descname">TensorProductKernel</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">fs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mlkernels/kernels/tensor.html#TensorProductKernel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mlkernels.TensorProductKernel" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="mlkernels.TensorProductKernel">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">mlkernels.</span></span><span class="sig-name descname"><span class="pre">TensorProductKernel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">fs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mlkernels/kernels/tensor.html#TensorProductKernel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mlkernels.TensorProductKernel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="source/mlkernels.kernel.html#mlkernels.kernel.Kernel" title="mlkernels.kernel.Kernel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlkernels.kernel.Kernel</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">algebra.ops.tensor.TensorProductFunction</span></code></p>
 <p>Tensor product kernel.</p>
 </dd></dl>
@@ -380,35 +384,28 @@ the right input and the inducing points respectively.</p></li>
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-      
-        <a href="readme.html" class="btn btn-neutral float-left" title="MLKernels" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="readme.html" class="btn btn-neutral float-left" title="MLKernels" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2021, Wessel Bruinsma
+        &#169; Copyright 2021, Wessel Bruinsma.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

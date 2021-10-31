@@ -1,0 +1,7 @@
+mlkernels.kernels.ceq module
+============================
+
+.. automodule:: mlkernels.kernels.ceq
+   :members:
+   :undoc-members:
+   :show-inheritance:
