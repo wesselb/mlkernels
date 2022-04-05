@@ -16,4 +16,13 @@ def test_posterior():
     assert str(k) == "PosteriorKernel()"
 
     # Standard tests:
-    standard_kernel_tests(k, shapes=[((10, 2), (5, 2))])
+    standard_kernel_tests(
+        k,
+        shapes=[
+            ((10, 2), (5, 2)),
+            # Add in batch shapes.
+            ((3, 10, 2), (3, 5, 2)),
+            ((3, 10, 2), (5, 2)),
+            ((10, 2), (3, 5, 2)),
+        ],
+    )

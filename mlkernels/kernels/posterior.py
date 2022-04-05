@@ -38,4 +38,4 @@ def pairwise(k: PosteriorKernel, x, y):
 @_dispatch
 def elwise(k: PosteriorKernel, x, y):
     iqf_diag = B.iqf_diag(k.K_z, k.k_zi(k.z, x), k.k_zj(k.z, y))
-    return B.subtract(k.k_ij.elwise(x, y), B.expand_dims(iqf_diag, axis=1))
+    return B.subtract(k.k_ij.elwise(x, y), B.expand_dims(iqf_diag, axis=-1))
