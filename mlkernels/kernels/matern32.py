@@ -11,7 +11,7 @@ class Matern32(Kernel):
     """Matern--3/2 kernel."""
 
     def _compute(self, dists):
-        r = 3 ** 0.5 * dists
+        r = 3**0.5 * dists
         return (1 + r) * B.exp(-r)
 
     @property

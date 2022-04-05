@@ -11,8 +11,8 @@ class Matern52(Kernel):
     """Matern--5/2 kernel."""
 
     def _compute(self, dists):
-        r1 = 5 ** 0.5 * dists
-        r2 = 5 * dists ** 2 / 3
+        r1 = 5**0.5 * dists
+        r2 = 5 * dists**2 / 3
         return (1 + r1 + r2) * B.exp(-r1)
 
     @property

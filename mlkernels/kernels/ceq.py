@@ -19,7 +19,7 @@ class CEQ(Kernel):
         self.alpha = alpha
 
     def _compute(self, dists):
-        return (1 - B.erf(self.alpha * dists / 4)) * B.exp(-0.5 * dists ** 2)
+        return (1 - B.erf(self.alpha * dists / 4)) * B.exp(-0.5 * dists**2)
 
     def render(self, formatter):
         return f"CEQ({formatter(self.alpha)})"

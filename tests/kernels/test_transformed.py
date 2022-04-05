@@ -14,7 +14,7 @@ def test_transform():
         return x
 
     def f2(x):
-        return x ** 2
+        return x**2
 
     # Test equality.
     assert EQ().transform(f1) == EQ().transform(f1)
@@ -27,7 +27,7 @@ def test_transform():
     # Test computation of the kernel.
     k = Linear()
     x1, x2 = B.randn(10, 2), B.randn(10, 2)
-    k2 = k.transform(lambda x: x ** 2)
-    k3 = k.transform(lambda x: x ** 2, lambda x: x - 5)
-    approx(k(x1 ** 2, x2 ** 2), k2(x1, x2))
-    approx(k(x1 ** 2, x2 - 5), k3(x1, x2))
+    k2 = k.transform(lambda x: x**2)
+    k3 = k.transform(lambda x: x**2, lambda x: x - 5)
+    approx(k(x1**2, x2**2), k2(x1, x2))
+    approx(k(x1**2, x2 - 5), k3(x1, x2))

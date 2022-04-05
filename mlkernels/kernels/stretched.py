@@ -6,7 +6,7 @@ from . import _dispatch
 from .. import Kernel
 from ..util import expand
 
-__all__ = ["StretchedFunction"]
+__all__ = ["StretchedKernel"]
 
 
 class StretchedKernel(Kernel, StretchedFunction):

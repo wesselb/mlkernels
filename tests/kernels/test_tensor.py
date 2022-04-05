@@ -5,7 +5,7 @@ from ..util import approx, standard_kernel_tests
 
 
 def test_tensor_product():
-    k = TensorProductKernel(lambda x: B.sum(x ** 2, axis=-1))
+    k = TensorProductKernel(lambda x: B.sum(x**2, axis=-1))
 
     # Verify that the kernel has the right properties.
     assert not k.stationary
@@ -29,6 +29,6 @@ def test_tensor_product():
     approx(k(x1), x1 * x1.T)
     approx(k(x1, x2), x1 * x2.T)
 
-    k = TensorProductKernel(lambda x: x ** 2)
-    approx(k(x1), x1 ** 2 * (x1 ** 2).T)
-    approx(k(x1, x2), (x1 ** 2) * (x2 ** 2).T)
+    k = TensorProductKernel(lambda x: x**2)
+    approx(k(x1), x1**2 * (x1**2).T)
+    approx(k(x1, x2), (x1**2) * (x2**2).T)

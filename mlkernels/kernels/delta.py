@@ -22,7 +22,7 @@ class Delta(Kernel):
 
     def _compute(self, dists2):
         dtype = B.dtype(dists2)
-        return B.cast(dtype, B.lt(dists2, self.epsilon ** 2))
+        return B.cast(dtype, B.lt(dists2, self.epsilon**2))
 
     @property
     def _stationary(self):
