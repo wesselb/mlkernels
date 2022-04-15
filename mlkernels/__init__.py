@@ -7,4 +7,4 @@ from .kernels import *
 from .mean import *
 from .means import *
 from .util import *
-from .mean_var import *
+from .meanvar import *

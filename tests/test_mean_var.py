@@ -11,7 +11,7 @@ from mlkernels import (
     Exp,
     TensorProductMean,
 )
-from mlkernels.mean_var import mean_var, mean_var_diag
+from mlkernels.meanvar import mean_var, mean_var_diag
 from .util import approx
 
 z = B.linspace(0, 5, 5)
