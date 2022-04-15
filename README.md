@@ -174,6 +174,59 @@ Example:
        [0.891 1.    0.638]
        [0.627 0.638 1.   ]]]>
 ```
+
+Finally, if you are simultaneously computing means and kernel matrices, then speed-ups
+may be possible.
+To obtain these speed-ups, use `mean_var` instead of first calling `m(x)` and then
+`k(x)`;
+and use `mean_var_diag` instead of first calling `m(x)` and then `k.elwise(x)`.
+
+Example:
+
+```python
+>>> from mlkernels import mean_var, mean_var_diag
+
+>>> m = TensorProductMean(lambda x: x ** 2)
+
+>>> k = EQ()
+
+>>> x = np.linspace(0, 1, 3)
+
+>>> m(x), k(x)         # Less efficient
+(array([[0.  ],
+        [0.25],
+        [1.  ]]),
+ <dense matrix: batch=(), shape=(3, 3), dtype=float64
+  mat=[[1.    0.882 0.607]
+       [0.882 1.    0.882]
+       [0.607 0.882 1.   ]]>)
+
+>>> mean_var(m, k, x)  # More efficient
+(array([[0.  ],
+        [0.25],
+        [1.  ]]),
+ <dense matrix: batch=(), shape=(3, 3), dtype=float64
+  mat=[[1.    0.882 0.607]
+       [0.882 1.    0.882]
+       [0.607 0.882 1.   ]]>)
+
+>>> m(x), k.elwise(x)       # Less efficient
+(array([[0.  ],
+        [0.25],
+        [1.  ]]),
+ array([[1.],
+        [1.],
+        [1.]]))
+
+>>> mean_var_diag(m, k, x)  # More efficient
+(array([[0.  ],
+        [0.25],
+        [1.  ]]),
+ array([[1.],
+        [1.],
+        [1.]]))
+```
+
     
 ## AutoGrad, TensorFlow, PyTorch, or JAX? Your Choice!
 
@@ -609,7 +662,7 @@ they know how to efficiently add, multiply, and do other linear algebra operatio
  diag=[4. 4. 4. 4. 4. 4. 4. 4. 4. 4.]>
 ```
 
-As in the above exmaple, you can convert structured primitives to regular
+As in the above example, you can convert structured primitives to regular
 NumPy/TensorFlow/PyTorch/JAX arrays by calling `B.dense`:
 
 ```python

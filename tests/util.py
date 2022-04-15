@@ -1,14 +1,25 @@
 import lab as B
 import numpy as np
 from numpy.testing import assert_allclose
+from plum import Dispatcher
 
 from mlkernels import Kernel, elwise, pairwise
 
 __all__ = ["approx", "standard_kernel_tests"]
 
+_dispatch = Dispatcher()
 
+
+@_dispatch
 def approx(x, y, rtol=1e-12, atol=1e-12):
     assert_allclose(B.dense(x), B.dense(y), rtol=rtol, atol=atol)
+
+
+@_dispatch
+def approx(x: tuple, y: tuple, **kw_args):
+    assert len(x) == len(y)
+    for xi, yi in zip(x, y):
+        approx(xi, yi)
 
 
 def standard_kernel_tests(

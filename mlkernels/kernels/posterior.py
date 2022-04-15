@@ -35,9 +35,18 @@ class PosteriorKernel(Kernel):
         self.K_z = convert(K_z, AbstractMatrix)
 
 
+def _K_zi_K_zj(k_zi, k_zj, z, x, y):
+    K_zi = k_zi(z, x)
+    if k_zi == k_zj and x is y:
+        K_zj = K_zi
+    else:
+        K_zj = k_zj(z, y)
+    return K_zi, K_zj
+
+
 @_dispatch
 def pairwise(k: PosteriorKernel, x, y):
-    return _pairwise_posteriorkernel(k, x, y, k.k_zi(k.z, x), k.k_zj(k.z, y))
+    return _pairwise_posteriorkernel(k, x, y, *_K_zi_K_zj(k.k_zi, k.k_zj, k.z, x, y))
 
 
 @_dispatch
@@ -47,5 +56,10 @@ def _pairwise_posteriorkernel(k: PosteriorKernel, x, y, K_zi, K_zj):
 
 @_dispatch
 def elwise(k: PosteriorKernel, x, y):
-    iqf_diag = B.iqf_diag(k.K_z, k.k_zi(k.z, x), k.k_zj(k.z, y))
+    return _elwise_posteriorkernel(k, x, y, *_K_zi_K_zj(k.k_zi, k.k_zj, k.z, x, y))
+
+
+@_dispatch
+def _elwise_posteriorkernel(k: PosteriorKernel, x, y, K_zi, K_zj):
+    iqf_diag = B.iqf_diag(k.K_z, K_zi, K_zj)
     return B.subtract(k.k_ij.elwise(x, y), B.expand_dims(iqf_diag, axis=-1))

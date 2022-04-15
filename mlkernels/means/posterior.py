@@ -31,5 +31,9 @@ class PosteriorMean(Mean):
 
     @_dispatch
     def __call__(self, x):
+        return self(x, self.k_zi(self.z, x))
+
+    @_dispatch
+    def __call__(self, x, K_zi):
         diff = B.subtract(self.y, self.m_z(self.z))
-        return B.add(self.m_i(x), B.iqf(self.K_z, self.k_zi(self.z, x), diff))
+        return B.add(self.m_i(x), B.iqf(self.K_z, K_zi, diff))

@@ -1,22 +1,32 @@
 import lab as B
+import pytest
 
 from mlkernels import PosteriorKernel, EQ
 from ..util import standard_kernel_tests, approx
 
 
-def test_posterior():
+@pytest.mark.parametrize(
+    "k_zi, k_zj",
+    [
+        # Test equal and unequal `k_zi` and `k_zj` to cover all branches.
+        (EQ(), EQ()),
+        (0.5 * EQ(), 2 * EQ()),
+    ],
+)
+def test_posterior(k_zi, k_zj):
     z = B.randn(3, 2)
-    k = PosteriorKernel(EQ(), EQ(), EQ(), z, EQ()(z))
+    k = PosteriorKernel(k_zi, k_zj, EQ(), z, EQ()(z))
 
     # Test parametric type.
-    assert type(k) == PosteriorKernel[EQ, EQ, EQ]
+    assert type(k) == PosteriorKernel[type(k_zi), type(k_zj), EQ]
 
     # Check that the kernel computes correctly.
-    approx(k(z), B.zeros(3, 3), atol=1e-11)
+    if k_zi == k_zj == k.k_ij:
+        approx(k(z), B.zeros(3, 3), atol=1e-11)
 
     # Verify that the kernel has the right properties.
     assert not k.stationary
-    assert str(k) == f"PosteriorKernel[{EQ}, {EQ}, {EQ}]()"
+    assert str(k) == f"PosteriorKernel[{type(k_zi)}, {type(k_zj)}, {EQ}]()"
 
     # Standard tests:
     standard_kernel_tests(

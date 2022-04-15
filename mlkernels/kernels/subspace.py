@@ -3,6 +3,7 @@ from matrix import AbstractMatrix
 from plum import convert, parametric
 
 from . import _dispatch
+from .posterior import _K_zi_K_zj
 from .. import Kernel
 
 __all__ = ["SubspaceKernel"]
@@ -34,9 +35,19 @@ class SubspaceKernel(Kernel):
 
 @_dispatch
 def pairwise(k: SubspaceKernel, x, y):
-    return B.iqf(k.A, k.k_zi(k.z, x), k.k_zj(k.z, y))
+    return _pairwise_subspacekernel(k, x, y, *_K_zi_K_zj(k.k_zi, k.k_zj, k.z, x, y))
+
+
+@_dispatch
+def _pairwise_subspacekernel(k: SubspaceKernel, x, y, K_zi, K_zj):
+    return B.iqf(k.A, K_zi, K_zj)
 
 
 @_dispatch
 def elwise(k: SubspaceKernel, x, y):
-    return B.iqf_diag(k.A, k.k_zi(k.z, x), k.k_zj(k.z, y))[:, None]
+    return _elwise_subspacekernel(k, x, y, *_K_zi_K_zj(k.k_zi, k.k_zj, k.z, x, y))
+
+
+@_dispatch
+def _elwise_subspacekernel(k: SubspaceKernel, x, y, K_zi, K_zj):
+    return B.iqf_diag(k.A, K_zi, K_zj)[..., :, None]
