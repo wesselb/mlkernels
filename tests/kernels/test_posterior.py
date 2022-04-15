@@ -8,12 +8,15 @@ def test_posterior():
     z = B.randn(3, 2)
     k = PosteriorKernel(EQ(), EQ(), EQ(), z, EQ()(z))
 
+    # Test parametric type.
+    assert type(k) == PosteriorKernel[EQ, EQ, EQ]
+
     # Check that the kernel computes correctly.
     approx(k(z), B.zeros(3, 3), atol=1e-11)
 
     # Verify that the kernel has the right properties.
     assert not k.stationary
-    assert str(k) == "PosteriorKernel()"
+    assert str(k) == f"PosteriorKernel[{EQ}, {EQ}, {EQ}]()"
 
     # Standard tests:
     standard_kernel_tests(

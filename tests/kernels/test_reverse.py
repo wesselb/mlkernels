@@ -1,7 +1,6 @@
 import lab as B
 
-from mlkernels import EQ, DecayingKernel, Linear
-
+from mlkernels import EQ, DecayingKernel, Linear, ReversedKernel
 from ..util import approx, standard_kernel_tests
 
 
@@ -22,6 +21,9 @@ def test_reversal():
         approx(k(x3), reversed(reversed(k))(x3))
         approx(k(x1, x2), reversed(reversed(k))(x1, x2))
         approx(k(x1, x2), reversed(reversed(k))(x2, x1).T)
+
+    # Test parametric type.
+    assert type(reversed(EQ())) == ReversedKernel[EQ]
 
     # Verify that the kernel has the right properties.
     k = reversed(EQ())

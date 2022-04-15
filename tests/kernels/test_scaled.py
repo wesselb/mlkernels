@@ -1,11 +1,12 @@
-import lab as B
-
-from mlkernels import EQ, Matern12
-from ..util import standard_kernel_tests, approx
+from mlkernels import EQ, Matern12, ScaledKernel
+from ..util import standard_kernel_tests
 
 
 def test_scaled():
     k = 2 * EQ()
+
+    # Test parametric type.
+    assert type(k) == ScaledKernel[EQ]
 
     # Verify that the kernel has the right properties.
     assert k.stationary

@@ -1,4 +1,4 @@
-from mlkernels import EQ, RQ, Linear
+from mlkernels import EQ, RQ, Linear, ScaledKernel, ProductKernel, StretchedKernel
 import lab as B
 
 from ..util import standard_kernel_tests, approx
@@ -6,6 +6,11 @@ from ..util import standard_kernel_tests, approx
 
 def test_product():
     k = (2 * EQ().stretch(10)) * (3 * RQ(1e-2).stretch(20))
+
+    # Test parametric type.
+    assert (
+        type(k) == ScaledKernel[ProductKernel[StretchedKernel[EQ], StretchedKernel[RQ]]]
+    )
 
     # Verify that the kernel has the right properties.
     assert k.stationary

@@ -1,12 +1,15 @@
 import lab as B
 import numpy as np
 
-from mlkernels import EQ, Matern12, ZeroKernel
+from mlkernels import EQ, Matern12, ZeroKernel, StretchedKernel, PeriodicKernel
 from ..util import standard_kernel_tests
 
 
 def test_periodic():
     k = EQ().stretch(2).periodic(3)
+
+    # Test parametric type.
+    assert type(k) == PeriodicKernel[StretchedKernel[EQ]]
 
     # Verify that the kernel has the right properties.
     assert str(k) == "(EQ() > 2) per 3"

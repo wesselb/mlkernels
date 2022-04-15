@@ -1,6 +1,7 @@
 import lab as B
 from algebra import SelectedFunction
 from algebra.util import identical
+from plum import parametric
 
 from . import _dispatch
 from .. import Kernel
@@ -9,8 +10,13 @@ from ..util import expand, uprank
 __all__ = ["SelectedKernel"]
 
 
+@parametric
 class SelectedKernel(Kernel, SelectedFunction):
     """Kernel with particular input dimensions selected."""
+
+    @classmethod
+    def __infer_type_parameter__(cls, k, *args):
+        return type(k)
 
     @property
     def _stationary(self):

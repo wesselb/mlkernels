@@ -1,11 +1,14 @@
 import lab as B
 
-from mlkernels import Linear, EQ, Matern12
+from mlkernels import Linear, EQ, Matern12, InputTransformedKernel
 from ..util import approx, standard_kernel_tests
 
 
 def test_transform():
     k = Linear().transform(lambda x: x - 5)
+
+    # Test parametric type.
+    assert type(k) == InputTransformedKernel[Linear]
 
     # Verify that the kernel has the right properties.
     assert not k.stationary

@@ -1,6 +1,6 @@
 import lab as B
 from matrix import AbstractMatrix
-from plum import convert
+from plum import convert, parametric
 
 from . import _dispatch
 from .. import Kernel
@@ -8,6 +8,7 @@ from .. import Kernel
 __all__ = ["SubspaceKernel"]
 
 
+@parametric
 class SubspaceKernel(Kernel):
     """Kernel for a subspace of the RKHS.
 
@@ -19,6 +20,10 @@ class SubspaceKernel(Kernel):
         z (input): Locations of the inducing points.
         A (matrix): Generalised inducing point kernel matrix.
     """
+
+    @classmethod
+    def __infer_type_parameter__(cls, k_zi, k_zj, *args):
+        return type(k_zi), type(k_zj)
 
     def __init__(self, k_zi, k_zj, z, A):
         self.k_zi = k_zi

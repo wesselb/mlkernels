@@ -1,13 +1,15 @@
 import lab as B
 import numpy as np
 
-from mlkernels import EQ, DecayingKernel, Linear, ShiftedKernel
-
-from ..util import approx, standard_kernel_tests
+from mlkernels import EQ, DecayingKernel, Linear, ShiftedKernel, ScaledKernel
+from ..util import standard_kernel_tests
 
 
 def test_shifted():
     k = ShiftedKernel(2 * EQ(), 5)
+
+    # Test parametric type.
+    assert type(k) == ShiftedKernel[ScaledKernel[EQ]]
 
     # Verify that the kernel has the right properties.
     assert k.stationary

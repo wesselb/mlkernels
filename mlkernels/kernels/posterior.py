@@ -1,6 +1,6 @@
 import lab as B
 from matrix import AbstractMatrix
-from plum import convert
+from plum import convert, parametric
 
 from . import _dispatch
 from .. import Kernel
@@ -8,6 +8,7 @@ from .. import Kernel
 __all__ = ["PosteriorKernel"]
 
 
+@parametric
 class PosteriorKernel(Kernel):
     """Posterior kernel.
 
@@ -22,6 +23,10 @@ class PosteriorKernel(Kernel):
         K_z (matrix): Kernel matrix of data.
     """
 
+    @classmethod
+    def __infer_type_parameter__(cls, k_ij, k_zi, k_zj, *args):
+        return type(k_ij), type(k_zi), type(k_zj)
+
     def __init__(self, k_ij, k_zi, k_zj, z, K_z):
         self.k_ij = k_ij
         self.k_zi = k_zi
@@ -32,7 +37,12 @@ class PosteriorKernel(Kernel):
 
 @_dispatch
 def pairwise(k: PosteriorKernel, x, y):
-    return B.subtract(k.k_ij(x, y), B.iqf(k.K_z, k.k_zi(k.z, x), k.k_zj(k.z, y)))
+    return _pairwise_posteriorkernel(k, x, y, k.k_zi(k.z, x), k.k_zj(k.z, y))
+
+
+@_dispatch
+def _pairwise_posteriorkernel(k: PosteriorKernel, x, y, K_zi, K_zj):
+    return B.subtract(k.k_ij(x, y), B.iqf(k.K_z, K_zi, K_zj))
 
 
 @_dispatch

@@ -1,12 +1,15 @@
 import lab as B
 import numpy as np
 
-from mlkernels import EQ, Matern12
+from mlkernels import EQ, Matern12, StretchedKernel
 from ..util import standard_kernel_tests
 
 
 def test_stretched():
     k = EQ().stretch(2)
+
+    # Test parametric type.
+    assert type(k) == StretchedKernel[EQ]
 
     # Verify that the kernel has the right properties.
     assert k.stationary

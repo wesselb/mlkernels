@@ -1,12 +1,15 @@
 import lab as B
 from algebra import SumFunction
 
+from plum import parametric
+
 from . import _dispatch
 from .. import Kernel
 
 __all__ = ["SumKernel"]
 
 
+@parametric
 class SumKernel(Kernel, SumFunction):
     """Sum of kernels."""
 

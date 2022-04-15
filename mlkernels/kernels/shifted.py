@@ -1,6 +1,7 @@
 import lab as B
 from algebra import ShiftedFunction, shift
 from algebra.util import identical
+from plum import parametric
 
 from . import _dispatch
 from .. import Kernel
@@ -9,8 +10,13 @@ from ..util import expand
 __all__ = ["ShiftedKernel"]
 
 
+@parametric
 class ShiftedKernel(Kernel, ShiftedFunction):
     """Shifted kernel."""
+
+    @classmethod
+    def __infer_type_parameter__(cls, k, *args):
+        return type(k)
 
     def _compute(self, x, y):
         shifts1, shifts2 = expand(self.shifts)

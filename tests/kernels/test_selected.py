@@ -1,12 +1,15 @@
 import lab as B
 import numpy as np
 
-from mlkernels import EQ, Matern12
+from mlkernels import EQ, Matern12, SelectedKernel, ScaledKernel, StretchedKernel
 from ..util import approx, standard_kernel_tests
 
 
 def test_selected():
     k = (2 * EQ().stretch(5)).select(0)
+
+    # Test parametric type.
+    assert type(k) == SelectedKernel[ScaledKernel[StretchedKernel[EQ]]]
 
     # Verify that the kernel has the right properties.
     assert k.stationary

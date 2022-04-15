@@ -1,6 +1,7 @@
 import lab as B
 from algebra import StretchedFunction
 from algebra.util import identical
+from plum import parametric
 
 from . import _dispatch
 from .. import Kernel
@@ -9,8 +10,13 @@ from ..util import expand
 __all__ = ["StretchedKernel"]
 
 
+@parametric
 class StretchedKernel(Kernel, StretchedFunction):
     """Stretched kernel."""
+
+    @classmethod
+    def __infer_type_parameter__(cls, k, *args):
+        return type(k)
 
     def _compute(self, x, y):
         stretches1, stretches2 = expand(self.stretches)

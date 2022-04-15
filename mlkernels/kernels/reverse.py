@@ -1,5 +1,6 @@
 import lab as B
 from algebra import ReversedFunction
+from plum import parametric
 
 from . import _dispatch
 from .. import Kernel
@@ -7,6 +8,7 @@ from .. import Kernel
 __all__ = ["ReversedKernel"]
 
 
+@parametric
 class ReversedKernel(Kernel, ReversedFunction):
     """Reversed kernel.
 

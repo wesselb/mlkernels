@@ -1,5 +1,6 @@
 from algebra import InputTransformedFunction
 from algebra.util import identical
+from plum import parametric
 
 from . import _dispatch
 from .. import Kernel
@@ -8,8 +9,13 @@ from ..util import expand, uprank
 __all__ = ["InputTransformedKernel"]
 
 
+@parametric
 class InputTransformedKernel(Kernel, InputTransformedFunction):
     """Input-transformed kernel."""
+
+    @classmethod
+    def __infer_type_parameter__(cls, k, *args):
+        return type(k)
 
     def _compute(self, x, y):
         f1, f2 = expand(self.fs)

@@ -1,6 +1,7 @@
 import lab as B
 from algebra import WrappedFunction
 from algebra.util import to_tensor, identical
+from plum import parametric
 
 from . import _dispatch
 from .zero import ZeroKernel
@@ -10,6 +11,7 @@ from ..util import uprank
 __all__ = ["PeriodicKernel"]
 
 
+@parametric
 class PeriodicKernel(Kernel, WrappedFunction):
     """Periodic kernel.
 
@@ -17,6 +19,10 @@ class PeriodicKernel(Kernel, WrappedFunction):
         k (:class:`.kernel.Kernel`): Kernel to make periodic.
         period (tensor): Period.
     """
+
+    @classmethod
+    def __infer_type_parameter__(cls, k, *args):
+        return type(k)
 
     def __init__(self, k, period):
         WrappedFunction.__init__(self, k)

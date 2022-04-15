@@ -1,5 +1,6 @@
 import lab as B
 from algebra import ScaledFunction
+from plum import parametric
 
 from . import _dispatch
 from .. import Kernel
@@ -7,8 +8,13 @@ from .. import Kernel
 __all__ = ["ScaledKernel"]
 
 
+@parametric
 class ScaledKernel(Kernel, ScaledFunction):
     """Scaled kernel."""
+
+    @classmethod
+    def __infer_type_parameter__(cls, k, *args):
+        return type(k)
 
     @property
     def _stationary(self):
