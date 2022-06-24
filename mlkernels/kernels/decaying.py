@@ -23,10 +23,7 @@ class DecayingKernel(Kernel):
         self.beta = beta
 
     def _compute_beta_raised(self):
-        beta_norm = B.sqrt(
-            B.maximum(B.sum(B.power(self.beta, 2)), B.cast(B.dtype(self.beta), 1e-30))
-        )
-        return B.power(beta_norm, self.alpha)
+        return B.power(self.beta * self.beta, self.alpha / 2)
 
     def render(self, formatter):
         return f"DecayingKernel({formatter(self.alpha)}, {formatter(self.beta)})"
@@ -38,7 +35,7 @@ class DecayingKernel(Kernel):
 
 @_dispatch
 def pairwise(k: DecayingKernel, x: B.Numeric, y: B.Numeric):
-    pw_sums_raised = B.power(B.pw_sums(B.add(x, k.beta), y), k.alpha)
+    pw_sums_raised = B.power(B.pw_sums2(B.add(x, k.beta), y), k.alpha / 2)
     return Dense(B.divide(k._compute_beta_raised(), pw_sums_raised))
 
 
@@ -46,5 +43,5 @@ def pairwise(k: DecayingKernel, x: B.Numeric, y: B.Numeric):
 def elwise(k: DecayingKernel, x: B.Numeric, y: B.Numeric):
     return B.divide(
         k._compute_beta_raised(),
-        B.power(B.ew_sums(B.add(x, k.beta), y), k.alpha),
+        B.power(B.ew_sums2(B.add(x, k.beta), y), k.alpha / 2),
     )
