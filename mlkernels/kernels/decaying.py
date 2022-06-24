@@ -11,6 +11,9 @@ __all__ = ["DecayingKernel"]
 class DecayingKernel(Kernel):
     """Decaying kernel.
 
+    This kernel is a multi-dimensional version of equation (6) in
+         https://arxiv.org/pdf/1406.3896.pdf
+
     Args:
         alpha (tensor): Shape of the gamma distribution governing the distribution of
             decaying exponentials.
