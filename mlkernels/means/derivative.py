@@ -1,9 +1,9 @@
 import lab as B
 from algebra import DerivativeFunction
 
-from . import _dispatch
 from ..mean import Mean
 from ..util import uprank
+from . import _dispatch
 
 __all__ = ["DerivativeMean"]
 

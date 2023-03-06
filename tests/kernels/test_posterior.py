@@ -1,8 +1,9 @@
 import lab as B
 import pytest
+from mlkernels import EQ, PosteriorKernel
+from plum.util import repr_short
 
-from mlkernels import PosteriorKernel, EQ
-from ..util import standard_kernel_tests, approx
+from ..util import approx, standard_kernel_tests
 
 
 @pytest.mark.parametrize(
@@ -26,7 +27,12 @@ def test_posterior(k_zi, k_zj):
 
     # Verify that the kernel has the right properties.
     assert not k.stationary
-    assert str(k) == f"PosteriorKernel[{type(k_zi)}, {type(k_zj)}, {EQ}]()"
+    expected = (
+        f"PosteriorKernel[{repr_short(k_zi.__class__)},"
+        f" {repr_short(k_zj.__class__)},"
+        f" {repr_short(EQ)}]()"
+    )
+    assert str(k) == expected
 
     # Standard tests:
     standard_kernel_tests(
@@ -38,4 +44,5 @@ def test_posterior(k_zi, k_zj):
             ((3, 10, 2), (5, 2)),
             ((10, 2), (3, 5, 2)),
         ],
+        pd=k_zi == k_zj,
     )

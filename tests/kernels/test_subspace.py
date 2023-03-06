@@ -1,7 +1,8 @@
 import lab as B
+from mlkernels import EQ, SubspaceKernel
+from plum import repr_short
 
-from mlkernels import SubspaceKernel, EQ
-from ..util import standard_kernel_tests, approx
+from ..util import approx, standard_kernel_tests
 
 
 def test_subspace():
@@ -16,7 +17,7 @@ def test_subspace():
 
     # Verify that the kernel has the right properties.
     assert not k.stationary
-    assert str(k) == f"SubspaceKernel[{EQ}, {EQ}]()"
+    assert str(k) == f"SubspaceKernel[{repr_short(EQ)}, {repr_short(EQ)}]()"
 
     # Standard tests:
     standard_kernel_tests(

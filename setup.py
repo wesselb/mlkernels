@@ -5,7 +5,7 @@ requirements = [
     "algebra>=1.2",
     "backends>=1.4.11",
     "backends-matrix>=1.2.1",
-    "plum-dispatch>=1.0",
+    "plum-dispatch>=2",
 ]
 
 setup(

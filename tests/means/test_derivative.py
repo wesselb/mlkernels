@@ -4,7 +4,7 @@ import tensorflow as tf
 from ..util import approx
 
 # noinspection PyUnresolvedReferences
-from ..util_mean import x, m_square, m_cube
+from ..util_mean import m_cube, m_square, x
 
 
 def test_derivative(x):

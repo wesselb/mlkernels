@@ -7,8 +7,8 @@ import torch
 from algebra import Element
 from lab import torch as B
 from matrix import AbstractMatrix, Dense
-
 from mlkernels import EQ
+from plum import isinstance
 
 
 @pytest.mark.parametrize("grad", [autograd.grad, lambda f: jax.jit(jax.grad(f))])

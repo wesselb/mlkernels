@@ -1,16 +1,16 @@
 import lab as B
 import pytest
-
 from mlkernels import (
     EQ,
     RQ,
     Linear,
-    StretchedKernel,
-    ScaledKernel,
-    SumKernel,
     PosteriorKernel,
+    ScaledKernel,
+    StretchedKernel,
     SubspaceKernel,
+    SumKernel,
 )
+
 from ..util import standard_kernel_tests
 
 
@@ -40,23 +40,23 @@ def test_sum():
 
 
 z = B.randn(3, 2)
+K_z = B.dense(EQ()(z))
 
 
 @pytest.mark.parametrize(
     "k",
     [
         # Entirely similar:
-        PosteriorKernel(EQ(), EQ(), EQ(), z, B.eye(3))
-        + SubspaceKernel(EQ(), EQ(), z, B.eye(3)),
+        PosteriorKernel(EQ(), EQ(), EQ(), z, K_z) + SubspaceKernel(EQ(), EQ(), z, K_z),
         # Dissimilar `z`:
-        PosteriorKernel(EQ(), EQ(), EQ(), z, B.eye(3))
-        + SubspaceKernel(EQ(), EQ(), z + 1, B.eye(3)),
+        PosteriorKernel(EQ(), EQ(), EQ(), z, K_z)
+        + SubspaceKernel(EQ(), EQ(), z + 1, K_z),
         # Dissimilar `k_zi`:
-        PosteriorKernel(EQ(), EQ(), EQ(), z, B.eye(3))
-        + SubspaceKernel(2 * EQ(), EQ(), z, B.eye(3)),
+        PosteriorKernel(EQ(), EQ(), EQ(), z, K_z)
+        + SubspaceKernel(2 * EQ(), EQ(), z, K_z),
         # Dissimilar `k_zj`:
-        PosteriorKernel(EQ(), EQ(), EQ(), z, B.eye(3))
-        + SubspaceKernel(EQ(), 2 * EQ(), z, B.eye(3)),
+        PosteriorKernel(EQ(), EQ(), EQ(), z, K_z)
+        + SubspaceKernel(EQ(), 2 * EQ(), z, K_z),
     ],
 )
 def test_sum_specialisations(k):
@@ -69,4 +69,5 @@ def test_sum_specialisations(k):
             ((3, 10, 2), (5, 2)),
             ((10, 2), (3, 5, 2)),
         ],
+        pd=k[1].k_zi == k[1].k_zj,
     )
