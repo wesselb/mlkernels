@@ -2,8 +2,8 @@ import lab as B
 from algebra.util import identical
 from matrix import Dense
 
-from . import _dispatch
 from .. import Kernel
+from . import _dispatch
 
 __all__ = ["DecayingKernel"]
 
@@ -36,14 +36,22 @@ class DecayingKernel(Kernel):
         return identical(self.alpha, other.alpha) and identical(self.beta, other.beta)
 
 
+def _one_norm(x):
+    return B.sum(B.abs(B.uprank(x)), axis=-1, squeeze=False)
+
+
 @_dispatch
 def pairwise(k: DecayingKernel, x: B.Numeric, y: B.Numeric):
+    x = _one_norm(x)
+    y = _one_norm(y)
     pw_sums_raised = B.power(B.pw_sums2(B.add(x, k.beta), y), k.alpha / 2)
     return Dense(B.divide(k._compute_beta_raised(), pw_sums_raised))
 
 
 @_dispatch
 def elwise(k: DecayingKernel, x: B.Numeric, y: B.Numeric):
+    x = _one_norm(x)
+    y = _one_norm(y)
     return B.divide(
         k._compute_beta_raised(),
         B.power(B.ew_sums2(B.add(x, k.beta), y), k.alpha / 2),

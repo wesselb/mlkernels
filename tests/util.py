@@ -1,9 +1,8 @@
 import lab as B
 import numpy as np
+from mlkernels import Kernel, elwise, pairwise
 from numpy.testing import assert_allclose
 from plum import Dispatcher
-
-from mlkernels import Kernel, elwise, pairwise
 
 __all__ = ["approx", "standard_kernel_tests"]
 
@@ -29,6 +28,7 @@ def standard_kernel_tests(
     dtype=np.float64,
     f1=None,
     f2=None,
+    pd=True,
 ):
     if shapes is None:
         shapes = [
@@ -59,6 +59,11 @@ def standard_kernel_tests(
             approx(f1(x1), f2(x1))
 
         # Check `pairwise`.
+
+        # Check positive definiteness.
+        if pd:
+            B.chol(k(x1))
+            B.chol(k(x2))
 
         # Check argument duplication.
         approx(pairwise(k, x1, x1), pairwise(k, x1))
